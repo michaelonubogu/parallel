@@ -1,0 +1,316 @@
+@font-face {
+	font-family: "Flaticon";
+	src: url("flaticon.eot");
+	src: url("flaticon.eot#iefix") format("embedded-opentype"),
+	url("flaticon.woff") format("woff"),
+	url("flaticon.ttf") format("truetype"),
+	url("flaticon.svg") format("svg");
+	font-weight: normal;
+	font-style: normal;
+}
+[class^="flaticon-"]:before, [class*=" flaticon-"]:before,
+[class^="flaticon-"]:after, [class*=" flaticon-"]:after {   
+	font-family: Flaticon;
+        /*font-size: 20px;*/
+font-style: normal;
+margin-left: 20px;
+}.flaticon-add86:before {
+	content: "\e000";
+}
+.flaticon-add87:before {
+	content: "\e001";
+}
+.flaticon-cancel15:before {
+	content: "\e002";
+}
+.flaticon-cooperative:before {
+	content: "\e003";
+}
+.flaticon-delete44:before {
+	content: "\e004";
+}
+.flaticon-disc10:before {
+	content: "\e005";
+}
+.flaticon-download76:before {
+	content: "\e006";
+}
+.flaticon-dreamcast:before {
+	content: "\e007";
+}
+.flaticon-four44:before {
+	content: "\e008";
+}
+.flaticon-four47:before {
+	content: "\e009";
+}
+.flaticon-game23:before {
+	content: "\e00a";
+}
+.flaticon-game24:before {
+	content: "\e00b";
+}
+.flaticon-game25:before {
+	content: "\e00c";
+}
+.flaticon-game26:before {
+	content: "\e00d";
+}
+.flaticon-game27:before {
+	content: "\e00e";
+}
+.flaticon-game28:before {
+	content: "\e00f";
+}
+.flaticon-game29:before {
+	content: "\e010";
+}
+.flaticon-game31:before {
+	content: "\e011";
+}
+.flaticon-game32:before {
+	content: "\e012";
+}
+.flaticon-game33:before {
+	content: "\e013";
+}
+.flaticon-game34:before {
+	content: "\e014";
+}
+.flaticon-gameboy1:before {
+	content: "\e015";
+}
+.flaticon-gameboy2:before {
+	content: "\e016";
+}
+.flaticon-gameboy:before {
+	content: "\e017";
+}
+.flaticon-gamecube:before {
+	content: "\e018";
+}
+.flaticon-games10:before {
+	content: "\e019";
+}
+.flaticon-games11:before {
+	content: "\e01a";
+}
+.flaticon-games13:before {
+	content: "\e01b";
+}
+.flaticon-games8:before {
+	content: "\e01c";
+}
+.flaticon-games9:before {
+	content: "\e01d";
+}
+.flaticon-gane:before {
+	content: "\e01e";
+}
+.flaticon-genesis:before {
+	content: "\e01f";
+}
+.flaticon-headset6:before {
+	content: "\e020";
+}
+.flaticon-joystick8:before {
+	content: "\e021";
+}
+.flaticon-medium4:before {
+	content: "\e022";
+}
+.flaticon-monitor49:before {
+	content: "\e023";
+}
+.flaticon-n64:before {
+	content: "\e024";
+}
+.flaticon-nintendo1:before {
+	content: "\e025";
+}
+.flaticon-nintendo2:before {
+	content: "\e026";
+}
+.flaticon-nintendo3:before {
+	content: "\e027";
+}
+.flaticon-nintendo4:before {
+	content: "\e028";
+}
+.flaticon-nintendo5:before {
+	content: "\e029";
+}
+.flaticon-nintendo7:before {
+	content: "\e02a";
+}
+.flaticon-nintendo8:before {
+	content: "\e02b";
+}
+.flaticon-nintendo9:before {
+	content: "\e02c";
+}
+.flaticon-one28:before {
+	content: "\e02d";
+}
+.flaticon-one29:before {
+	content: "\e02e";
+}
+.flaticon-online12:before {
+	content: "\e02f";
+}
+.flaticon-online13:before {
+	content: "\e030";
+}
+.flaticon-plus42:before {
+	content: "\e031";
+}
+.flaticon-ps31:before {
+	content: "\e032";
+}
+.flaticon-ps3:before {
+	content: "\e033";
+}
+.flaticon-ps41:before {
+	content: "\e034";
+}
+.flaticon-ps42:before {
+	content: "\e035";
+}
+.flaticon-ps43:before {
+	content: "\e036";
+}
+.flaticon-ps44:before {
+	content: "\e037";
+}
+.flaticon-ps45:before {
+	content: "\e038";
+}
+.flaticon-ps46:before {
+	content: "\e039";
+}
+.flaticon-ps4:before {
+	content: "\e03a";
+}
+.flaticon-racing3:before {
+	content: "\e03b";
+}
+.flaticon-rest2:before {
+	content: "\e03c";
+}
+.flaticon-shooting6:before {
+	content: "\e03d";
+}
+.flaticon-sony:before {
+	content: "\e03e";
+}
+.flaticon-super3:before {
+	content: "\e03f";
+}
+.flaticon-three85:before {
+	content: "\e040";
+}
+.flaticon-three86:before {
+	content: "\e041";
+}
+.flaticon-two161:before {
+	content: "\e042";
+}
+.flaticon-versus:before {
+	content: "\e043";
+}
+.flaticon-vibration:before {
+	content: "\e044";
+}
+.flaticon-wifi58:before {
+	content: "\e045";
+}
+.flaticon-wii10:before {
+	content: "\e046";
+}
+.flaticon-wii11:before {
+	content: "\e047";
+}
+.flaticon-wii12:before {
+	content: "\e048";
+}
+.flaticon-wii13:before {
+	content: "\e049";
+}
+.flaticon-wii14:before {
+	content: "\e04a";
+}
+.flaticon-wii2:before {
+	content: "\e04b";
+}
+.flaticon-wii3:before {
+	content: "\e04c";
+}
+.flaticon-wii4:before {
+	content: "\e04d";
+}
+.flaticon-wii5:before {
+	content: "\e04e";
+}
+.flaticon-wii6:before {
+	content: "\e04f";
+}
+.flaticon-wii7:before {
+	content: "\e050";
+}
+.flaticon-wii8:before {
+	content: "\e051";
+}
+.flaticon-wii9:before {
+	content: "\e052";
+}
+.flaticon-wii:before {
+	content: "\e053";
+}
+.flaticon-xbox10:before {
+	content: "\e054";
+}
+.flaticon-xbox11:before {
+	content: "\e055";
+}
+.flaticon-xbox12:before {
+	content: "\e056";
+}
+.flaticon-xbox13:before {
+	content: "\e057";
+}
+.flaticon-xbox14:before {
+	content: "\e058";
+}
+.flaticon-xbox15:before {
+	content: "\e059";
+}
+.flaticon-xbox16:before {
+	content: "\e05a";
+}
+.flaticon-xbox17:before {
+	content: "\e05b";
+}
+.flaticon-xbox18:before {
+	content: "\e05c";
+}
+.flaticon-xbox19:before {
+	content: "\e05d";
+}
+.flaticon-xbox20:before {
+	content: "\e05e";
+}
+.flaticon-xbox5:before {
+	content: "\e05f";
+}
+.flaticon-xbox6:before {
+	content: "\e060";
+}
+.flaticon-xbox7:before {
+	content: "\e061";
+}
+.flaticon-xbox8:before {
+	content: "\e062";
+}
+.flaticon-xbox9:before {
+	content: "\e063";
+}

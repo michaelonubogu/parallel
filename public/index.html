@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <title>LFG - Find people to play games with</title>
+    <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+
+	<!--Open Graph Meta Tags-->
+	<meta property="og:title"content="Gaming Request" />
+	<meta property="og:site_name" content="Parallel" />
+	<meta property="og:description" content="Parellel is an app that helps you find other gamers online to play your favorite games with. Create gaming requests for your favorite games, search for other players, respond to gaming requests by other gamers, & track your favorite games" />
+	<meta property="fb:app_id" content="857142311041951" />
+	<meta property="og:type" content="website" />
+
+    <!-- Web Components Polyfils -->
+    <script src="components/bower_components/webcomponentsjs/webcomponents-lite.min.js"></script>
+
+    <!-- Fonts -->
+    <link rel='import' href='components/bower_components/font-roboto/roboto.html'>
+
+    <!-- CSS -->
+    <link href='assets/app/css/lfg.css' rel='stylesheet' type='text/css'>
+
+    <!-- Polymer & Polymer Core Components -->
+	<link rel='import' href='components/bower_components/polymer/polymer.html'>
+
+    <!-- Scripts & Other dependencies -->
+    <script src="components/bower_components/jquery/dist/jquery.min.js"></script>
+	<script src="assets/app/js/jquery-ui.min.js"></script>
+    <!--<script src='https://cdn.firebase.com/js/client/2.2.1/firebase.js'></script>-->
+    <script src='components/bower_components/firebase/firebase.js'></script>
+
+	<!-- Html sanitization-->
+	<script src="components/bower_components/xss/dist/xss.min.js"></script>
+
+	<script src="assets/app/js/app-config.js"></script>
+	<!--<script src="assets/app/js/page-director.js"></script>-->
+	<script src="assets/app/js/jquery.plugin.min.js"></script>
+	<script src="assets/app/js/jquery.timeentry.js"></script>
+    <script src="assets/app/js/underscore-min.js"></script>
+	<script src="assets/app/js/timeago.js"></script>
+    <script src="assets/app/js/date.js"></script>
+	
+
+    <!-- Custom Imports -->
+    <link rel="import" href="imports/materialize.html">
+    <link rel="import" href="components/bower_components/app-router/app-router.html">
+</head>
+<body unresolved>
+<app-router init="manual">
+	<app-route path="/" import="/views/request-page.html"></app-route>
+	<app-route path="/login" import="/views/sign-in.html"></app-route>
+    <app-route path="/new" import="/views/new-request.html"></app-route>
+    <app-route path="/about" import="/views/about.html"></app-route>
+    <app-route path="/games" import="/views/games-page.html"></app-route>
+	<app-route path="/userrequests" import="/views/user-requests.html"></app-route>
+    <app-route path="/recent" import="/views/recent-requests.html"></app-route>
+	<app-route path="/setup" import="/views/user-setup.html"></app-route>
+	<app-route path="/request/:requestkey" import="/views/request-details.html"></app-route>
+    <app-route path="*" import="/views/not-found-page.html"></app-route>
+</app-router>
+
+<script src="assets/app/js/page-director.js"></script>
+
+<script>
+	window.fbAsyncInit = function() {
+		FB.init({
+			appId: '857142311041951',
+			xfbml: true,
+			version: 'v2.4'
+		});
+	};
+
+	(function(d, s, id){
+		var js, fjs = d.getElementsByTagName(s)[0];
+		if (d.getElementById(id)) {return;}
+		js = d.createElement(s); js.id = id;
+		js.src = "//connect.facebook.net/en_US/sdk.js";
+		fjs.parentNode.insertBefore(js, fjs);
+	}(document, 'script', 'facebook-jssdk'));
+
+</script>
+
+<script>
+
+    //var DEFAULT_ROUTE = 'home';
+    document.addEventListener('WebComponentsReady', function() {
+    	document.querySelector('app-router').init();
+    });
+</script>
+</body>
+</html>

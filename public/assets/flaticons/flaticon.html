@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Flaticon WebFont</title>
+    <link rel="stylesheet" type="text/css" href="flaticon.css">
+    <meta charset="UTF-8">
+    <style>
+    body {
+        font-family: sans-serif;
+        line-height: 1.5;
+        font-size: 16px;
+        padding: 20px;
+        color:#333;
+    }
+    * {
+        -moz-box-sizing: border-box;
+        -webkit-box-sizing: border-box;
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+    }
+    [class^="flaticon-"]:before, [class*=" flaticon-"]:before, [class^="flaticon-"]:after, [class*=" flaticon-"]:after {
+        font-family: Flaticon;
+        font-size: 30px;
+        font-style: normal;
+        margin-left: 20px;
+        color: #333;
+    }
+    .image p {
+		font-size: 12px;
+		margin: 0px;
+		clear: none;
+		width: 300px;
+		line-height: 40px;
+	}
+    .text {
+        float: left;
+        font-size:14px;
+        margin-top: 15px;
+    }
+    .text ul {
+        margin-left:0px;
+        color:#111;
+        margin-bottom:20px;
+    }
+    .text .ex {
+        font-size:12px;
+        color:#666;
+        margin-left:35px;
+        display:block;
+    }
+    .text ul li {
+        margin-top:10px;
+        list-style:none;
+    }
+    .num {
+        background:#66A523;
+        color:#fff;
+        border-radius:20px;
+        padding:1px;
+        display:inline-block;
+        width:22px;
+        height:22px;
+        text-align:center;
+        margin-right: 5px;
+    }
+    .text ul strong {
+        font-weight:normal;
+        color:#000;
+    }
+    .image {
+        width: 280px;
+        float: left;
+        margin-bottom: 15px;
+        margin-right: 30px;
+    }
+    #glyphs {
+        clear: both;
+    }
+    .image p:nth-child(even) i {
+        clear: none;
+    }
+    .glyph {
+        display: inline-block;
+        width: 120px;
+        margin: 10px;
+        text-align: center;
+        vertical-align: top;
+        background: #FFF;
+    }
+    .glyph .glyph-icon {
+        padding: 10px;
+        display: block;
+        font-family:"Flaticon";
+        font-size: 64px;
+        line-height: 1;
+    }
+    .glyph .glyph-icon:before {
+        font-size: 64px;
+        color: #666;
+        margin-left: 0;
+    }
+    .class-name {
+        font-size: 12px;
+    }
+    .author-name {
+		font-size: 10px;
+	}
+	a{
+		color: #66A523;
+	}
+    .instructions {
+        font-style:italic;
+        font-size:22px;
+        margin-bottom:10px;
+    }
+    .iconsuse {
+        font-size:22px;
+        font-style:italic;
+        padding-top:20px;
+        margin-top:20px;
+        border-top:1px solid #bbb;
+    }
+    .usetitle {
+        margin-bottom: 10px;
+        font-size: 20px;
+        font-style: italic;
+    }
+    .class-name:last-child {
+        font-size: 10px;
+        color:#888;
+    }
+    .class-name:last-child a {
+        font-size: 10px;
+        color:#555;
+    }
+    .class-name:last-child a:hover {
+        color:#66A523;
+    }
+    .glyph > input {
+        display: block;
+        width: 100px;
+        margin: 5px auto;
+        text-align: center;
+        font-size: 12px;
+        cursor: text;
+    }
+    .glyph > input.icon-input {
+        font-family:"Flaticon";
+        font-size: 16px;
+        margin-bottom: 10px;
+    }
+    h1.logo {
+        font-size: 40px;
+        letter-spacing: -1px;
+        margin-top: -16px;
+        text-transform: lowercase;
+        border-bottom:1px solid #bbb;
+    }
+    h1.logo strong {
+        font-size: 16px;
+        font-family:sans-serif;
+        font-weight:normal;
+        color:#333;
+    }
+    h1.logo a {
+        color:#34302d;
+        text-decoration: none;
+    }
+    h1.logo a span {
+        color:#66A523;
+    }
+    #footer {
+        padding-top:40px;
+        clear:both;
+        text-align:center;
+    }
+    #footer a {
+        color:#66A523;
+    }
+    textarea {
+		margin: 0px;
+		width: 800px;
+		height: 150px;
+		border: 1px solid #CCC;
+		resize: none;
+		background: #EEE;
+    }
+    .author-link, .attrDiv a{
+    	font-size: 12px;
+    	color: #333;
+    	text-decoration: none;
+    }
+    .external {
+    	display: block;
+    }
+    .attrDiv {
+		font-size: 12px;
+	}
+    .attribution {
+        border-top: 1px solid #AAA;
+        margin: 10px 0;
+        padding-top: 15px;
+    }
+    </style>
+</head>
+
+<body>
+    <header>
+        <h1 class="logo">
+            <a href="http://www.flaticon.com">
+                <span>FLAT</span>ICON</a>
+            <strong>Font Demo</strong>
+        </h1>
+    </header>
+
+    <section class="demo">
+        <div class="text">
+
+            <div class="instructions">Instructions:</div>
+
+            <ul>
+                <li>
+                    <p>
+                        <span class="num">1</span>Copy the "Fonts" files and CSS files to your website CSS folder.
+                </li>
+                <li>
+                    <p>
+                        <span class="num">2</span>Add the CSS link to your website source code on header.
+                        <br />
+                        <span class="ex">&lt;head&gt;
+                            <br/>...
+                            <br/>&lt;link rel="stylesheet" type="text/css" href="your_website_domain/css_root/flaticon.css"&gt;
+                            <br/>...
+                            <br/>&lt;/head&gt;</span>
+                </li>
+
+                <li>
+                    <p>
+                        <span class="num">3</span>Use the icon class on "display:inline" elements:
+                        <br />
+                        <span class="ex">Use example: &lt;i class=&quot;flaticon-airplane49&quot;&gt;&lt;/i&gt; or &lt;span class=&quot;flaticon-airplane49&quot;&gt;&lt;/span&gt;</span>
+                </li>
+            </ul>
+        </div>
+
+    </section>
+
+    <section id="glyphs"><div class="glyph">
+		<div class="glyph-icon flaticon-add86"></div>
+		<div class="class-name">.flaticon-add86</div><div class="author-name">Author: <a href="http://www.flaticon.com/free-icon/add-control-interface-symbol_37544">Freepik</a></div></div><div class="glyph">
+		<div class="glyph-icon flaticon-add87"></div>
+		<div class="class-name">.flaticon-add87</div><div class="author-name">Author: <a href="http://www.flaticon.com/free-icon/add-game-console-symbol_38617">Freepik</a></div></div><div class="glyph">
+		<div class="glyph-icon flaticon-cancel15"></div>
+		<div class="class-name">.flaticon-cancel15</div><div class="author-name">Author: <a href="http://www.flaticon.com/free-icon/cancel-game-control-interface-symbol_39597">Freepik</a></div></div><div class="glyph">
+		<div class="glyph-icon flaticon-cooperative"></div>
+		<div class="class-name">.flaticon-cooperative</div><div class="author-name">Author: <a href="http://www.flaticon.com/free-icon/cooperative-game_37896">Freepik</a></div></div><div class="glyph">
+		<div class="glyph-icon flaticon-delete44"></div>
+		<div class="class-name">.flaticon-delete44</div><div class="author-name">Author: <a href="http://www.flaticon.com/free-icon/delete-console-of-games-interface-symbol_39532">Freepik</a></div></div><div class="glyph">
+		<div class="glyph-icon flaticon-disc10"></div>
+		<div class="class-name">.flaticon-disc10</div><div class="author-name">Author: <a href="http://www.flaticon.com/free-icon/disc-black-circular-shape_37616">Freepik</a></div></div><div class="glyph">
+		<div class="glyph-icon flaticon-download76"></div>
+		<div class="class-name">.flaticon-download76</div><div class="author-name">Author: <a href="http://www.flaticon.com/free-icon/download-game-interface-symbol-of-control-with-an-arrow_39598">Freepik</a></div></div><div class="glyph">
+		<div class="glyph-icon flaticon-dreamcast"></div>
+		<div class="class-name">.flaticon-dreamcast</div><div class="author-name">Author: <a href="http://www.flaticon.com/free-icon/dreamcast-control-for-games_37624">Freepik</a></div></div><div class="glyph">
+		<div class="glyph-icon flaticon-four44"></div>
+		<div class="class-name">.flaticon-four44</div><div class="author-name">Author: <a href="http://www.flaticon.com/free-icon/four-player-game-control_37512">Freepik</a></div></div><div class="glyph">
+		<div class="glyph-icon flaticon-four47"></div>
+		<div class="class-name">.flaticon-four47</div><div class="author-name">Author: <a href="http://www.flaticon.com/free-icon/four-ps-games-controls_38381">Freepik</a></div></div><div class="glyph">
+		<div class="glyph-icon flaticon-game23"></div>
+		<div class="class-name">.flaticon-game23</div><div class="author-name">Author: <a href="http://www.flaticon.com/free-icon/game-control-with-no-battery_37478">Freepik</a></div></div><div class="glyph">
+		<div class="glyph-icon flaticon-game24"></div>
+		<div class="class-name">.flaticon-game24</div><div class="author-name">Author: <a href="http://www.flaticon.com/free-icon/game-disk_37569">Freepik</a></div></div><div class="glyph">
+		<div class="glyph-icon flaticon-game25"></div>
+		<div class="class-name">.flaticon-game25</div><div class="author-name">Author: <a href="http://www.flaticon.com/free-icon/game-control-tool-with-full-battery-symbol_37617">Freepik</a></div></div><div class="glyph">
+		<div class="glyph-icon flaticon-game26"></div>
+		<div class="class-name">.flaticon-game26</div><div class="author-name">Author: <a href="http://www.flaticon.com/free-icon/game_37648">Freepik</a></div></div><div class="glyph">
+		<div class="glyph-icon flaticon-game27"></div>
+		<div class="class-name">.flaticon-game27</div><div class="author-name">Author: <a href="http://www.flaticon.com/free-icon/game-control-tool_37693">Freepik</a></div></div><div class="glyph">
+		<div class="glyph-icon flaticon-game28"></div>
+		<div class="class-name">.flaticon-game28</div><div class="author-name">Author: <a href="http://www.flaticon.com/free-icon/game-control-with-full-battery_37924">Freepik</a></div></div><div class="glyph">
+		<div class="glyph-icon flaticon-game29"></div>
+		<div class="class-name">.flaticon-game29</div><div class="author-name">Author: <a href="http://www.flaticon.com/free-icon/game-control-without-batteries_38353">Freepik</a></div></div><div class="glyph">
+		<div class="glyph-icon flaticon-game31"></div>
+		<div class="class-name">.flaticon-game31</div><div class="author-name">Author: <a href="http://www.flaticon.com/free-icon/game-mini-disc_38620">Freepik</a></div></div><div class="glyph">
+		<div class="glyph-icon flaticon-game32"></div>
+		<div class="class-name">.flaticon-game32</div><div class="author-name">Author: <a href="http://www.flaticon.com/free-icon/game-control-with-half-battery-charged_38635">Freepik</a></div></div><div class="glyph">
+		<div class="glyph-icon flaticon-game33"></div>
+		<div class="class-name">.flaticon-game33</div><div class="author-name">Author: <a href="http://www.flaticon.com/free-icon/game-control-for-one-person-interface-symbol_39579">Freepik</a></div></div><div class="glyph">
+		<div class="glyph-icon flaticon-game34"></div>
+		<div class="class-name">.flaticon-game34</div><div class="author-name">Author: <a href="http://www.flaticon.com/free-icon/game-control-super-nintendo_39684">Freepik</a></div></div><div class="glyph">
+		<div class="glyph-icon flaticon-gameboy1"></div>
+		<div class="class-name">.flaticon-gameboy1</div><div class="author-name">Author: <a href="http://www.flaticon.com/free-icon/gameboy_38449">Freepik</a></div></div><div class="glyph">
+		<div class="glyph-icon flaticon-gameboy2"></div>
+		<div class="class-name">.flaticon-gameboy2</div><div class="author-name">Author: <a href="http://www.flaticon.com/free-icon/gameboy-tool_39607">Freepik</a></div></div><div class="glyph">
+		<div class="glyph-icon flaticon-gameboy"></div>
+		<div class="class-name">.flaticon-gameboy</div><div class="author-name">Author: <a href="http://www.flaticon.com/free-icon/gameboy-advanced-game_38390">Freepik</a></div></div><div class="glyph">
+		<div class="glyph-icon flaticon-gamecube"></div>
+		<div class="class-name">.flaticon-gamecube</div><div class="author-name">Author: <a href="http://www.flaticon.com/free-icon/gamecube-console-box_37957">Freepik</a></div></div><div class="glyph">
+		<div class="glyph-icon flaticon-games10"></div>
+		<div class="class-name">.flaticon-games10</div><div class="author-name">Author: <a href="http://www.flaticon.com/free-icon/games-control-with-low-battery_37637">Freepik</a></div></div><div class="glyph">
+		<div class="glyph-icon flaticon-games11"></div>
+		<div class="class-name">.flaticon-games11</div><div class="author-name">Author: <a href="http://www.flaticon.com/free-icon/games-console_37764">Freepik</a></div></div><div class="glyph">
+		<div class="glyph-icon flaticon-games13"></div>
+		<div class="class-name">.flaticon-games13</div><div class="author-name">Author: <a href="http://www.flaticon.com/free-icon/games-control-with-no-batteries-symbol_39540">Freepik</a></div></div><div class="glyph">
+		<div class="glyph-icon flaticon-games8"></div>
+		<div class="class-name">.flaticon-games8</div><div class="author-name">Author: <a href="http://www.flaticon.com/free-icon/games-control-tool_37417">Freepik</a></div></div><div class="glyph">
+		<div class="glyph-icon flaticon-games9"></div>
+		<div class="class-name">.flaticon-games9</div><div class="author-name">Author: <a href="http://www.flaticon.com/free-icon/games-controller-with-full-battery_37634">Freepik</a></div></div><div class="glyph">
+		<div class="glyph-icon flaticon-gane"></div>
+		<div class="class-name">.flaticon-gane</div><div class="author-name">Author: <a href="http://www.flaticon.com/free-icon/gane-control-with-medium-battery-status_37709">Freepik</a></div></div><div class="glyph">
+		<div class="glyph-icon flaticon-genesis"></div>
+		<div class="class-name">.flaticon-genesis</div><div class="author-name">Author: <a href="http://www.flaticon.com/free-icon/genesis-control_37526">Freepik</a></div></div><div class="glyph">
+		<div class="glyph-icon flaticon-headset6"></div>
+		<div class="class-name">.flaticon-headset6</div><div class="author-name">Author: <a href="http://www.flaticon.com/free-icon/headset_38708">Freepik</a></div></div><div class="glyph">
+		<div class="glyph-icon flaticon-joystick8"></div>
+		<div class="class-name">.flaticon-joystick8</div><div class="author-name">Author: <a href="http://www.flaticon.com/free-icon/joystick-game-control_39596">Freepik</a></div></div><div class="glyph">
+		<div class="glyph-icon flaticon-medium4"></div>
+		<div class="class-name">.flaticon-medium4</div><div class="author-name">Author: <a href="http://www.flaticon.com/free-icon/medium-battery-status-symbol-of-games-control_39612">Freepik</a></div></div><div class="glyph">
+		<div class="glyph-icon flaticon-monitor49"></div>
+		<div class="class-name">.flaticon-monitor49</div><div class="author-name">Author: <a href="http://www.flaticon.com/free-icon/monitor-keyboard-and-mouse_38465">Freepik</a></div></div><div class="glyph">
+		<div class="glyph-icon flaticon-n64"></div>
+		<div class="class-name">.flaticon-n64</div><div class="author-name">Author: <a href="http://www.flaticon.com/free-icon/n64-game-control_39689">Freepik</a></div></div><div class="glyph">
+		<div class="glyph-icon flaticon-nintendo1"></div>
+		<div class="class-name">.flaticon-nintendo1</div><div class="author-name">Author: <a href="http://www.flaticon.com/free-icon/nintendo-64-console_37766">Freepik</a></div></div><div class="glyph">
+		<div class="glyph-icon flaticon-nintendo2"></div>
+		<div class="class-name">.flaticon-nintendo2</div><div class="author-name">Author: <a href="http://www.flaticon.com/free-icon/nintendo-games-console_37981">Freepik</a></div></div><div class="glyph">
+		<div class="glyph-icon flaticon-nintendo3"></div>
+		<div class="class-name">.flaticon-nintendo3</div><div class="author-name">Author: <a href="http://www.flaticon.com/free-icon/nintendo-gamecube-control_38392">Freepik</a></div></div><div class="glyph">
+		<div class="glyph-icon flaticon-nintendo4"></div>
+		<div class="class-name">.flaticon-nintendo4</div><div class="author-name">Author: <a href="http://www.flaticon.com/free-icon/nintendo-game-control_38453">Freepik</a></div></div><div class="glyph">
+		<div class="glyph-icon flaticon-nintendo5"></div>
+		<div class="class-name">.flaticon-nintendo5</div><div class="author-name">Author: <a href="http://www.flaticon.com/free-icon/nintendo-game_38660">Freepik</a></div></div><div class="glyph">
+		<div class="glyph-icon flaticon-nintendo7"></div>
+		<div class="class-name">.flaticon-nintendo7</div><div class="author-name">Author: <a href="http://www.flaticon.com/free-icon/nintendo-wii-control-for-games_39573">Freepik</a></div></div><div class="glyph">
+		<div class="glyph-icon flaticon-nintendo8"></div>
+		<div class="class-name">.flaticon-nintendo8</div><div class="author-name">Author: <a href="http://www.flaticon.com/free-icon/nintendo-game_39608">Freepik</a></div></div><div class="glyph">
+		<div class="glyph-icon flaticon-nintendo9"></div>
+		<div class="class-name">.flaticon-nintendo9</div><div class="author-name">Author: <a href="http://www.flaticon.com/free-icon/nintendo-game-tool_39629">Freepik</a></div></div><div class="glyph">
+		<div class="glyph-icon flaticon-one28"></div>
+		<div class="class-name">.flaticon-one28</div><div class="author-name">Author: <a href="http://www.flaticon.com/free-icon/one-player-game-symbol_38490">Freepik</a></div></div><div class="glyph">
+		<div class="glyph-icon flaticon-one29"></div>
+		<div class="class-name">.flaticon-one29</div><div class="author-name">Author: <a href="http://www.flaticon.com/free-icon/one-player-game-symbol_38600">Freepik</a></div></div><div class="glyph">
+		<div class="glyph-icon flaticon-online12"></div>
+		<div class="class-name">.flaticon-online12</div><div class="author-name">Author: <a href="http://www.flaticon.com/free-icon/online-games-interface-symbol_37584">Freepik</a></div></div><div class="glyph">
+		<div class="glyph-icon flaticon-online13"></div>
+		<div class="class-name">.flaticon-online13</div><div class="author-name">Author: <a href="http://www.flaticon.com/free-icon/online-games-symbol-of-a-monitor-and-a-game-control_38604">Freepik</a></div></div><div class="glyph">
+		<div class="glyph-icon flaticon-plus42"></div>
+		<div class="class-name">.flaticon-plus42</div><div class="author-name">Author: <a href="http://www.flaticon.com/free-icon/plus-control_37434">Freepik</a></div></div><div class="glyph">
+		<div class="glyph-icon flaticon-ps31"></div>
+		<div class="class-name">.flaticon-ps31</div><div class="author-name">Author: <a href="http://www.flaticon.com/free-icon/ps3-wireless-game-control_38452">Freepik</a></div></div><div class="glyph">
+		<div class="glyph-icon flaticon-ps3"></div>
+		<div class="class-name">.flaticon-ps3</div><div class="author-name">Author: <a href="http://www.flaticon.com/free-icon/ps-logo-of-games_37812">Freepik</a></div></div><div class="glyph">
+		<div class="glyph-icon flaticon-ps41"></div>
+		<div class="class-name">.flaticon-ps41</div><div class="author-name">Author: <a href="http://www.flaticon.com/free-icon/ps4-game-control-with-medium-battery_38627">Freepik</a></div></div><div class="glyph">
+		<div class="glyph-icon flaticon-ps42"></div>
+		<div class="class-name">.flaticon-ps42</div><div class="author-name">Author: <a href="http://www.flaticon.com/free-icon/ps4-game-control-with-no-battery_39560">Freepik</a></div></div><div class="glyph">
+		<div class="glyph-icon flaticon-ps43"></div>
+		<div class="class-name">.flaticon-ps43</div><div class="author-name">Author: <a href="http://www.flaticon.com/free-icon/ps4-wireless-game-control_39562">Freepik</a></div></div><div class="glyph">
+		<div class="glyph-icon flaticon-ps44"></div>
+		<div class="class-name">.flaticon-ps44</div><div class="author-name">Author: <a href="http://www.flaticon.com/free-icon/ps4-low-battery-status-symbol-of-game-control-interface_39624">Freepik</a></div></div><div class="glyph">
+		<div class="glyph-icon flaticon-ps45"></div>
+		<div class="class-name">.flaticon-ps45</div><div class="author-name">Author: <a href="http://www.flaticon.com/free-icon/ps4-game-console_39627">Freepik</a></div></div><div class="glyph">
+		<div class="glyph-icon flaticon-ps46"></div>
+		<div class="class-name">.flaticon-ps46</div><div class="author-name">Author: <a href="http://www.flaticon.com/free-icon/ps4-control-of-games_39639">Freepik</a></div></div><div class="glyph">
+		<div class="glyph-icon flaticon-ps4"></div>
+		<div class="class-name">.flaticon-ps4</div><div class="author-name">Author: <a href="http://www.flaticon.com/free-icon/ps-3-games-control-with-low-battery-status_37897">Freepik</a></div></div><div class="glyph">
+		<div class="glyph-icon flaticon-racing3"></div>
+		<div class="class-name">.flaticon-racing3</div><div class="author-name">Author: <a href="http://www.flaticon.com/free-icon/racing-controller_37581">Freepik</a></div></div><div class="glyph">
+		<div class="glyph-icon flaticon-rest2"></div>
+		<div class="class-name">.flaticon-rest2</div><div class="author-name">Author: <a href="http://www.flaticon.com/free-icon/rest-game-control-interface-symbol_39728">Freepik</a></div></div><div class="glyph">
+		<div class="glyph-icon flaticon-shooting6"></div>
+		<div class="class-name">.flaticon-shooting6</div><div class="author-name">Author: <a href="http://www.flaticon.com/free-icon/shooting-game-target_39736">Freepik</a></div></div><div class="glyph">
+		<div class="glyph-icon flaticon-sony"></div>
+		<div class="class-name">.flaticon-sony</div><div class="author-name">Author: <a href="http://www.flaticon.com/free-icon/sony-ps-games-buttons_37506">Freepik</a></div></div><div class="glyph">
+		<div class="glyph-icon flaticon-super3"></div>
+		<div class="class-name">.flaticon-super3</div><div class="author-name">Author: <a href="http://www.flaticon.com/free-icon/super-nintendo-game-symbol_39735">Freepik</a></div></div><div class="glyph">
+		<div class="glyph-icon flaticon-three85"></div>
+		<div class="class-name">.flaticon-three85</div><div class="author-name">Author: <a href="http://www.flaticon.com/free-icon/three-ps-controls-for-games_37880">Freepik</a></div></div><div class="glyph">
+		<div class="glyph-icon flaticon-three86"></div>
+		<div class="class-name">.flaticon-three86</div><div class="author-name">Author: <a href="http://www.flaticon.com/free-icon/three-players-game-symbol_38576">Freepik</a></div></div><div class="glyph">
+		<div class="glyph-icon flaticon-two161"></div>
+		<div class="class-name">.flaticon-two161</div><div class="author-name">Author: <a href="http://www.flaticon.com/free-icon/two-players-game-interface-symbol_39739">Freepik</a></div></div><div class="glyph">
+		<div class="glyph-icon flaticon-versus"></div>
+		<div class="class-name">.flaticon-versus</div><div class="author-name">Author: <a href="http://www.flaticon.com/free-icon/versus-game_37933">Freepik</a></div></div><div class="glyph">
+		<div class="glyph-icon flaticon-vibration"></div>
+		<div class="class-name">.flaticon-vibration</div><div class="author-name">Author: <a href="http://www.flaticon.com/free-icon/vibration-game-control-black-tool-shape_39666">Freepik</a></div></div><div class="glyph">
+		<div class="glyph-icon flaticon-wifi58"></div>
+		<div class="class-name">.flaticon-wifi58</div><div class="author-name">Author: <a href="http://www.flaticon.com/free-icon/wifi-wireless-control_37444">Freepik</a></div></div><div class="glyph">
+		<div class="glyph-icon flaticon-wii10"></div>
+		<div class="class-name">.flaticon-wii10</div><div class="author-name">Author: <a href="http://www.flaticon.com/free-icon/wii-u-wireless-game-control-tool_38474">Freepik</a></div></div><div class="glyph">
+		<div class="glyph-icon flaticon-wii11"></div>
+		<div class="class-name">.flaticon-wii11</div><div class="author-name">Author: <a href="http://www.flaticon.com/free-icon/wii-game-control-with-medium-battery-status_38541">Freepik</a></div></div><div class="glyph">
+		<div class="glyph-icon flaticon-wii12"></div>
+		<div class="class-name">.flaticon-wii12</div><div class="author-name">Author: <a href="http://www.flaticon.com/free-icon/wii-u-games-tool_39462">Freepik</a></div></div><div class="glyph">
+		<div class="glyph-icon flaticon-wii13"></div>
+		<div class="class-name">.flaticon-wii13</div><div class="author-name">Author: <a href="http://www.flaticon.com/free-icon/wii-u-control-for-games_39568">Freepik</a></div></div><div class="glyph">
+		<div class="glyph-icon flaticon-wii14"></div>
+		<div class="class-name">.flaticon-wii14</div><div class="author-name">Author: <a href="http://www.flaticon.com/free-icon/wii-games-control-tool_39646">Freepik</a></div></div><div class="glyph">
+		<div class="glyph-icon flaticon-wii2"></div>
+		<div class="class-name">.flaticon-wii2</div><div class="author-name">Author: <a href="http://www.flaticon.com/free-icon/wii-u-full-battery-games-control-symbol_37835">Freepik</a></div></div><div class="glyph">
+		<div class="glyph-icon flaticon-wii3"></div>
+		<div class="class-name">.flaticon-wii3</div><div class="author-name">Author: <a href="http://www.flaticon.com/free-icon/wii-games-control_37867">Freepik</a></div></div><div class="glyph">
+		<div class="glyph-icon flaticon-wii4"></div>
+		<div class="class-name">.flaticon-wii4</div><div class="author-name">Author: <a href="http://www.flaticon.com/free-icon/wii-control-for-games_37870">Freepik</a></div></div><div class="glyph">
+		<div class="glyph-icon flaticon-wii5"></div>
+		<div class="class-name">.flaticon-wii5</div><div class="author-name">Author: <a href="http://www.flaticon.com/free-icon/wii-full-battery-status-symbol_37875">Freepik</a></div></div><div class="glyph">
+		<div class="glyph-icon flaticon-wii6"></div>
+		<div class="class-name">.flaticon-wii6</div><div class="author-name">Author: <a href="http://www.flaticon.com/free-icon/wii-u-logo_37885">Freepik</a></div></div><div class="glyph">
+		<div class="glyph-icon flaticon-wii7"></div>
+		<div class="class-name">.flaticon-wii7</div><div class="author-name">Author: <a href="http://www.flaticon.com/free-icon/wii-game-control-with-low-battery_37963">Freepik</a></div></div><div class="glyph">
+		<div class="glyph-icon flaticon-wii8"></div>
+		<div class="class-name">.flaticon-wii8</div><div class="author-name">Author: <a href="http://www.flaticon.com/free-icon/wii-game-control-with-no-battery_37969">Freepik</a></div></div><div class="glyph">
+		<div class="glyph-icon flaticon-wii9"></div>
+		<div class="class-name">.flaticon-wii9</div><div class="author-name">Author: <a href="http://www.flaticon.com/free-icon/wii-game-control-with-low-battery-status_38468">Freepik</a></div></div><div class="glyph">
+		<div class="glyph-icon flaticon-wii"></div>
+		<div class="class-name">.flaticon-wii</div><div class="author-name">Author: <a href="http://www.flaticon.com/free-icon/wii-logo_37756">Freepik</a></div></div><div class="glyph">
+		<div class="glyph-icon flaticon-xbox10"></div>
+		<div class="class-name">.flaticon-xbox10</div><div class="author-name">Author: <a href="http://www.flaticon.com/free-icon/xbox-one-wireless-control_37649">Freepik</a></div></div><div class="glyph">
+		<div class="glyph-icon flaticon-xbox11"></div>
+		<div class="class-name">.flaticon-xbox11</div><div class="author-name">Author: <a href="http://www.flaticon.com/free-icon/xbox-games-control-with-medium-battery-status_37712">Freepik</a></div></div><div class="glyph">
+		<div class="glyph-icon flaticon-xbox12"></div>
+		<div class="class-name">.flaticon-xbox12</div><div class="author-name">Author: <a href="http://www.flaticon.com/free-icon/xbox-control-for-one_37942">Freepik</a></div></div><div class="glyph">
+		<div class="glyph-icon flaticon-xbox13"></div>
+		<div class="class-name">.flaticon-xbox13</div><div class="author-name">Author: <a href="http://www.flaticon.com/free-icon/xbox-one-games-console_37966">Freepik</a></div></div><div class="glyph">
+		<div class="glyph-icon flaticon-xbox14"></div>
+		<div class="class-name">.flaticon-xbox14</div><div class="author-name">Author: <a href="http://www.flaticon.com/free-icon/xbox-buttons-set_38462">Freepik</a></div></div><div class="glyph">
+		<div class="glyph-icon flaticon-xbox15"></div>
+		<div class="class-name">.flaticon-xbox15</div><div class="author-name">Author: <a href="http://www.flaticon.com/free-icon/xbox-one-game-control-with-low-battery-status_38575">Freepik</a></div></div><div class="glyph">
+		<div class="glyph-icon flaticon-xbox16"></div>
+		<div class="class-name">.flaticon-xbox16</div><div class="author-name">Author: <a href="http://www.flaticon.com/free-icon/xbox-360-console-of-games_39454">Freepik</a></div></div><div class="glyph">
+		<div class="glyph-icon flaticon-xbox17"></div>
+		<div class="class-name">.flaticon-xbox17</div><div class="author-name">Author: <a href="http://www.flaticon.com/free-icon/xbox-one-with-no-battery_39487">Freepik</a></div></div><div class="glyph">
+		<div class="glyph-icon flaticon-xbox18"></div>
+		<div class="class-name">.flaticon-xbox18</div><div class="author-name">Author: <a href="http://www.flaticon.com/free-icon/xbox-digital-control_39504">Freepik</a></div></div><div class="glyph">
+		<div class="glyph-icon flaticon-xbox19"></div>
+		<div class="class-name">.flaticon-xbox19</div><div class="author-name">Author: <a href="http://www.flaticon.com/free-icon/xbox-360-control-game-tool_39723">Freepik</a></div></div><div class="glyph">
+		<div class="glyph-icon flaticon-xbox20"></div>
+		<div class="class-name">.flaticon-xbox20</div><div class="author-name">Author: <a href="http://www.flaticon.com/free-icon/xbox-360-wireless-game-control-tool_39752">Freepik</a></div></div><div class="glyph">
+		<div class="glyph-icon flaticon-xbox5"></div>
+		<div class="class-name">.flaticon-xbox5</div><div class="author-name">Author: <a href="http://www.flaticon.com/free-icon/xbox-console_37377">Freepik</a></div></div><div class="glyph">
+		<div class="glyph-icon flaticon-xbox6"></div>
+		<div class="class-name">.flaticon-xbox6</div><div class="author-name">Author: <a href="http://www.flaticon.com/free-icon/xbox-one-full-battery-games-control_37408">Freepik</a></div></div><div class="glyph">
+		<div class="glyph-icon flaticon-xbox7"></div>
+		<div class="class-name">.flaticon-xbox7</div><div class="author-name">Author: <a href="http://www.flaticon.com/free-icon/xbox-logo_37496">Freepik</a></div></div><div class="glyph">
+		<div class="glyph-icon flaticon-xbox8"></div>
+		<div class="class-name">.flaticon-xbox8</div><div class="author-name">Author: <a href="http://www.flaticon.com/free-icon/xbox-buttons_37532">Freepik</a></div></div><div class="glyph">
+		<div class="glyph-icon flaticon-xbox9"></div>
+		<div class="class-name">.flaticon-xbox9</div><div class="author-name">Author: <a href="http://www.flaticon.com/free-icon/xbox-console-tool_37627">Freepik</a></div></div></section>
+
+<section class="attribution">
+
+	<div class="usetitle">License and attribution:</div><div class="attrDiv">Font generated by <a href="http://www.flaticon.com">flaticon.com</a>
+ under <a href="http://creativecommons.org/licenses/by/3.0/">CC BY</a>. The authors are: <a href="http://www.freepik.com">Freepik</a>.</div><div class="usetitle">Copy the Attribution License:</div>
+
+<textarea onclick="this.focus();this.select();">Font generated by &lt;a href=&quot;http://www.flaticon.com&quot;&gt;flaticon.com&lt;/a&gt;
+ under &lt;a href=&quot;http://creativecommons.org/licenses/by/3.0/&quot;&gt;CC BY&lt;/a&gt;. The authors are: &lt;a href=&quot;http://www.freepik.com&quot;&gt;Freepik&lt;/a&gt;.</textarea>
+
+</section>
+
+<section class="iconsuse">
+    	<div class="usetitle">Examples:</div>
+		<div class="image"><p>&lt;i class=&quot;flaticon-add86&quot;&gt;&lt;/i&gt; <i class="flaticon-add86"></i></p><p>&lt;i class=&quot;flaticon-add87&quot;&gt;&lt;/i&gt; <i class="flaticon-add87"></i></p><p>&lt;i class=&quot;flaticon-cancel15&quot;&gt;&lt;/i&gt; <i class="flaticon-cancel15"></i></p><p>&lt;i class=&quot;flaticon-cooperative&quot;&gt;&lt;/i&gt; <i class="flaticon-cooperative"></i></p><p>&lt;i class=&quot;flaticon-delete44&quot;&gt;&lt;/i&gt; <i class="flaticon-delete44"></i></p></div><div class="image"><p>&lt;span class=&quot;flaticon-disc10&quot;&gt;&lt;/span&gt; <span class="flaticon-disc10"></span></p><p>&lt;span class=&quot;flaticon-download76&quot;&gt;&lt;/span&gt; <span class="flaticon-download76"></span></p><p>&lt;span class=&quot;flaticon-dreamcast&quot;&gt;&lt;/span&gt; <span class="flaticon-dreamcast"></span></p><p>&lt;span class=&quot;flaticon-four44&quot;&gt;&lt;/span&gt; <span class="flaticon-four44"></span></p><p>&lt;span class=&quot;flaticon-four47&quot;&gt;&lt;/span&gt; <span class="flaticon-four47"></span></p></div><div class="image"><p>&lt;span class=&quot;flaticon-game23&quot;&gt;&lt;/span&gt; <span class="flaticon-game23"></span></p><p>&lt;i class=&quot;flaticon-game24&quot;&gt;&lt;/i&gt; <i class="flaticon-game24"></i></p><p>&lt;i class=&quot;flaticon-game25&quot;&gt;&lt;/i&gt; <i class="flaticon-game25"></i></p><p>&lt;i class=&quot;flaticon-game26&quot;&gt;&lt;/i&gt; <i class="flaticon-game26"></i></p><p>&lt;i class=&quot;flaticon-game27&quot;&gt;&lt;/i&gt; <i class="flaticon-game27"></i></p></div><div class="image"><p>&lt;span class=&quot;flaticon-game28&quot;&gt;&lt;/span&gt; <span class="flaticon-game28"></span></p><p>&lt;span class=&quot;flaticon-game29&quot;&gt;&lt;/span&gt; <span class="flaticon-game29"></span></p><p>&lt;span class=&quot;flaticon-game31&quot;&gt;&lt;/span&gt; <span class="flaticon-game31"></span></p><p>&lt;span class=&quot;flaticon-game32&quot;&gt;&lt;/span&gt; <span class="flaticon-game32"></span></p><p>&lt;span class=&quot;flaticon-game33&quot;&gt;&lt;/span&gt; <span class="flaticon-game33"></span></p></div><div class="image"></div>
+</section>
+<div id="footer">
+    <div>Generated by <a href="http://www.flaticon.com">flaticon.com</a>
+    </div>
+</div>
+	</body>
+</html>

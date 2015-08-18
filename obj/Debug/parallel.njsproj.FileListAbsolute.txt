@@ -1,0 +1,2 @@
+C:\Users\Namdascious\Desktop\Projects\parallel\obj\Debug\parallel.njsprojResolveAssemblyReference.cache
+C:\Users\Namdascious\Desktop\Projects\parallel\bin\Microsoft.NodejsTools.WebRole.dll

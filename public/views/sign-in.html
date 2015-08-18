@@ -1,0 +1,449 @@
+﻿<link rel="import" href="../components/bower_components/polymer/polymer.html">
+<link rel="import" href="../imports/layout.html">
+
+<!-- Fonts -->
+<link rel='import' href='../components/bower_components/font-roboto/roboto.html'>
+
+<link rel="import" href="../components/bower_components/iron-icons/iron-icons.html">
+<link rel="import" href="../components/bower_components/iron-icons/av-icons.html">
+<link rel="import" href="../components/bower_components/iron-icons/communication-icons.html">
+<link rel="import" href="../components/bower_components/iron-icons/iron-icons.html">
+<link rel="import" href="../components/bower_components/iron-icons/editor-icons.html">
+<link rel="import" href="../components/bower_components/iron-icons/hardware-icons.html">
+<link rel="import" href="../components/bower_components/iron-icons/image-icons.html">
+<link rel="import" href="../components/bower_components/iron-icons/maps-icons.html">
+<link rel="import" href="../components/bower_components/iron-icons/notification-icons.html">
+<link rel="import" href="../components/bower_components/iron-icons/social-icons.html">
+
+<link rel="import" href="../components/bower_components/iron-form/iron-form.html">
+
+<link rel="import" href="../components/bower_components/paper-drawer-panel/paper-drawer-panel.html">
+<link rel="import" href="../components/bower_components/paper-header-panel/paper-header-panel.html">
+<link rel="import" href="../components/bower_components/paper-scroll-header-panel/paper-scroll-header-panel.html">
+<link rel="import" href="../components/bower_components/paper-item/paper-item.html">
+<link rel="import" href="../components/bower_components/paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../components/bower_components/paper-fab/paper-fab.html">
+<link rel="import" href="../components/bower_components/paper-toolbar/paper-toolbar.html">
+
+<!-- Custom Imports -->
+<link rel="import" href="../imports/font-awesome.html">
+<link rel="import" href="../imports/materialize.html" />
+<link rel="import" href="../imports/material_icons.html" />
+<link rel="import" href="../imports/flaticons.html" />
+
+<script type="text/javascript" src="http://localhost:8089/faye/client.js"></script>
+
+<dom-module id="sign-in">
+	<!-- CSS -->
+	<link rel="import" type="css" href='../assets/app/css/lfg.css'>
+
+	<style>
+		:host {
+		}
+
+		.sign-in-flaticon-update {
+			font-size: 50px !important;
+			color: #ffffff;
+			margin-top: -15px;
+		}
+
+        .bullet-point {
+            font-size: 0.4rem;
+        }
+
+		.regular-text {
+			text-transform:none;
+		}
+
+		.sign-in-button {
+			width: 300px;
+		}
+
+		[type="checkbox"].filled-in:checked + label:after {
+			border: 2px solid #e65100;
+			background-color: #e65100;
+		}
+
+		.terms-policy p {
+			font-size:0.85rem;
+		}
+		
+		.terms-policy h6 {
+			font-size:1.35rem;
+		}
+
+		.terms-policy ul li {
+			font-size:0.85rem;
+			font-weight:500;
+		}
+	</style>
+
+	<template>
+		<div layout fit vertical center-center class="orange darken-1">
+			<div class="layout horizontal">
+				<h4 class="white-text thin">Sign in & Start Gaming with Gamers</h4>
+			</div>
+			<div layout horizontal>
+				<i class="flaticon-xbox12 sign-in-flaticon-update"></i>
+				<i class="flaticon-xbox19 sign-in-flaticon-update"></i>
+				<i class="flaticon-game27 sign-in-flaticon-update"></i>
+				<i class="flaticon-ps46 sign-in-flaticon-update"></i>
+				<i class="flaticon-wii14 sign-in-flaticon-update"></i>
+				<i class="flaticon-wii12 sign-in-flaticon-update"></i>
+				<i class="flaticon-monitor49 sign-in-flaticon-update"></i>
+			</div>
+			<br /><br />
+			<div>
+				<a class="waves-effect waves-light btn light-blue darken-4 white-text sign-in-button regular-text" on-click="signInWithFacebook">
+					<i class="fa fa-facebook left"></i>
+					Sign in with Facebook
+				</a>
+			</div>
+			<br />
+			<div>
+				<a class="waves-effect waves-purple btn light-blue accent-3 white-text sign-in-button regular-text" on-click="signInWithTwitter">
+					<i class="fa fa-twitter left"></i>
+					Sign in with Twitter
+				</a>
+			</div>
+			<br />
+			<div>
+				<a class="waves-effect waves-light btn red darken-2 white-text sign-in-button regular-text" on-click="signInWithGoogle">
+					<i class="fa fa-google left"></i>
+					Sign in with Google
+				</a>
+			</div>
+			<br />
+			<div>
+				<a class="waves-effect waves-light btn light-green darken-3 white-text sign-in-button regular-text" on-click="signInWithSteam">
+					<i class="fa fa-steam-square left"></i>
+					Sign in with Steam
+				</a>
+			</div>
+			<br />
+			<div>
+				<p>
+					<input type="checkbox" id="keep_signed" class="filled-in" checked="{{login.keepsignin}}" />
+					<label for="keep_signed" class="white-text">Keep me logged in</label>
+				</p>
+			</div>
+			<br />
+			<div>
+				<p class="white-text">By signing in to Parallel, you agree to our <a href="#termsagree" class="yellow-text text-accent-2 modal-trigger" style="cursor:pointer;">Terms & Data Policy</a></p>
+			</div>
+		</div>
+
+		<div id="loginerror" class="modal">
+			<div class="modal-content center-align center">
+				<i class="material-icons medium grey-text text-darken-2">mood_bad</i>
+				<p style="font-size:1.15rem;">Oh Noez!!! We had a little trouble signing you in. Don't panic, try to sign-in again. If that doesn't work then, erm....oh, try petting a porcupine! That'll do it for sure...ok, ok don't do that. Open a trouble ticket <a style="cursor:pointer;">here</a></p>
+			</div>
+		</div>
+
+		<div id="termsagree" class="modal">
+			<div class="modal-content terms-policy">
+				<p>
+					This Privacy Policy governs the manner in which Parallel collects, uses, maintains and discloses information collected from users (each, a "User") of the http://www.parallel.team website ("Site").
+				</p>
+
+				<br />
+				<h6>Personal identification information</h6>
+				<p>
+					We may collect personal identification information from Users in a variety of ways, including, but not limited to, when Users visit our site, register on the site, and in connection with other activities, services, features or resources we make available on our Site.Users may be asked for, as appropriate, name, email address. Users may, however, visit our Site anonymously. We will collect personal identification information from Users only if they voluntarily submit such information to us. Users can always refuse to supply personally identification information, except that it may prevent them from engaging in certain Site related activities.
+				</p>
+
+				<br />
+				<h6>Non-personal identification information</h6>
+				<p>
+					We may collect non-personal identification information about Users whenever they interact with our Site. Non-personal identification information may include the browser name, the type of computer and technical information about Users means of connection to our Site, such as the operating system and the Internet service providers utilized and other similar information.
+				</p>
+
+				<br />
+				<h6>Web browser cookies</h6>
+				<p>
+					Our Site may use "cookies" to enhance User experience. User's web browser places cookies on their hard drive for record-keeping purposes and sometimes to track information about them. User may choose to set their web browser to refuse cookies, or to alert you when cookies are being sent. If they do so, note that some parts of the Site may not function properly.
+				</p>
+
+				<br />
+				<h6>How we use collected information</h6>
+				<p>Parallel may collect and use Users personal information for the following purposes:</p>
+				<ul style="list-style-type:disc !important;">
+					<li><i class="fa fa-circle bullet-point"></i>&nbsp;&nbsp;&nbsp;To run and operate our Site</li>
+					<li><i class="fa fa-circle bullet-point"></i>&nbsp;&nbsp;&nbsp;We may need your information to display content on the Site correctly</li>
+					<li><i class="fa fa-circle bullet-point"></i>&nbsp;&nbsp;&nbsp;To improve customer service</li>
+					<li><i class="fa fa-circle bullet-point"></i>&nbsp;&nbsp;&nbsp;Information you provide helps us respond to your customer service requests and support needs more efficiently.</li>
+					<li><i class="fa fa-circle bullet-point"></i>&nbsp;&nbsp;&nbsp;To personalize user experience</li>
+					<li><i class="fa fa-circle bullet-point"></i>&nbsp;&nbsp;&nbsp;We may use information in the aggregate to understand how our Users as a group use the services and resources provided on our Site.</li>
+					<li><i class="fa fa-circle bullet-point"></i>&nbsp;&nbsp;&nbsp;To improve our Site</li>
+					<li><i class="fa fa-circle bullet-point"></i>&nbsp;&nbsp;&nbsp;We may use feedback you provide to improve our products and services.</li>
+					<li><i class="fa fa-circle bullet-point"></i>&nbsp;&nbsp;&nbsp;To send periodic emails</li>
+					<li><i class="fa fa-circle bullet-point"></i>&nbsp;&nbsp;&nbsp;We may use the email address to send User information and updates pertaining to their order. It may also be used to respond to their inquiries, questions, and/or other requests.</li>
+				</ul>
+				<br />
+				<h6>How we protect your information</h6>
+				<p>We adopt appropriate data collection, storage and processing practices and security measures to protect against unauthorized access, alteration, disclosure or destruction of your personal information, username, password, transaction information and data stored on our Site.</p>
+
+				<br />
+				<h6>Sharing your personal information</h6>
+				<p>We do not sell, trade, or rent Users personal identification information to others. We may share generic aggregated demographic information not linked to any personal identification information regarding visitors and users with our business partners, trusted affiliates and advertisers for the purposes outlined above. We may use third party service providers to help us operate our business and the Site or administer activities on our behalf, such as sending out newsletters or surveys. We may share your information with these third parties for those limited purposes provided that you have given us your permission.</p>
+
+				<br />
+				<h6>Electronic newsletters</h6>
+				<p>If User decides to opt-in to our mailing list, they will receive emails that may include company news, updates, related product or service information, etc. If at any time the User would like to unsubscribe from receiving future emails, we include detailed unsubscribe instructions at the bottom of each email or User may contact us via our Site. We may use third party service providers to help us operate our business and the Site or administer activities on our behalf, such as sending out newsletters or surveys. We may share your information with these third parties for those limited purposes provided that you have given us your permission.</p>
+
+				<br />
+				<h6>Third party websites</h6>
+				<p>Users may find advertising or other content on our Site that link to the sites and services of our partners, suppliers, advertisers, sponsors, licencors and other third parties. We do not control the content or links that appear on these sites and are not responsible for the practices employed by websites linked to or from our Site. In addition, these sites or services, including their content and links, may be constantly changing. These sites and services may have their own privacy policies and customer service policies. Browsing and interaction on any other website, including websites which have a link to our Site, is subject to that website's own terms and policies.</p>
+
+				<br />
+				<h6>Advertising</h6>
+				<p>Ads appearing on our site may be delivered to Users by advertising partners, who may set cookies. These cookies allow the ad server to recognize your computer each time they send you an online advertisement to compile non personal identification information about you or others who use your computer. This information allows ad networks to, among other things, deliver targeted advertisements that they believe will be of most interest to you. This privacy policy does not cover the use of cookies by any advertisers.</p>
+
+				<br />
+				<h6>Google Adsense</h6>
+				<p>Some of the ads may be served by Google. Google's use of the DART cookie enables it to serve ads to Users based on their visit to our Site and other sites on the Internet. DART uses "non personally identifiable information" and does NOT track personal information about you, such as your name, email address, physical address, etc. You may opt out of the use of the DART cookie by visiting the Google ad and content network privacy policy at http://www.google.com/privacy_ads.html</p>
+				
+				<br />
+				<h6>Compliance with children's online privacy protection act</h6>
+				<p>Protecting the privacy of the very young is especially important. For that reason, we never collect or maintain information at our Site from those we actually know are under 13, and no part of our website is structured to attract anyone under 13.</p>
+				
+				<br />
+				<h6>Changes to this privacy policy</h6>
+				<p>Parallel has the discretion to update this privacy policy at any time. When we do, we will post a notification on the main page of our Site, revise the updated date at the bottom of this page and send you an email. We encourage Users to frequently check this page for any changes to stay informed about how we are helping to protect the personal information we collect. You acknowledge and agree that it is your responsibility to review this privacy policy periodically and become aware of modifications.</p>
+				
+				<br />
+				<h6>Your acceptance of these terms</h6>
+				<p>By using this Site, you signify your acceptance of this policy. If you do not agree to this policy, please do not use our Site. Your continued use of the Site following the posting of changes to this policy will be deemed your acceptance of those changes. This policy was created with http://www.Privacy Policies.com</p>
+
+				<br />
+				<h6>Contacting us</h6>
+				<p>If you have any questions about this Privacy Policy, the practices of this site, or your dealings with this site, please contact us.</p>
+				<p>This document was last updated on August 09, 2015</p>
+			</div>
+		</div>
+		<div id="signin_overlay" class="layout fit" style="background-color:#FB8C00; z-index:1000;">
+			<div layout vertical fit center-center>
+				<h4 class="yellow-text text-accent-2 light">Loading...</h4>
+				<div class="preloader-wrapper big active">
+					<div class="spinner-layer spinner-yellow-only" style="border-color:#ffff00;">
+						<div class="circle-clipper left">
+							<div class="circle"></div>
+						</div><div class="gap-patch">
+							<div class="circle"></div>
+						</div><div class="circle-clipper right">
+							<div class="circle"></div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</template>
+</dom-module>
+
+<script>
+    (function(window) {
+        var constructor = Polymer({
+
+            is: 'sign-in',
+
+            /**
+             * ...
+             *
+             * @attribute properties
+             * @type object
+             * @default
+             */
+            properties: {
+                name: 'Sign In'
+            },
+
+            /* Functions */
+            cacheLoginCredentials: function (authData) {
+            	sessionStorage.setItem(window.lfg.config.firebaseCacheKey, JSON.stringify(authData));
+
+            	if (this.login.keepsignin) {
+            		var localAuthData = localStorage.getItem(window.lfg.config.firebaseCacheKey);
+            		if (localAuthData == null || localAuthData == undefined) {
+            			localStorage.setItem(window.lfg.config.firebaseCacheKey, JSON.stringify(authData));
+            		}
+            	}
+            },
+
+            getSteamAuthUrl: function () {
+            	var customElem = this;
+            	var url = window.lfg.config.getSteamVerifyUrl();
+
+            	$.ajax({
+            		url: url,
+            		type: 'GET',
+            		cache: false,
+            		dataType: 'json',
+            		success: function (data) {
+            			if (data !== null && data !== undefined && data.url != null && data.url !== undefined && data.url !== '') {
+            				customElem.steamAuthUrl = data.url;
+            			}
+            		},
+            		error: function (err) {
+            			alert('Login through Steam is temporarily unavailable');
+            		}
+            	});
+            },
+
+            removeOverlay: function () {
+            	$(this.$.signin_overlay).fadeOut();
+            },
+
+            signInWithFacebook: function () {
+            	var currElem = this;
+            	this.firebaseRef.authWithOAuthPopup('facebook', function (error, authData) {
+            		if (error) {
+            			//show sign in error
+            			$(currElem.$.loginerror).openModal();
+            		}
+            		else {
+            			currElem.cacheLoginCredentials(authData);
+            			console.log("Authenticated Successfully via facebook with payload:", authData);
+
+            			//Check to see if it's user's first time. If it is, create user object in db for them and display 
+            			//appropriate screen
+            			currElem.startIntroProcess(authData);
+            			document.querySelector('app-router').go('/requests');
+            		}
+            	});
+            },
+
+            signInWithTwitter: function () {
+            	var currElem = this;
+            	this.firebaseRef.authWithOAuthPopup('twitter', function (error, authData) {
+            		if (error) {
+            			//show sign in error
+            			$(currElem.$.loginerror).openModal();
+            		}
+            		else {
+            			currElem.cacheLoginCredentials(authData);
+            			console.log("Authenticated Successfully via twitter with payload:", authData);
+
+            			currElem.startIntroProcess(authData);
+            			document.querySelector('app-router').go('/requests');
+            		}
+            	});
+            },
+
+            signInWithGoogle: function () {
+            	var currElem = this;
+            	this.firebaseRef.authWithOAuthPopup('google', function (error, authData) {
+            		if (error) {
+            			//show sign in error
+            			$(currElem.$.loginerror).openModal();
+            		}
+            		else {
+            			currElem.cacheLoginCredentials(authData);
+            			console.log("Authenticated Successfully via google with payload:", authData);
+            			currElem.startIntroProcess(authData);
+            		}
+            	});
+            },
+
+            signInWithSteam: function () {
+				//See the callback from the Faye client for the second part of Steam signin. It's in the "init" function
+            	if (this.steamAuthUrl !== null && this.steamAuthUrl !== undefined && this.steamAuthUrl !== '') {
+            		this.steamWindow = window.open(
+								  this.steamAuthUrl,
+								  '_blank' // <- This is what makes it open in a new window.
+							   );
+            	}
+            	else {
+            		alert('Authentication via Steam is not working at the moment! Sorry...');
+            	}
+            },
+
+            startIntroProcess: function (authData) {
+            	var userRef = new Firebase(window.lfg.config.getFirebaseUrl() + 'users/' + authData.uid);
+
+				//Get the user profile info. If none exists, redirect to Onboarding process...
+            	userRef
+					.once('value', function (snapshot) {
+						var user = snapshot.val();
+
+						//redirect to user setup page
+						if (user === null || user === undefined || user.setupcomplete === null || user.setupcomplete === undefined || user.setupcomplete === '' || user.setupcomplete === false) {
+							document.querySelector('app-router').go('/setup');
+						}
+						else {
+							document.querySelector('app-router').go('/');
+						}
+					});
+            },
+
+			/* Init */
+            initializeData: function () {
+				var customElem = this
+            	this.steamAuthUrl = '';
+            	this.getSteamAuthUrl();
+
+            	this.login = {
+            		keepsignin: true
+            	};
+
+            	this.firebaseUrl = window.lfg.config.getFirebaseUrl();
+            	this.firebaseRef = new Firebase(window.lfg.config.getFirebaseUrl());
+            	var url = window.lfg.config.fayeDevUrl;
+
+            	switch (window.lfg.config.env.toLowerCase()) {
+            	    case 'test':
+            	        url = window.lfg.config.fayeTestUrl;
+            	        break;
+
+            	    case 'prod':
+            	        url = window.lfg.config.fayeProdUrl;
+            	        break;
+            	}
+
+            	var faye_client = new Faye.Client(url);
+
+				//Callback for Steam Authentication
+            	var faye_subscription = faye_client.subscribe('/steamSuccess', function (message) {
+
+            		if (customElem.steamWindow != null && customElem.steamWindow != undefined) {
+            			customElem.steamWindow.close();
+            			var authData = {
+            				auth: {
+            					provider: 'steam',
+            					uid: 'steam:' + message.steamid
+            				},
+            				provider: 'steam',
+            				uid: 'steam:' + message.steamid,
+							token: message.token
+            			};
+
+            			customElem.cacheLoginCredentials(authData);
+            			console.log("Authenticated Successfully via Steam with payload:", authData);
+            			customElem.startIntroProcess(authData);
+            		}
+            	});
+            },
+
+            registerEvents: function () {
+            	var polymer = this;
+            },
+
+            registerPlugins: function () {
+            	$('.modal-trigger').leanModal();
+            },
+
+        	/* Events */
+            created: function () {
+            },
+
+            ready: function () {
+            },
+
+            attached: function () {
+            	this.initializeData();
+            	this.registerPlugins();
+            	this.registerEvents();
+            	$(this.$.signin_overlay).fadeOut();
+            }
+        });
+    })(window);
+</script>

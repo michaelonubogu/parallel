@@ -1,0 +1,41 @@
+﻿KEY
+	** = More to consider
+
+
+New Request
+---------------------------------------------------
+ - Add Gamertag (XBL, PSN, SteamOS, Wii) field	<DONE>
+ - Add Description field						<DONE>
+ - **Allow for recurring scheduled gaming event
+ - Add "created" field (datecreated)			<DONE>
+
+Requess List
+---------------------------------------------------
+ - Add sorting to Requests list							<DONE -- but removed because of decision>
+ - Add Pull up Filterting to Requests list				<DONE -- but removed cuz of decision>
+ - Add on-click event to list items in request list		<DONE>
+ - Show system icon in list (xbl, psn, wii, pc)			<DONE>
+ - Show mic icon in list								<DONE>
+ - Show gamer tag										<DONE>
+ - **Allow users to send message to lister from list page (message should get send to email and trigger push notification) 
+
+Request Detail
+---------------------------------------------------
+ - **Allow users to send message to lister from details page (message should get send to email and trigger push notification)
+ - Allow for comments in details page (by other users)	<DONE>
+
+User Page
+---------------------------------------------------
+====================================================================================================================================================
+
+NEW TODOs FOR LAUNCH:
+ - Fix user setup - acct created bug
+ - Throttle search
+ - Card links on all games within the my games page
+ - Landing Page
+ - games details page & games page (different from my games page)
+ - Log out redirect for specific pages (i.e. pages contingent on sign-in)
+ - Multiple provider sign-in resolving (i.e. I sign in with Facebook, and then later Google)
+ - Search on all requests lists order by created desc
+ - Clean up code to only include polymer components, js plugins & libraries used
+ - Set up Github readMe

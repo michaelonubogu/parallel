@@ -1,0 +1,20 @@
+﻿<!DOCTYPE html>
+<html>
+<head lang="en">
+	<title></title>
+	<meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+
+	<script>
+		if (window.location.pathname.indexOf('request')) {
+			//store the request id in local storage. We'll check for it on index.html
+			var pathname = window.location.pathname;
+			var requestid = pathname.substring(pathname.lastIndexOf('/') + 1);
+
+			window.sessionStorage.setItem('requestid', requestid);
+			window.location.href = window.location.protocol + '//' + window.location.host;
+		}
+	</script>
+</head>
+<body>
+</body>
+</html>

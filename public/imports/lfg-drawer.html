@@ -1,0 +1,128 @@
+<link rel="import" href="../components/bower_components/polymer/polymer.html">
+<link rel="import" href="../components/bower_components/polymer/layout.html">
+
+<!-- Fonts -->
+<link rel='import' href='../components/bower_components/font-roboto/roboto.html'>
+
+<link rel="import" href="../components/bower_components/iron-icons/iron-icons.html">
+<link rel="import" href="../components/bower_components/iron-icons/av-icons.html">
+<link rel="import" href="../components/bower_components/iron-icons/communication-icons.html">
+<link rel="import" href="../components/bower_components/iron-icons/iron-icons.html">
+<link rel="import" href="../components/bower_components/iron-icons/editor-icons.html">
+<link rel="import" href="../components/bower_components/iron-icons/hardware-icons.html">
+<link rel="import" href="../components/bower_components/iron-icons/image-icons.html">
+<link rel="import" href="../components/bower_components/iron-icons/maps-icons.html">
+<link rel="import" href="../components/bower_components/iron-icons/notification-icons.html">
+<link rel="import" href="../components/bower_components/iron-icons/social-icons.html">
+
+<link rel="import" href="../components/bower_components/paper-drawer-panel/paper-drawer-panel.html">
+<link rel="import" href="../components/bower_components/paper-header-panel/paper-header-panel.html">
+<link rel="import" href="../components/bower_components/paper-scroll-header-panel/paper-scroll-header-panel.html">
+<link rel="import" href="../components/bower_components/paper-item/paper-item.html">
+<link rel="import" href="../components/bower_components/paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../components/bower_components/paper-toolbar/paper-toolbar.html">
+
+<dom-module id="lfg-drawer">
+    <!-- CSS -->
+    <link rel="import" type="css" href="../assets/materialize/css/materialize.css"  />
+    <style>
+        :host{
+        }
+
+        .logo-link{
+            text-decoration: none;
+            font-size:2rem;
+            color:#ffffff;
+            margin-left:-15px !important;
+        }
+
+        .lfg-main-toolbar{
+            --paper-toolbar-background: {
+                background-color: transparent !important;
+             };
+        }
+
+        .content-area{
+            padding: 0 30px 30px 30px;
+        }
+
+        .requests-card-panel{
+            width: 100%;
+            box-shadow: 0 2px 5px 0 #e65100;
+            border-radius:0px;
+            height: 1200px;
+        }
+
+
+        @media (max-width: 640px){
+            .logo-link{
+                margin-left:0px;
+            }
+
+            .content-area{
+                padding: 0;
+            }
+        }
+    </style>
+
+    <template>
+        <paper-drawer-panel>
+            <paper-header-panel drawer>
+                <paper-toolbar>
+
+                </paper-toolbar>
+                <div>Drawer Content</div>
+            </paper-header-panel>
+            <paper-header-panel mode="waterfall-tall" main>
+                <paper-toolbar class="tall lfg-main-toolbar">
+                    <paper-icon-button icon="menu" paper-drawer-toggle></paper-icon-button>
+                    <paper-icon-button icon="arrow-back"></paper-icon-button>
+                    <div flex></div>
+                    <paper-icon-button icon="search"></paper-icon-button>
+                    <paper-icon-button icon="settings"></paper-icon-button>
+                    <div class="middle">
+                    </div>
+                    <div title class="bottom" style="margin-left:0px !important;">
+                        <a href="/" class="logo-link">LFG</a>
+                    </div>
+                </paper-toolbar>
+                <div class="content-area">
+                    <div class="card-panel requests-card-panel">
+
+                    </div>
+                </div>
+            </paper-header-panel>
+        </paper-drawer-panel>
+    </template>
+</dom-module>
+
+<script>
+    (function(window) {
+        var constructor = Polymer({
+
+            is: 'lfg-drawer',
+
+            /**
+             * ...
+             *
+             * @attribute properties
+             * @type object
+             * @default
+             */
+            properties: {
+                name: 'LFG Drawer'
+
+                /**
+                 * ...
+                 *
+                 * @attribute thingName
+                 * @type string
+                 * @default ''
+                 */
+            },
+
+            ready: function () {
+            }
+        });
+    })();
+</script>

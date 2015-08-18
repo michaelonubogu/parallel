@@ -1,0 +1,174 @@
+﻿<link rel="import" href="../components/bower_components/polymer/polymer.html">
+<link rel="import" href="../imports/layout.html">
+
+<!-- Fonts -->
+<link rel='import' href='../components/bower_components/font-roboto/roboto.html'>
+
+<link rel="import" href="../components/bower_components/iron-icons/iron-icons.html">
+<link rel="import" href="../components/bower_components/iron-icons/av-icons.html">
+<link rel="import" href="../components/bower_components/iron-icons/communication-icons.html">
+<link rel="import" href="../components/bower_components/iron-icons/iron-icons.html">
+<link rel="import" href="../components/bower_components/iron-icons/editor-icons.html">
+<link rel="import" href="../components/bower_components/iron-icons/hardware-icons.html">
+<link rel="import" href="../components/bower_components/iron-icons/image-icons.html">
+<link rel="import" href="../components/bower_components/iron-icons/maps-icons.html">
+<link rel="import" href="../components/bower_components/iron-icons/notification-icons.html">
+<link rel="import" href="../components/bower_components/iron-icons/social-icons.html">
+
+<link rel="import" href="../components/bower_components/paper-item/paper-item.html">
+<link rel="import" href="../components/bower_components/paper-ripple/paper-ripple.html">
+
+<!-- Custom Imports -->
+<link rel="import" href="../imports/materialize.html" />
+
+<dom-module id="side-nav-contents">
+	<!-- CSS -->
+	<link rel="import" type="css" href='../assets/app/css/lfg.css'>
+
+	<style>
+		:host {
+		}
+
+		iron-icon {
+			margin-right: 1.5em;
+			color: #ffffff;
+		}
+
+		paper-item {
+			color: #ffffff;
+			cursor: pointer;
+		}
+
+		.sign-in-button {
+			display:block;
+			background-color:transparent; 
+			color: #ffffff;
+			font-size:1rem; 
+			padding:6px 18px; 
+			border:solid 2px #ffffff; 
+			border-radius:5px;
+			cursor:pointer;
+			/*width:100%;*/
+			margin: 0 15px !important;
+			margin-top:10px !important;
+			max-height:60px !important;
+			text-align:center;
+			cursor:pointer;
+		}
+
+		.sign-in-button:hover {
+			color: #e65100;
+			background-color: #ffff00;
+			border-color: #ffff00;
+			font-weight:500;
+			box-shadow: 0 2px 5px 0 #e65100;
+		}
+	</style>
+
+	<template>
+		<div style="padding-top:20px; height:45vh;">
+			<template is="dom-if" if="{{loggedIn}}">
+				<paper-item class="waves-effect waves-light">
+					<a href="#/" class="white-text"><iron-icon icon="view-day"></iron-icon><span class="thin">Requests</span></a>
+				</paper-item>
+				<paper-item class="waves-effect waves-light">
+					<a href="#/userrequests" class="white-text"><iron-icon icon="bookmark-border"></iron-icon><span class="thin">My Requests</span></a>
+				</paper-item>
+				<paper-item class="waves-effect waves-light">
+					<a href="#/recent" class="white-text"><iron-icon icon="history"></iron-icon><span class="thin">Recent Requests</span></a>
+				</paper-item>
+				<paper-item class="waves-effect waves-light">
+					<a href="#/games" class="white-text"><iron-icon icon="hardware:gamepad"></iron-icon><span class="thin">Games</span></a>
+				</paper-item>
+			</template>
+		</div>
+		<div style="padding-top:20px;">
+			<template is="dom-if" if="{{loggedIn}}">
+				<paper-item class="waves-effect waves-light" on-click="logOut"><iron-icon icon="arrow-back"></iron-icon><span class="thin">Sign Out</span></paper-item>
+			</template>
+		</div>
+	</template>
+</dom-module>
+
+<script>
+    (function(window) {
+        var constructor = Polymer({
+
+        	is: 'side-nav-contents',
+
+            /**
+             * ...
+             *
+             * @attribute properties
+             * @type object
+             * @default
+             */
+            properties: {
+                firebase: {
+                    requests: null,
+                    games: null,
+                    users: null
+                },
+                name: 'Side Nav Contents'
+            },
+
+            /* Functions */
+            authDataCallback: function (authData) {
+                var cusElem = this;
+
+                if (authData) {
+                    //console.log("User " + authData.uid + " is logged in with " + authData.provider);
+                } else {
+                    //Check to make sure the user is logged out
+                    cusElem.loggedIn = false;
+                    cusElem.loggedOut = true;
+
+                    cusElem.notifyPath('loggedIn', cusElem.loggedIn);
+                    cusElem.notifyPath('loggedOut', cusElem.loggedOut);
+                    console.log("User is logged out");
+                }
+            },
+
+            isLoggedIn: function () {
+            	return window.lfg.utils.isLoggedIn();
+            },
+
+            isLoggedOut: function () {
+            	return (window.lfg.utils.isLoggedIn() === false);
+            },
+
+            logOut: function () {
+                window.lfg.utils.logOut();
+                //check the current url. If they are in any of these pages, redirect them
+            },
+
+            /* Init */
+            initializeData: function () {
+            	this.firebaseUrl = window.lfg.config.getFirebaseUrl();
+            	this.firebaseRef = new Firebase(window.lfg.config.getFirebaseUrl());
+
+            	this.loggedIn = this.isLoggedIn();
+            	this.loggedOut = this.isLoggedOut();
+            },
+
+            registerEvents: function () {
+                // Register the callback to be fired every time auth state changes
+                var ref = new Firebase(window.lfg.config.getFirebaseUrl());
+                ref.onAuth(this.authDataCallback.bind(this));
+            },
+
+            registerPlugins: function() {
+            },
+
+			/* Events */
+            ready: function () {
+            	this.initializeData();
+            },
+
+            attached: function () {
+            	this.registerPlugins();
+            	this.registerEvents();
+            }
+        });
+    })(window);
+</script>

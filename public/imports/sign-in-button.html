@@ -1,0 +1,118 @@
+﻿<link rel="import" href="../components/bower_components/polymer/polymer.html">
+
+<!-- Fonts -->
+<link rel='import' href='../components/bower_components/font-roboto/roboto.html'>
+
+<link rel="import" href="../components/bower_components/iron-icons/iron-icons.html">
+<link rel="import" href="../components/bower_components/iron-icons/av-icons.html">
+<link rel="import" href="../components/bower_components/iron-icons/communication-icons.html">
+<link rel="import" href="../components/bower_components/iron-icons/iron-icons.html">
+<link rel="import" href="../components/bower_components/iron-icons/editor-icons.html">
+<link rel="import" href="../components/bower_components/iron-icons/hardware-icons.html">
+<link rel="import" href="../components/bower_components/iron-icons/image-icons.html">
+<link rel="import" href="../components/bower_components/iron-icons/maps-icons.html">
+<link rel="import" href="../components/bower_components/iron-icons/notification-icons.html">
+<link rel="import" href="../components/bower_components/iron-icons/social-icons.html">
+
+<!-- Custom Imports -->
+<link rel="import" href="../imports/materialize.html" />
+
+<dom-module id="sign-in-button">
+	<!-- CSS -->
+	<link rel="import" type="css" href='../assets/app/css/lfg.css'>
+
+	<style>
+		:host {
+		}
+
+		iron-icon {
+			margin-right: 1.5em;
+			color: #ffffff;
+		}
+
+		.sign-in-link {
+			display: block;
+			background-color: transparent;
+			color: #ffffff;
+			font-size: 1rem;
+			padding: 6px 18px;
+			border: solid 2px #ffffff;
+			border-radius: 5px;
+			cursor: pointer;
+			margin: 0 15px !important;
+			margin-top: 10px !important;
+			max-height: 60px !important;
+			text-align: center;
+			cursor: pointer;
+		}
+
+		.sign-in-link:hover {
+			color: #e65100;
+			background-color: #ffff00;
+			border-color: #ffff00;
+			font-weight: 500;
+			box-shadow: 0 2px 5px 0 #e65100;
+		}
+	</style>
+
+	<template>
+		<template is="dom-if" if="{{loggedOut}}">
+			<a href="#/login" class="sign-in-link">Sign in</a>
+		</template>
+	</template>
+</dom-module>
+
+<script>
+    (function(window) {
+        var constructor = Polymer({
+
+        	is: 'sign-in-button',
+
+            /**
+             * ...
+             *
+             * @attribute properties
+             * @type object
+             * @default
+             */
+            properties: {
+            },
+
+            /* Functions */
+            authDataCallback: function (authData) {
+                var cusElem = this;
+
+                if (authData) {
+                    //console.log("User " + authData.uid + " is logged in with " + authData.provider);
+                } else {
+                    //Check to make sure the user is logged out
+                    cusElem.loggedOut = true;
+                    cusElem.notifyPath('loggedOut', cusElem.loggedOut);
+                }
+            },
+
+            isLoggedOut: function () {
+            	return (window.lfg.utils.isLoggedIn() === false);
+            },
+
+            registerEvents: function () {
+                var ref = new Firebase(window.lfg.config.getFirebaseUrl());
+                ref.onAuth(this.authDataCallback.bind(this));
+            },
+
+            /* Init */
+            initializeData: function () {
+            	this.loggedOut = this.isLoggedOut();
+            },
+
+			/* Events */
+            ready: function () {
+            	this.initializeData();
+            },
+
+            attached: function () {
+                this.registerEvents();
+            }
+        });
+    })(window);
+</script>

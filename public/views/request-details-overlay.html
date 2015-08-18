@@ -1,0 +1,949 @@
+﻿<link rel="import" href="../components/bower_components/polymer/polymer.html">
+<link rel="import" href="../imports/layout.html">
+
+<!-- Fonts -->
+<link rel='import' href='../components/bower_components/font-roboto/roboto.html'>
+
+<link rel="import" href="../components/bower_components/iron-icons/iron-icons.html">
+<link rel="import" href="../components/bower_components/iron-icons/av-icons.html">
+<link rel="import" href="../components/bower_components/iron-icons/communication-icons.html">
+<link rel="import" href="../components/bower_components/iron-icons/iron-icons.html">
+<link rel="import" href="../components/bower_components/iron-icons/editor-icons.html">
+<link rel="import" href="../components/bower_components/iron-icons/hardware-icons.html">
+<link rel="import" href="../components/bower_components/iron-icons/image-icons.html">
+<link rel="import" href="../components/bower_components/iron-icons/maps-icons.html">
+<link rel="import" href="../components/bower_components/iron-icons/notification-icons.html">
+<link rel="import" href="../components/bower_components/iron-icons/social-icons.html">
+
+<link rel="import" href="../components/bower_components/paper-drawer-panel/paper-drawer-panel.html">
+<link rel="import" href="../components/bower_components/paper-header-panel/paper-header-panel.html">
+<link rel="import" href="../components/bower_components/paper-scroll-header-panel/paper-scroll-header-panel.html">
+<link rel="import" href="../components/bower_components/paper-item/paper-item.html">
+<link rel="import" href="../components/bower_components/paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../components/bower_components/paper-fab/paper-fab.html">
+<link rel="import" href="../components/bower_components/paper-toolbar/paper-toolbar.html">
+
+<!--Custom Imports-->
+<link rel="import" href="../imports/font-awesome.html" />
+<link rel="import" href="../imports/material_icons.html" />
+<link rel="import" href="../imports/materialize.html" />
+<link rel="import" href="../imports/side-nav-contents.html" />
+
+<dom-module id="request-details-overlay">
+
+	<style>
+		:host {
+		}
+
+		.logo-link {
+			text-decoration: none;
+			font-size: 2rem;
+			color: #ffffff;
+			margin-left: -15px !important;
+		}
+
+
+		.tag-facebook {
+			background-color: #3B5998;
+			color: #ffffff;
+			font-size: 1rem;
+			padding: 3px 13px;
+			border: solid 2px #3B5998;
+			border-radius: 5px;
+			cursor: pointer;
+			margin: 0 5px;
+			max-height: 30px !important;
+			z-index: 1000;
+			width: 40px;
+		}
+
+		.tag-twitter {
+			background-color: #55ACEE;
+			color: #ffffff;
+			font-size: 1rem;
+			padding: 3px 13px;
+			border: solid 2px #55ACEE;
+			border-radius: 5px;
+			cursor: pointer;
+			margin: 0 5px;
+			max-height: 30px !important;
+			z-index: 1000;
+			width: 40px;
+		}
+
+		.tag-neutral {
+			background-color: #ffffff;
+			color: #bdbdbd;
+			font-size: 1rem;
+			padding: 3px 13px;
+			border: solid 2px #BDBDBD;
+			border-radius: 5px;
+			margin: 0 5px;
+			max-height: 30px !important;
+		}
+
+		.psn-filter-tag {
+			background-color: #01579B;
+			color: #ffffff !important;
+			font-size: 1rem;
+			padding: 3px 13px;
+			border: solid 2px #01579B;
+			border-radius: 5px;
+			margin: 0 5px;
+			max-height: 30px !important;
+		}
+
+		.xbox-filter-tag {
+			background-color: #5DCB17;
+			color: #ffffff !important;
+			font-size: 1rem;
+			padding: 3px 13px;
+			border: solid 2px #5DCB17;
+			border-radius: 5px;
+			margin: 0 5px;
+			max-height: 30px !important;
+		}
+
+		.wii-filter-tag {
+			background-color: #03A9F4;
+			color: #ffffff !important;
+			font-size: 1rem;
+			padding: 3px 13px;
+			border: solid 2px #03A9F4;
+			border-radius: 5px;
+			margin: 0 5px;
+			max-height: 30px !important;
+		}
+
+		.pc-filter-tag {
+			background-color: #F44336;
+			color: #ffffff !important;
+			font-size: 1rem;
+			padding: 3px 13px;
+			border: solid 2px #F44336;
+			border-radius: 5px;
+			margin: 0 5px;
+			max-height: 30px !important;
+		}
+
+		.profile-background {
+			/*background-color: transparent;
+			background:url('../assets/app/img/1662530.jpg');*/
+			top: 0;
+			left: 0;
+			position: absolute !important;
+			height: 200px;
+			background-size: cover;
+			border-bottom: solid 1px #ffee58;
+			width: 100%;
+			filter: blur(4px);
+			-webkit-filter: blur(4px);
+			-moz-filter: blur(4px);
+			-o-filter: blur(4px);
+			-ms-filter: blur(4px);
+		}
+
+		.profile-background-dopple {
+			/*background-color: transparent;
+			background:url('../assets/app/img/1662530.jpg');*/
+			top: 0;
+			left: 0;
+			position: absolute !important;
+			height: 200px;
+			background-size: cover;
+			border-bottom: solid 1px #ffee58;
+			width: 100%;
+		}
+
+		.profile-background-overlay {
+			background: rgba(0,0,0,.75);
+			opacity: 0.25;
+			-webkit-transition: opacity .25s ease;
+			-moz-transition: opacity .25s ease;
+			top: 0;
+			left: 0;
+			position: absolute !important;
+			height: 200px;
+			width: 100%;
+		}
+
+		.switch label.request-details input[type=checkbox].request-details-overlay:checked + .lever.request-details-overlay {
+			background-color: #7ED321;
+		}
+
+		.switch.request-details-overlay label.request-details-overlay input[type=checkbox].request-details-overlay:checked + .lever.request-details-overlay:after {
+			background-color: #ccff90;
+		}
+
+		.switch.request-details-overlay label.request-details-overlay input[type=checkbox].request-details-overlay:checked + .positive.request-details-overlay {
+			background-color: #ffff00 !important;
+		}
+
+		.switch.request-details-overlay label.request-details-overlay input[type=checkbox].request-details-overlay:checked + .negative.request-details-overlay:after {
+			background-color: #ffff00 !important;
+		}
+
+		.request-list-image {
+			border-radius: 5px;
+			border: 2px solid #ffffff;
+		}
+
+		.text-shadow {
+			text-shadow: 0px 1px 1px #000;
+			/*mix-blend-mode: difference;*/
+		}
+
+		.title {
+			margin-left: 0 !important;
+		}
+
+		.details-area {
+			padding: 0px 20px 20px 20px;
+		}
+
+		.row {
+			margin-bottom: 0 !important;
+			margin-top: 0 !important;
+			line-height: 1;
+		}
+
+		.comment-button-row {
+			margin-top: 20px !important;
+		}
+
+		.lfg-input.input-field textarea {
+			color: #e65100;
+			border-bottom: 1px solid #bdbdbd;
+		}
+
+		.lfg-input.input-field textarea:focus {
+			border-bottom: 1px solid #f57c00;
+			box-shadow: 0 1px 0 0 #f57c00;
+		}
+
+		.lfg-input.input-field textarea.invalid {
+			border-bottom: 1px solid #f44336;
+			box-shadow: 0 1px 0 0 #f44336;
+		}
+
+		.request-list-item {
+			cursor: pointer;
+		}
+
+		/*.lfg-main-toolbar {
+			--paper-toolbar-background:{
+				background-color: #ffffff !important;
+			};
+		}
+
+		.lfg-drawer-toolbar {
+			--paper-toolbar-background: #ef6c00;
+		}*/
+
+		#paper-header-panel {
+			border-bottom: solid 1px #ffffff;
+		}
+
+		/*.lfg-main-header-panel {
+			--paper-header-panel-cover-container:{
+				border: solid 1px #ffffff;
+			};
+		}
+
+		.lfg-paper-fab {
+			--paper-fab:{
+				position: fixed;
+				right: 0;
+				bottom: 0;
+				margin-right: 3%;
+				margin-bottom: 3%;
+			}; 
+			 
+			--paper-fab-background: #e65100;
+		}*/
+
+		.collection-item {
+			height: auto !important;
+			padding-top: 20px !important;
+			padding-bottom: 40px !important;
+		}
+
+		.bottom-bar {
+			margin-left: 0px !important;
+		}
+
+		.content-area {
+			padding: 0 3% 3% 3%;
+		}
+
+		.requests-card-panel {
+			width: 100%;
+			box-shadow: 0 2px 5px 0 #e65100;
+			border-radius: 0px;
+			height: 290px !important;
+		}
+
+		.comments-card-panel {
+			width: 100%;
+			box-shadow: 0 2px 5px 0 #e65100;
+			border-radius: 0px;
+			padding: 0;
+		}
+
+		.request-profile-image {
+			width: 50px;
+			height: 50px;
+			overflow: hidden;
+			display: inline-block;
+			vertical-align: middle;
+		}
+
+		.reply-circle {
+			font-size: 18px;
+			line-height: 55px;
+			color: #fff;
+			background-color: #bdbdbd;
+			text-align: center;
+			width: 55px;
+			height: 55px;
+			overflow: hidden;
+			left: 15px;
+			display: inline-block;
+			vertical-align: middle;
+			border-radius: 50%;
+		}
+
+		.request-info-area {
+			padding: 0 10%;
+		}
+
+		.comment-row {
+			margin-top: 40px !important;
+		}
+
+		.add-comment-row {
+			cursor: pointer;
+		}
+
+		@media (max-width: 640px) {
+			.logo-link {
+				margin-left: 0px;
+			}
+
+			/*.lfg-paper-fab {
+				--paper-fab:{
+					position: fixed;
+					right: 0;
+					bottom: 0;
+					margin-right: 3.5%;
+					margin-bottom: 3.5%;
+				}; 
+				--paper-fab-background: #e65100;
+			}*/
+		}
+	</style>
+
+	<template>
+		<paper-toolbar class="tall lfg-main-toolbar request-details-party request-content" style="display:none;">
+			<div id="request_header_dopple" class="profile-background-dopple"></div>
+			<div id="request_header" class="profile-background"></div>
+			<div class="profile-background-overlay"></div>
+			<!--<paper-icon-button icon="menu" class="lfg-menu-icon" paper-drawer-toggle></paper-icon-button>
+			<paper-icon-button icon="arrow-back" class="lfg-menu-icon" on-click="goToList"></paper-icon-button>-->
+			<div flex></div>
+			<a id="to_facebook" class="center center-align filter-tags tag-facebook" on-click="postToFacebook">
+				<i class="fa fa-facebook"></i>
+			</a>
+			<a id="to_twitter" class="center center-align filter-tags tag-twitter" on-click="postToTwitter">
+				<i class="fa fa-twitter"></i>
+			</a>
+			<div style="display:table-cell; text-align:center;" class="middle title">
+				<template is="dom-if" if="{{request.images.list_url}}">
+					<img class="request-list-image" src="[[request.images.list_url]]" width="160" />
+				</template>
+				<template is="dom-if" if="{{isImageBlank(request.images.list_url)}}">
+					<div class="layout vertical center-center white-text" style="background-color:#FB8C00; width:160px; height:90px; border-radius: 5px; padding:0 7px;">
+						<label class="white-text">{{request.gametitle}}</label>
+					</div>
+				</template>
+			</div>
+			<div class="bottom title bottom-bar">
+				<h5 class="white-text text-shadow">{{request.gametitle}}</h5>
+			</div>
+		</paper-toolbar>
+
+		<div class="white details-area request-details-party request-content" style="display:none;">
+			<div class="row" style="margin-top:30px !important;">
+				<div class="col s3 left left-align">
+					<!--<div class="switch">
+						<label class="white-text" style="font-size:1rem;">
+							<span class="negative">No</span>
+							<input type="checkbox">
+							<span class="lever"></span>
+							<span class="positive">Yes</span>
+						</label>
+					</div>-->
+				</div>
+				<div class="col s6 offset-s3 center center-align">
+					<span class$="[[getSystemClass(request.system)]]">[[getSystemType(request.system)]]</span>
+					<span class="center center-align tag-neutral">[[getGamerCount(request.gamercount)]]</span>
+				</div>
+				<div class="col s3 right right-align">
+					<h6 class="grey-text" style="font-size:0.85rem;">[[getTimeLapse(request.datetime)]]</h6>
+				</div>
+			</div>
+			<br />
+
+			<div class="request-info-area">
+				<div class="row">
+					<div class="col s12 center center-aligned">
+						<img id="profile_image" alt="" src="../assets/app/img/profile-photo-placeholder.jpg" style="position:relative;" class="circle request-profile-image" width="50" height="50" />
+					</div>
+					<div class="col s12 center center-align">
+						<h6 class="light grey-text">[[user.username]]</h6>
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col s12 center center-align">
+						<h4 class="grey-text text-darken-2 light">[[request.title]]</h4>
+					</div>
+					<div class="col s12 center center-align">
+						<h6 class="grey-text text-darken-2">[[request.description]]</h6>
+					</div>
+				</div>
+
+				<br /><div class="divider"></div><br />
+
+				<div class="row add-comment-row">
+					<div class="col s12  add-comment-message">
+						<i class="reply-circle" style="margin-right:30px; cursor:pointer;"></i>
+						<label class="grey-text text-lighten-1" style="font-size:1.25rem; cursor:pointer;">Reply to request</label>
+					</div>
+
+					<div class="lfg-input input-field col s12 add-comment-control add-comment-text" style="display:none;">
+						<textarea id="comment_text" type="text" placeholder="Say something nice" spellcheck="false" class="materialize-textarea" length="250"></textarea>
+					</div>
+					<div class="col s12 center center-align add-comment-control add-comment-button" style="display:none;">
+						<a class="waves-effect waves-light btn orange darken-4 white-text" style="text-transform:none;" on-click="addComment">Post Comment</a>
+					</div>
+				</div>
+
+				<div id="request_comments_list" class="row comment-row">
+				</div>
+			</div>
+		</div>
+
+		<div id="details_loading_overlay" class="layout fit">
+			<div class="layout vertical fit center-center">
+				<div class="preloader-wrapper big active">
+					<div class="spinner-layer spinner-yellow-only" style="border-color:#ff9800;">
+						<div class="circle-clipper left">
+							<div class="circle"></div>
+						</div><div class="gap-patch">
+							<div class="circle"></div>
+						</div><div class="circle-clipper right">
+							<div class="circle"></div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</template>
+</dom-module>
+
+<script>
+	(function (window) {
+		var classElement = Polymer({
+
+			is: 'request-details-overlay',
+
+			/**
+			 * ...
+			 *
+			 * @attribute properties
+			 * @type object
+			 * @default
+			 */
+			properties: {
+				elementname: 'Request Details Overlay',
+				requestkey: {
+					type: String,
+					notify: true
+				}
+				/**
+				 * ...
+				 *
+				 * @attribute thingName
+				 * @type string
+				 * @default ''
+				 */
+			},
+
+			addComment: function () {
+				var customElem = this;
+				var requestkey = customElem.request.id;
+
+				var authJSON = sessionStorage.getItem(window.lfg.config.firebaseCacheKey);
+				var authData = JSON.parse(authJSON);
+
+				if (authData == null || authData == undefined) {
+					var localJSON = localStorage.getItem(window.lfg.config.firebaseCacheKey);
+					authData = JSON.parse(localJSON);
+				}
+
+				if (authData !== null && authData !== undefined) {
+					var userComment = $(customElem.$.comment_text).val();
+
+					if (userComment === null || userComment === undefined || userComment === '') {
+						$(customElem.$.comment_text).addClass('invalid');
+						return;
+					}
+
+					var requestCommentRef = new Firebase(window.lfg.config.getFirebaseUrl() + 'comments');
+					var newCommentRef = requestCommentRef.push({
+						requestkey: requestkey,
+						uid: authData.uid,
+						comment: userComment,
+						created: this.convertDateToUtc(new Date.now())
+					});
+					var key = newCommentRef.key();
+					if (key !== null && key !== undefined && key !== '')
+						Materialize.toast('Comment Added', 4000);
+
+					$('.add-comment-control').hide();
+					$('.add-comment-message').fadeIn();
+				}
+				else {
+					//display error message for no user signed in
+				}
+			},
+
+
+			getGamerCount: function (count) {
+				if (count <= 1) {
+					return '1 Gamer';
+				}
+				else {
+					return count + ' Gamers';
+				}
+			},
+
+			getSystemType: function (system) {
+
+				switch (system) {
+
+					case 'pc':
+						return 'PC';
+						break;
+
+					case 'ps3':
+						return 'PS3';
+						break;
+
+					case 'ps4':
+						return 'PS4';
+						break;
+
+					case 'xbox360':
+						return 'X360';
+						break;
+
+					case 'xboxOne':
+						return 'X1';
+						break;
+
+					case 'wii':
+						return 'Wii';
+						break;
+
+					case 'wiiu':
+						return 'Wii U';
+						break;
+				}
+			},
+
+			getSystemClass: function (system) {
+
+				var tagClass = "center center-align ";
+
+				switch (system) {
+
+					case 'pc':
+						return tagClass + 'pc-filter-tag';
+						break;
+
+					case 'ps3':
+						return tagClass + 'psn-filter-tag';
+						break;
+
+					case 'ps4':
+						return tagClass + 'psn-filter-tag';
+						break;
+
+					case 'xbox360':
+						return tagClass + 'xbox-filter-tag';
+						break;
+
+					case 'xboxOne':
+						return tagClass + 'xbox-filter-tag';
+						break;
+
+					case 'wii':
+						return tagClass + 'wii-filter-tag';
+						break;
+
+					case 'wiiu':
+						return tagClass + 'wii-filter-tag';
+						break;
+				}
+			},
+
+			getTimeLapse: function (date) {
+				var convDate = new Date(date);
+				return window.lfg.utils.timeSince(window.lfg.utils.convertUtcToLocalDate(convDate));
+			},
+
+			goToList: function () {
+				document.querySelector('app-router').go('/');
+			},
+
+			isImageBlank: function (url) {
+				return (url == null || url == undefined || url == '');
+			},
+
+			setCommentId: function (id) {
+				return 'div_' + id;
+			},
+
+			convertDateToUtc: function (date) {
+				return window.lfg.utils.convertDateToUtc(date);
+			},
+
+			formatDate: function (utc) {
+				return window.lfg.utils.convertUtcToLocal(utc);
+			},
+
+			formatMicRequest: function (mic) {
+				return mic ? 'Required' : 'Not Required';
+			},
+
+			formatSystem: function (system) {
+				switch (system) {
+					case 'pc':
+						return 'PC';
+						break;
+
+					case 'ps3':
+						return 'PS3';
+						break;
+
+					case 'ps4':
+						return 'PS4';
+						break;
+
+					case 'xbox360':
+						return 'Xbox 360';
+						break;
+
+					case 'xboxOne':
+						return 'Xbox One';
+						break;
+
+					case 'wii':
+						return 'Wii';
+						break;
+
+					case 'wiiu':
+						return 'Wii U';
+						break;
+
+					case 'steam':
+						return 'Steam';
+						break;
+				}
+			},
+
+			getCommenter: function (comment) {
+				var cusElem = this;
+				var userRef = new Firebase(window.lfg.config.getFirebaseUrl() + 'users/' + comment.uid);
+				userRef.once("value", function (snapshot) {
+					var user = snapshot.val();
+					if (user !== null && user !== undefined) {
+						var profileImage = document.getElementById('img_' + comment.id);
+						var userLabel = document.getElementById('label_' + comment.id);
+
+						if (profileImage !== null && profileImage !== undefined) {
+							profileImage.src = user.profilepic;
+						}
+
+						if (userLabel !== null && userLabel !== undefined) {
+							$(userLabel).html(user.username);
+						}
+
+						//update the comment
+						var commentObj = _.findWhere(cusElem.request.comments, { id: comment.id });
+
+						if (commentObj !== null && commentObj !== undefined) {
+							commentObj.user = user;
+							cusElem.notifyPath('request.comments', cusElem.request.comments);
+						}
+					}
+				});
+			},
+
+			getComments: function (requestkey) {
+				var customElem = this;
+				var commentsRef = new Firebase(window.lfg.config.getFirebaseUrl() + 'comments');
+
+				//Get the latest comment added
+				commentsRef.orderByChild('requestkey').equalTo(requestkey).on('child_added', function (childsnapshot) {
+					var commentHtml = '';
+					var comment = childsnapshot.val();
+					comment.id = childsnapshot.key();
+
+					var requestcomment = {
+						id: comment.id,
+						comment: comment.comment,
+						created: customElem.getTimeLapse(comment.created),
+						requestkey: comment.requestkey,
+						uid: comment.uid,
+						userimgid: 'img_' + comment.id,
+						userlabelid: 'label_' + comment.id,
+						user: {}
+					}
+
+					//customElem.request.comments.push(requestcomment);
+					//customElem.notifyPath('request.comments', customElem.request.comments);
+
+					customElem.request.comments.push(requestcomment);
+
+					commentHtml += '<div class="col s12" style="margin-bottom:30px;">';
+					commentHtml += '<img id="' + requestcomment.userimgid + '" src="../assets/app/img/profile-photo-placeholder.jpg" class="reply-circle" style="margin-right:30px;" />';
+					commentHtml += '<span><label id="' + requestcomment.userlabelid + '" class="grey-text text-darken-3" style="font-size:1.25rem; margin-right:20px;"></label>';
+					commentHtml += '<label class="grey-text" style="font-size:0.85rem;">' + requestcomment.created + '</label>';
+					commentHtml += '</span>';
+					commentHtml += '<p style="padding:0 0 0 85px; font-size:0.85rem; margin-top:-6px;">' + requestcomment.comment + '</p>';
+					commentHtml += '</div>';
+
+					$(customElem.$.request_comments_list).prepend(commentHtml);
+
+					//Get Commenter and their profile image
+					customElem.getCommenter(requestcomment);
+				});
+			},
+
+			getRequest: function (key) {
+				var customElem = this;
+				var requestRef = new Firebase(window.lfg.config.getFirebaseUrl() + 'requests/' + this.requestkey);
+
+				requestRef.once('value', function (snapshot) {	//I LUV U Firebase :D. Data will be read once for initial request
+
+					var comments = [];
+					var request = snapshot.val();
+					request.id = snapshot.key();
+
+					customElem.request = request;
+					customElem.request.comments = comments;
+
+					//Set the request changed handler for any new comments
+					customElem.getComments(request.id);
+					customElem.setCoverImage();
+					customElem.getUserProfile(request);
+					customElem.markAsRecent(request.id);
+
+					$(customElem.$.details_loading_overlay).hide(0, function () {
+						$('.request-content').fadeIn();
+					});
+				});
+			},
+
+			getUserProfile: function (request) {
+				var cusElem = this;
+				var userRef = new Firebase(window.lfg.config.getFirebaseUrl() + 'users/' + request.uid);
+				userRef.once("value", function (snapshot) {
+					var user = snapshot.val() || {};
+					if (user) {
+						cusElem.user = user;
+						var profileImage = document.getElementById("profile_image");
+
+						if (profileImage !== null && profileImage !== undefined) {
+							profileImage.src = user.profilepic;
+						}
+					}
+				});
+			},
+
+
+			getRequestKey: function () {
+				//app-router doesn support Polymer 1.0. Get hash and requestkey manually
+
+				if (this.requestkey === null || this.requestkey === undefined || this.requestkey === '') {
+					var hash = window.location.hash;
+					this.requestkey = hash.substring(hash.lastIndexOf('/') + 1);
+				}
+			},
+
+			getLookupData: function () {
+				//Gets lookup data from Giant Bomb
+				var config = window.lfg.config;
+				$.get(config.appUrl)
+			},
+
+			markAsRecent: function (requestid) {
+			    var customElem = this;
+			    var userid = window.lfg.utils.getUser();
+
+			    if (userid !== null && userid !== undefined && userid !== '') {
+			        var recentRequestRef = new Firebase(window.lfg.config.getFirebaseUrl() + 'users/' + userid + '/recentrequests');
+
+			        recentRequestRef
+                        .orderByChild('requestid')
+                        .equalTo(requestid)
+                        .once('value', function (snapshot) {
+                            var item = snapshot.val();
+
+                            if (item !== null && item !== undefined) {
+                                var itemArray = _.map(item, function (elem, key) { elem.id = key; return elem; });
+                                _.each(itemArray, function (elem, index) {
+                                    var recordkey = elem.id;
+                                    var recentRequestItemRef = new Firebase(window.lfg.config.getFirebaseUrl() + 'users/' + userid + '/recentrequests/' + recordkey);
+                                    recentRequestItemRef.remove();
+                                });
+                            }
+                            
+                            //add the record
+                            var newHistory = {
+                                requestid: requestid
+                            };
+
+                            var lexicoIndex = window.lfg.utils.getSearchIndex(customElem.convertDateToUtc(Date.now()));
+                            newHistory.requestindex = lexicoIndex;
+                            recentRequestRef.push(newHistory);
+                        });
+			    }
+			},
+
+			postToFacebook: function () {
+				//message : options.message,
+				//name : options.title,
+				//link : options.url,
+				//description : options.description,
+				//picture : options.image
+
+				var authJSON = sessionStorage.getItem(window.lfg.config.firebaseCacheKey);
+				var authData = JSON.parse(authJSON);
+
+				if (authData == null || authData == undefined) {
+					var localJSON = localStorage.getItem(window.lfg.config.firebaseCacheKey);
+					authData = JSON.parse(localJSON);
+				}
+
+				var message = 'Find gamers to play ' + this.request.gametitle + ' on ' + this.formatSystem(this.request.system) + ' with Parallel';
+
+				//if(authData !== null && authData !== undefined && authData.uid === this.request.uid){
+				//	message = 'I created a gaming request for ' + this.request.gametitle + ' on the Parallel app';
+				//}
+
+				var options = {
+					entityId: this.request.id,
+					entityType: 'request',
+					gametitle: this.request.gametitle,
+					system: this.formatSystem(this.request.system),
+					description: message,
+					photo: this.request.images.list_url
+				};
+
+				window.lfg.utils.postToFacebook(options);
+			},
+
+			postToTwitter: function () {
+
+				var authJSON = sessionStorage.getItem(window.lfg.config.firebaseCacheKey);
+				var authData = JSON.parse(authJSON);
+
+				if (authData == null || authData == undefined) {
+					var localJSON = localStorage.getItem(window.lfg.config.firebaseCacheKey);
+					authData = JSON.parse(localJSON);
+				}
+
+				var message = 'Check out this gaming request to play ' + this.request.gametitle + ' for ' + this.formatSystem(this.request.system) + ' on the Parallel app';
+
+				if (authData !== null && authData !== undefined && authData.uid === this.request.uid) {
+					message = 'I created a gaming request to play ' + this.request.gametitle + ' on ' + this.formatSystem(this.request.system) + ' with the Parallel app. Check it out';
+				}
+
+				var encodedMessage = encodeURIComponent(message);
+
+				var options = {
+					entityId: this.request.id,
+					entityType: 'request',
+					message: encodedMessage
+				};
+
+				window.lfg.utils.tweetOnTwitter(options);
+			},
+
+			setCoverImage: function () {
+				var images = this.request !== null && this.request !== undefined ? this.request.images : {};
+
+				if (images.list_url !== null && images.list_url !== undefined && images.list_url !== '') {
+					//set the contents to our property
+					var cusElem = this;
+
+					var toolbar = cusElem.$.request_header;
+					var toolbarDopple = cusElem.$.request_header_dopple;
+
+					toolbar.style.backgroundImage = "url('" + images.list_url + "')";
+					toolbarDopple.style.backgroundImage = "url('" + images.list_url + "')";
+				}
+			},
+
+			showCommentField: function () {
+				$(this.$.comment_text).val('');
+				$('.add-comment-message').hide(0, function () {
+					$('.add-comment-control').fadeIn();
+				});
+			},
+
+			initializeData: function () {
+
+				this.getRequestKey();
+				this.request = {
+					comments: []
+				};
+				this.user = {};
+			},
+
+			registerPlugins: function () {
+			},
+
+			registerEvents: function () {
+				var cusElem = this;
+				$('.comment-hidden-trigger').on('change', function () {
+					alert($(this).val());
+				})
+
+				$(document).on('click', '.add-comment-message', this.showCommentField.bind(this));
+				$(document).on('input', '#comment_text', function () {
+					$(this).removeClass('invalid');
+				});
+			},
+
+			created: function () {
+				//Part of Polymer lifecycle
+			},
+
+			ready: function () {
+				this.initializeData();
+			},
+
+			attached: function () {
+				//called after ready();
+				this.registerPlugins();
+				this.registerEvents();
+				this.getRequest(this.requestkey);
+			}
+		});
+    })(window);
+</script>

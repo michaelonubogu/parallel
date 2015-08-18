@@ -1,0 +1,1496 @@
+﻿<link rel="import" href="../components/bower_components/polymer/polymer.html">
+<link rel="import" href="../imports/layout.html">
+
+<!-- Fonts -->
+<link rel='import' href='../components/bower_components/font-roboto/roboto.html'>
+
+<link rel="import" href="../components/bower_components/iron-icons/iron-icons.html">
+<link rel="import" href="../components/bower_components/iron-icons/av-icons.html">
+<link rel="import" href="../components/bower_components/iron-icons/communication-icons.html">
+<link rel="import" href="../components/bower_components/iron-icons/iron-icons.html">
+<link rel="import" href="../components/bower_components/iron-icons/editor-icons.html">
+<link rel="import" href="../components/bower_components/iron-icons/hardware-icons.html">
+<link rel="import" href="../components/bower_components/iron-icons/image-icons.html">
+<link rel="import" href="../components/bower_components/iron-icons/maps-icons.html">
+<link rel="import" href="../components/bower_components/iron-icons/notification-icons.html">
+<link rel="import" href="../components/bower_components/iron-icons/social-icons.html">
+
+<link rel="import" href="../components/bower_components/paper-drawer-panel/paper-drawer-panel.html">
+<link rel="import" href="../components/bower_components/paper-header-panel/paper-header-panel.html">
+<link rel="import" href="../components/bower_components/paper-scroll-header-panel/paper-scroll-header-panel.html">
+<link rel="import" href="../components/bower_components/paper-item/paper-item.html">
+<link rel="import" href="../components/bower_components/paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../components/bower_components/paper-fab/paper-fab.html">
+<link rel="import" href="../components/bower_components/paper-toolbar/paper-toolbar.html">
+<link rel="import" href="../components/bower_components/paper-item/paper-item.html">
+
+<!-- Google Custom Elements-->
+<link rel="import" href="../components/bower_components/firebase-element/firebase-collection.html">
+
+<!-- Custom Imports -->
+<link rel="import" href="../imports/materialize.html" />
+<link rel="import" href="../imports/material_icons.html" />
+<link rel="import" href="../imports/font-awesome.html" />
+<link rel="import" href="../imports/flaticons.html" />
+<link rel="import" href="../imports/side-nav-contents.html" />
+<link rel="import" href="../imports/sign-in-button.html" />
+<link rel="import" href="../views/request-details-overlay.html" />
+
+<dom-module id="user-requests">
+	<!-- CSS -->
+	<link rel="import" type="css" href='../assets/app/css/lfg.css'>
+
+	<style>
+		:host {
+		}
+
+		.system-tag {
+			font-size: 0.7rem;
+			padding: 3px 10px;
+			border-radius: 4px;
+		}
+
+		.flaticon-update {
+			margin-top: 2px !important;
+			color: #424242;
+		}
+
+		.filter-tags {
+			width: 65px;
+			margin-top: 2px !important;
+			margin-bottom: 2px !important;
+		}
+
+		.tag-neutral {
+			background-color: #ffffff;
+			color: #bdbdbd;
+			font-size: 1rem;
+			padding: 3px 13px;
+			border: solid 2px #BDBDBD;
+			border-radius: 5px;
+			cursor: pointer;
+			margin: 0 5px;
+			max-height: 30px !important;
+		}
+
+		.new-request-button {
+			display: block;
+			background-color: transparent;
+			color: #ffffff;
+			font-size: 1rem;
+			padding: 6px 18px;
+			border: solid 2px #ffffff;
+			border-radius: 5px;
+			cursor: pointer;
+			/*width:100%;*/
+			margin: 0 15px !important;
+			margin-top: 10px !important;
+			max-height: 60px !important;
+			text-align: center;
+			cursor: pointer;
+		}
+
+		.new-request-button:hover {
+			color: #e65100;
+			background-color: #ffff00;
+			border-color: #ffff00;
+			font-weight: 500;
+			box-shadow: 0 2px 5px 0 #e65100;
+		}
+
+		.psn-filter-tag {
+			background-color: #01579B;
+			color: #ffffff !important;
+			font-size: 1rem;
+			padding: 3px 13px;
+			border: solid 2px #01579B;
+			border-radius: 5px;
+			cursor: pointer;
+			margin: 0 5px;
+			max-height: 30px !important;
+		}
+
+		.xbox-filter-tag {
+			background-color: #5DCB17;
+			color: #ffffff !important;
+			font-size: 1rem;
+			padding: 3px 13px;
+			border: solid 2px #5DCB17;
+			border-radius: 5px;
+			cursor: pointer;
+			margin: 0 5px;
+			max-height: 30px !important;
+		}
+
+		.wii-filter-tag {
+			background-color: #03A9F4;
+			color: #ffffff !important;
+			font-size: 1rem;
+			padding: 3px 13px;
+			border: solid 2px #03A9F4;
+			border-radius: 5px;
+			cursor: pointer;
+			margin: 0 5px;
+			max-height: 30px !important;
+		}
+
+		.pc-filter-tag {
+			background-color: #F44336;
+			color: #ffffff !important;
+			font-size: 1rem;
+			padding: 3px 13px;
+			border: solid 2px #F44336;
+			border-radius: 5px;
+			cursor: pointer;
+			margin: 0 5px;
+			max-height: 30px !important;
+		}
+
+		[class^="flaticon-"]:before, [class*=" flaticon-"]:before {
+			margin-left: 0px !important;
+			font-size: 35px !important;
+		}
+
+		.logo-link {
+			text-decoration: none;
+			font-size: 2rem;
+			color: #ffffff;
+			margin-left: -15px !important;
+		}
+
+		.lfg-icon-button {
+			--paper-icon-button:{
+				cursor: pointer !important;
+			};
+		}
+
+		input[type=text].user-requests {
+			background-color: transparent;
+			border: none;
+			border-bottom: none !important;
+			border-radius: 0;
+			outline: none;
+			height: 3rem;
+			width: 100%;
+			font-size: 1.5rem !important;
+			font-weight: 400;
+			margin: 0 0 15px 0;
+			padding: 0;
+		}
+
+		/* label underline focus color */
+		input[type=text].user-requests:focus {
+			border-bottom: none;
+			box-shadow: none;
+		}
+
+		/* valid color */
+		input[type=text].user-requests.valid {
+			border-bottom: none !important;
+			box-shadow: none !important;
+		}
+
+		/* invalid color */
+		input[type=text].user-requests.invalid {
+			border-bottom: none;
+			box-shadow: none;
+		}
+
+		.request-list-item {
+			cursor: pointer;
+			min-height: 125px;
+			border: none !important;
+			/*padding-left:20px !important;*/
+			/*margin-bottom:7px;*/
+			/*margin-top:7px !important;*/
+		}
+
+
+		.item-content-container {
+			/*margin-left: -65px;*/
+		}
+
+		.request-list-image {
+			border-radius: 5px;
+			/*margin-left: -50px;*/
+		}
+
+		.request-profile-image {
+			width: 42px;
+			height: 42px;
+			overflow: hidden;
+			left: 15px;
+			display: inline-block;
+			vertical-align: middle;
+		}
+
+		.request-list-item-container {
+			/*padding: 10px 20px 10px 20px;*/
+			padding-top: 10px;
+		}
+
+		.lfg-main-toolbar {
+			--paper-toolbar-background:{
+				background-color: transparent !important;
+			};
+		}
+
+		.lfg-drawer-toolbar {
+			--paper-toolbar:{
+				background-color: #EF6C00;
+			};
+		}
+
+		#paper-header-panel {
+			border-bottom: solid 1px #ffffff;
+		}
+
+		.lfg-main-header-panel {
+			--paper-header-panel-cover-container:{
+				border: solid 1px #ffffff;
+			};
+		}
+
+		.lfg-paper-fab {
+			--paper-fab:{
+				margin-top: -5px;
+			};
+			--paper-fab-background: #e65100;
+		}
+
+		.bottom-bar {
+			margin-left: 0px !important;
+		}
+
+		.content-area {
+			padding: 0 15% 15% 15%;
+			background-color: #FAFAFA;
+		}
+
+		.requests-card-panel {
+			width: 100%;
+			box-shadow: 0 2px 5px 0 #e65100;
+			border-radius: 0px;
+			height: 200px !important;
+		}
+
+		.request-card-item {
+			min-height: 150px !important;
+			border-bottom: 1px solid #f9a825;
+		}
+
+		.request-card-item .card-item .row {
+			margin-bottom: 5px;
+		}
+
+		.overlay-cover {
+			background-color: rgba(0,0,0,0.75);
+		}
+
+		.overlay-card {
+			opacity: 1 !important;
+			box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14),0 1px 5px 0 rgba(0, 0, 0, 0.12),0 3px 1px -2px rgba(0, 0, 0, 0.2);
+			border-radius: 4px;
+		}
+
+		@media (max-width: 640px) {
+			.logo-link {
+				margin-left: 0px;
+			}
+
+			.content-area {
+				padding: 0;
+			}
+
+			.lfg-paper-fab {
+				--paper-fab:{
+					margin-top: -5px;
+				}; 
+				--paper-fab-background: #e65100;
+			}
+
+			.flaticon-update {
+				margin-top: 2px !important;
+			}
+
+			.profile-icon-row {
+				margin-top: -150px !important;
+			}
+
+		}
+
+		@media (min-width: 640px) and (max-width: 992px) {
+			.profile-icon-row {
+				margin-top: -150px !important;
+			}
+		}
+	</style>
+
+	<template>
+		<!-- ------------------------ Search Box --------------------------------- -->
+		<ul id="search_dropdown" class="dropdown-content" style="min-height: 60px; top: 0px !important; left: 0px !important; min-width: 100% !important; position: absolute; opacity: 1; display: block;">
+			<li class="search-input-container" style="vertical-align: middle !important; min-height: 60px !important; cursor:auto;">
+				<div class="row" style="min-height:100% !important; margin-bottom: 0px;">
+					<div class="col s1" style="margin-top:19px;">
+						<paper-icon-button icon="arrow-back" class="grey-text text-darken-1"></paper-icon-button>
+					</div>
+					<div class="col s10 style-scope user-requests" style="margin-top: 18px; font-size:1.5rem;">
+						<input id="search_input" type="text" class="validate style-scope user-requests" placeholder="Game Title">
+					</div>
+                    <div class="col s1" style="margin-bottom: 0px; margin-top:21px;">
+                        <div class="search-loading-item center center-align" style="display:none;">
+                            <div class="preloader-wrapper active" style="height:32px; width:32px;">
+                                <div class="spinner-layer spinner-yellow-only">
+                                    <div class="circle-clipper left">
+                                        <div class="circle"></div>
+                                    </div>
+                                    <div class="gap-patch">
+                                        <div class="circle"></div>
+                                    </div>
+                                    <div class="circle-clipper right">
+                                        <div class="circle"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+				</div>
+			</li>
+		</ul>
+		<!-- ------------------------ Search Box --------------------------------- -->
+		<paper-drawer-panel>
+			<paper-header-panel mode="seamed" drawer>
+				<paper-toolbar class="medium-tall lfg-drawer-toolbar">
+				</paper-toolbar>
+				<div fit class="orange darken-3">
+					<template is="dom-if" if="{{loggedIn}}">
+						<a class="new-request-button" on-click="newRequest">New Request</a>
+					</template>
+					<sign-in-button></sign-in-button>
+					<side-nav-contents></side-nav-contents>
+				</div>
+			</paper-header-panel>
+			<paper-header-panel mode="seamed" main class="lfg-main-header-panel white">
+				<paper-toolbar class="medium-tall white lfg-main-toolbar">
+					<paper-icon-button icon="menu" class="grey-text" paper-drawer-toggle></paper-icon-button>
+					<div flex></div>
+					<paper-icon-button id="search_button" icon="search" class="grey-text" on-click="showSearch"></paper-icon-button>
+					<ul id='dropdown1' class='dropdown-content'>
+						<template is="dom-repeat" items="[[sortoptions]]">
+							<li><a on-click="changeSort" data-sort$="[[item.column]]">[[item.name]]</a></li>
+						</template>
+					</ul>
+					<div class="middle">
+					</div>
+					<div class="bottom" style="width:100%;">
+						<div class="layout horizontal wrap">
+							<span class="center center-align filter-tags tag-neutral" data-system="ps3">PS3</span>
+							<span class="center center-align filter-tags tag-neutral" data-system="ps4">PS4</span>
+							<span class="center center-align filter-tags tag-neutral" data-system="xbox360">X360</span>
+							<span class="center center-align filter-tags tag-neutral" data-system="xboxOne">X1</span>
+							<span class="center center-align filter-tags tag-neutral" data-system="wii">Wii</span>
+							<span class="center center-align filter-tags tag-neutral" data-system="wiiu">Wii U</span>
+							<span class="center center-align filter-tags tag-neutral" data-system="pc">PC</span>
+						</div>
+					</div>
+				</paper-toolbar>
+
+				<template is="dom-if" if="{{isLoggedOut()}}">
+					<paper-toolbar id="signin_message" class="orange lfg-main-toolbar">
+						<div><label class="white-text" style="font-size:1rem;">Sign in to create a Request</label></div>
+						<div class="flex"></div>
+						<div style="margin-top:5px;">
+							<a id="hide_message" class="white-text" style="cursor:pointer !important; z-index:10000;" on-click="hideMessage">
+								<i class="material-icons">cancel</i>
+							</a>
+						</div>
+					</paper-toolbar>
+				</template>
+
+				<div class="white lighten-3" style="margin-bottom:10%;">
+					<ul id="request_list" class="collection request-list-item-container" style="margin-top:0; border:none;">
+						<li class="collection-item request-list-item spinner-roo-item">
+							<div class="row">
+								<div class="col s12 center center-align">
+									<div class="preloader-wrapper active">
+										<div class="spinner-layer spinner-yellow-only">
+											<div class="circle-clipper left">
+												<div class="circle"></div>
+											</div>
+											<div class="gap-patch">
+												<div class="circle"></div>
+											</div>
+											<div class="circle-clipper right">
+												<div class="circle"></div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</li>
+
+						<template is="dom-repeat" items="{{requests}}">
+							<li data-request-key$="[[item.key]]" class="collection-item request-list-item" on-click="loadRequest">
+								<div style="width:100%" class="right right-align">
+									<h6 class="grey-text" style="font-size: 0.75rem;margin: 0px 10px 0 0;position: absolute;right: 0;">[[getTimeLapse(item.datetime)]]</h6>
+								</div>
+								<div class="row">
+									<div class="col s12 m12 l2">
+										<template is="dom-if" if="{{item.images.list_url}}">
+											<img class="request-list-image" src="[[item.images.list_url]]" width="160" />
+										</template>
+										<template is="dom-if" if="{{isImageBlank(item.images.list_url)}}">
+											<div class="layout vertical center-center white-text" style="background-color:#FB8C00; width:160px; height:90px; border-radius: 5px; padding:0 7px;">
+												<label class="white-text">{{item.gametitle}}</label>
+											</div>
+										</template>
+									</div>
+									<div class="col s12 m12 l8">
+										<div class="item-content-container">
+											<div><span class="grey-text text-darken-2" style="font-size:0.75rem;">[[item.gametitle]]</span></div>
+											<div><span style="font-size:1.15rem; margin-top:-5px; font-weight:500;">[[item.title]]</span></div>
+											<div><span class="grey-text" style="font-size:0.9rem;">[[item.description]]</span></div>
+											<div>
+												<span class="white-text center center-align system-tag" style$="[[item.systemColor]]">[[getSystemType(item.system)]]</span>
+												<span class="grey-text text-lighten-1 center center-align" style="background-color:#ffffff; font-size:0.7rem; padding:3px 10px; border:solid 1px #BDBDBD; border-radius:5px;">[[getGamerCount(item.gamercount)]]</span>
+												<template is="dom-if" if="{{item.mic}}">
+													<span style="margin-left:7px; vertical-align:text-top;" class="grey-text"><i style="font-size:1.0rem;" class="material-icons">headset_mic</i></span>
+												</template>
+
+												<template is="dom-if" if="{{item.commentCount}}">
+													<span style="margin-left:7px;" class="grey-text"><i class="fa fa-comments grey-text"></i>&nbsp;<span style="font-size:0.7rem">{{item.commentCount}}</span></span>
+												</template>
+											</div>
+										</div>
+									</div>
+									<div class="col s12 m12 l2 right right-align profile-icon-row" style="margin-top:40px;">
+										<img id$="{{getImageId(item.key)}}" src="../assets/app/img/profile-photo-placeholder.jpg" alt="" style="position:relative;" class="circle request-profile-image" width="60" height="60">
+									</div>
+								</div>
+							</li>
+						</template>
+					</ul>
+					<!--<paper-fab icon="add" class="lfg-paper-fab white-text text-darken-4" on-click="newRequest"></paper-fab>-->
+				</div>
+			</paper-header-panel>
+		</paper-drawer-panel>
+
+
+		<!-- Request Details Overlay-->
+		<div id="details_overlay" class="overlay-cover" style="width:100%; height:100% !important; z-index:10000 !important; position:absolute; display:none;">
+			<div id="details_overlay_content" class="white overlay-card" style="width:96%; height:92% !important; margin:2%;">
+				<div class="layout vertical white">
+					<div class="layout horizontal">
+						<div class="flex"></div>
+						<a id="close_overlay" class="grey-text" style="cursor:pointer !important; margin:7px 7px 0 0;" on-click="closeOverlay">
+							<i class="material-icons small" style="font-size:2rem;">cancel</i>
+						</a>
+					</div>
+				</div>
+
+				<div id="overlay_details" style="height:92%; overflow:auto;">
+				</div>
+			</div>
+		</div>
+	</template>
+</dom-module>
+
+<script>
+    (function(window) {
+        var constructor = Polymer({
+
+        	is: 'user-requests',
+
+            /**
+             * ...
+             *
+             * @attribute properties
+             * @type object
+             * @default
+             */
+            properties: {
+                firebase: {
+                    requests: null,
+                    games: null,
+                    users: null
+                },
+                name: 'Requests Page',
+
+                /**
+                 * ...
+                 *
+                 * @attribute thingName
+                 * @type string
+                 * @default ''
+                 */
+				notify: true
+            },
+
+        	/* Functions */
+            addNeutralTag: function (node) {
+            	$(node).addClass('tag-neutral');
+            },
+
+            addSpinnerRoo: function () {
+            	$('.spinner-roo-item').show();
+            },
+
+            activateFilterTag: function (e) {
+            	var cusElem = this;
+            	var system = e.target.dataset.system;
+
+            	$('.filter-tags').each(function () {
+            		cusElem.clearSystemTagClass($(this).get(0));
+            	});
+
+            	switch (system) {
+
+            		case 'pc':
+            			if (!$(e.target).hasClass('filter-active')) {
+            				cusElem.clearActiveTag(e.target);
+            				cusElem.clearNeutralTagClass(e.target);
+            				$(e.target).addClass('pc-filter-tag');
+            				$(e.target).addClass('filter-active');
+            				cusElem.systemFilter = 'pc';
+            				if (cusElem.dataops.query === null || cusElem.dataops.query === undefined || cusElem.dataops.query === '') {
+            					cusElem.getRequests(null, cusElem.querytype.bysystem, false);
+            				}
+            				else {
+            					cusElem.getRequests(cusElem.dataops.query, cusElem.querytype.bysystem, false);
+            				}
+            			}
+            			else {
+            				if (cusElem.dataops.query == null || cusElem.dataops.query === undefined || cusElem.dataops.query === '') {
+            					cusElem.getRequests(null, cusElem.querytype.none, false);
+            				}
+            				else {
+            					cusElem.getRequests(cusElem.dataops.query, cusElem.querytype.bygame, false);
+            				}
+            				$(e.target).removeClass('filter-active');
+            				cusElem.systemFilter = 'none';
+            			}
+            			break;
+
+            		case 'ps3':
+            			if (!$(e.target).hasClass('filter-active')) {
+            				cusElem.clearActiveTag(e.target);
+            				cusElem.clearNeutralTagClass(e.target);
+            				$(e.target).addClass('psn-filter-tag');
+            				$(e.target).addClass('filter-active');
+            				cusElem.systemFilter = 'ps3';
+            				if (cusElem.dataops.query === null || cusElem.dataops.query === undefined || cusElem.dataops.query === '') {
+            					cusElem.getRequests(null, cusElem.querytype.bysystem, false);
+            				}
+            				else {
+            					cusElem.getRequests(cusElem.dataops.query, cusElem.querytype.bysystem, false);
+            				}
+            			}
+            			else {
+            				if (cusElem.dataops.query == null || cusElem.dataops.query === undefined || cusElem.dataops.query === '') {
+            					cusElem.getRequests(null, cusElem.querytype.none, false);
+            				}
+            				else {
+            					cusElem.getRequests(cusElem.dataops.query, cusElem.querytype.bygame, false);
+            				}
+            				$(e.target).removeClass('filter-active');
+            				cusElem.systemFilter = 'none';
+            			}
+            			break;
+
+            		case 'ps4':
+            			if (!$(e.target).hasClass('filter-active')) {
+            				cusElem.clearActiveTag(e.target);
+            				cusElem.clearNeutralTagClass(e.target);
+            				$(e.target).addClass('psn-filter-tag');
+            				$(e.target).addClass('filter-active');
+            				cusElem.systemFilter = 'ps4';
+            				if (cusElem.dataops.query === null || cusElem.dataops.query === undefined || cusElem.dataops.query === '') {
+            					cusElem.getRequests(null, cusElem.querytype.bysystem, false);
+            				}
+            				else {
+            					cusElem.getRequests(cusElem.dataops.query, cusElem.querytype.bysystem, false);
+            				}
+            			}
+            			else {
+            				if (cusElem.dataops.query == null || cusElem.dataops.query === undefined || cusElem.dataops.query === '') {
+            					cusElem.getRequests(null, cusElem.querytype.none, false);
+            				}
+            				else {
+            					cusElem.getRequests(cusElem.dataops.query, cusElem.querytype.bygame, false);
+            				}
+            				$(e.target).removeClass('filter-active');
+            				cusElem.systemFilter = 'none';
+            			}
+            			break;
+
+            		case 'xbox360':
+            			if (!$(e.target).hasClass('filter-active')) {
+            				cusElem.clearActiveTag(e.target);
+            				cusElem.clearNeutralTagClass(e.target);
+            				$(e.target).addClass('xbox-filter-tag');
+            				$(e.target).addClass('filter-active');
+            				cusElem.systemFilter = 'xbox360';
+            				if (cusElem.dataops.query === null || cusElem.dataops.query === undefined || cusElem.dataops.query === '') {
+            					cusElem.getRequests(null, cusElem.querytype.bysystem, false);
+            				}
+            				else {
+            					cusElem.getRequests(cusElem.dataops.query, cusElem.querytype.bysystem, false);
+            				}
+            			}
+            			else {
+            				if (cusElem.dataops.query == null || cusElem.dataops.query === undefined || cusElem.dataops.query === '') {
+            					cusElem.getRequests(null, cusElem.querytype.none, false);
+            				}
+            				else {
+            					cusElem.getRequests(cusElem.dataops.query, cusElem.querytype.bygame, false);
+            				}
+            				$(e.target).removeClass('filter-active');
+            				cusElem.systemFilter = 'none';
+            			}
+            			break;
+
+            		case 'xboxOne':
+            			if (!$(e.target).hasClass('filter-active')) {
+            				cusElem.clearActiveTag(e.target);
+            				cusElem.clearNeutralTagClass(e.target);
+            				$(e.target).addClass('xbox-filter-tag');
+            				$(e.target).addClass('filter-active');
+            				cusElem.systemFilter = 'xboxOne';
+            				if (cusElem.dataops.query === null || cusElem.dataops.query === undefined || cusElem.dataops.query === '') {
+            					cusElem.getRequests(null, cusElem.querytype.bysystem, false);
+            				}
+            				else {
+            					cusElem.getRequests(cusElem.dataops.query, cusElem.querytype.bysystem, false);
+            				}
+            			}
+            			else {
+            				if (cusElem.dataops.query == null || cusElem.dataops.query === undefined || cusElem.dataops.query === '') {
+            					cusElem.getRequests(null, cusElem.querytype.none, false);
+            				}
+            				else {
+            					cusElem.getRequests(cusElem.dataops.query, cusElem.querytype.bygame, false);
+            				}
+            				$(e.target).removeClass('filter-active');
+            				cusElem.systemFilter = 'none';
+            			}
+            			break;
+
+            		case 'wii':
+            			if (!$(e.target).hasClass('filter-active')) {
+            				cusElem.clearActiveTag(e.target);
+            				cusElem.clearNeutralTagClass(e.target);
+            				$(e.target).addClass('wii-filter-tag');
+            				$(e.target).addClass('filter-active');
+            				cusElem.systemFilter = 'wii';
+            				if (cusElem.dataops.query === null || cusElem.dataops.query === undefined || cusElem.dataops.query === '') {
+            					cusElem.getRequests(null, cusElem.querytype.bysystem, false);
+            				}
+            				else {
+            					cusElem.getRequests(cusElem.dataops.query, cusElem.querytype.bysystem, false);
+            				}
+            			}
+            			else {
+            				if (cusElem.dataops.query == null || cusElem.dataops.query === undefined || cusElem.dataops.query === '') {
+            					cusElem.getRequests(null, cusElem.querytype.none, false);
+            				}
+            				else {
+            					cusElem.getRequests(cusElem.dataops.query, cusElem.querytype.bygame, false);
+            				}
+            				$(e.target).removeClass('filter-active');
+            				cusElem.systemFilter = 'none';
+            			}
+            			break;
+
+            		case 'wiiu':
+            			if (!$(e.target).hasClass('filter-active')) {
+            				cusElem.clearActiveTag(e.target);
+            				cusElem.clearNeutralTagClass(e.target);
+            				$(e.target).addClass('wii-filter-tag');
+            				$(e.target).addClass('filter-active');
+            				cusElem.systemFilter = 'wiiu';
+            				if (cusElem.dataops.query === null || cusElem.dataops.query === undefined || cusElem.dataops.query === '') {
+            					cusElem.getRequests(null, cusElem.querytype.bysystem, false);
+            				}
+            				else {
+            					cusElem.getRequests(cusElem.dataops.query, cusElem.querytype.bysystem, false);
+            				}
+            			}
+            			else {
+            				if (cusElem.dataops.query == null || cusElem.dataops.query === undefined || cusElem.dataops.query === '') {
+            					cusElem.getRequests(null, cusElem.querytype.none, false);
+            				}
+            				else {
+            					cusElem.getRequests(cusElem.dataops.query, cusElem.querytype.bygame, false);
+            				}
+            				$(e.target).removeClass('filter-active');
+            				cusElem.systemFilter = 'none';
+            			}
+            			break;
+            	}
+            },
+
+            authDataCallback: function (authData) {
+                var cusElem = this;
+
+                if (authData) {
+                    //console.log("User " + authData.uid + " is logged in with " + authData.provider);
+                } else {
+                    //Check to make sure the user is logged out
+                    cusElem.loggedIn = false;
+                    cusElem.notifyPath('loggedIn', cusElem.loggedIn);
+                }
+            },
+
+            clearActiveTag: function (exceptionNode) {
+            	$('.filter-tags').each(function () {
+            		if ($(this).data('system') !== $(exceptionNode).data('system')) {
+            			$(this).removeClass('filter-active');
+            		}
+            	});
+            },
+
+            clearFirebaseCallbacks: function () {
+            	_.each(this.firebaseRefs, function (ref) {
+					//Detach all currently attached firebase callbacks. Only one should be attached at one time
+            		ref.value.off(ref.type, ref.functionRef);
+            	});
+            },
+
+            clearNeutralTagClass: function (node) {
+            	$(node).removeClass('tag-neutral');
+            },
+
+            clearSystemTagClass: function (node) {
+            	var system = node.dataset.system;
+
+            	switch (system) {
+
+            		case 'pc':
+            			$(node).removeClass('pc-filter-tag');
+            			this.addNeutralTag(node);
+            			break;
+
+            		case 'ps3':
+            			$(node).removeClass('psn-filter-tag');
+            			this.addNeutralTag(node);
+            			break;
+
+            		case 'ps4':
+            			$(node).removeClass('psn-filter-tag');
+            			this.addNeutralTag(node);
+            			break;
+
+            		case 'xbox360':
+            			$(node).removeClass('xbox-filter-tag');
+            			this.addNeutralTag(node);
+            			break;
+
+            		case 'xboxOne':
+            			$(node).removeClass('xbox-filter-tag');
+            			this.addNeutralTag(node);
+            			break;
+
+            		case 'wii':
+            			$(node).removeClass('wii-filter-tag');
+            			this.addNeutralTag(node);
+            			break;
+
+            		case 'wiiu':
+            			$(node).removeClass('wii-filter-tag');
+            			this.addNeutralTag(node);
+            			break;
+            	}
+            },
+
+            closeOverlay: function () {
+            	$(this.$.details_overlay).fadeOut();
+            	this.$.overlay_details.innerHTML = '';
+            },
+
+            changeSort: function (e) {
+            	var anchor_elem = e.target;
+            	this.dataops.sort = anchor_elem.dataset.sort;
+
+            	//this.getRequests(this.dataops.sort, true);
+            	this.getRequests(null, this.querytype.none, false);
+            },
+
+            containerScroll: function (e) {
+            	var cusElem = this;
+            	var container = e.target;
+            	if ($(container).scrollTop() + $(container).innerHeight() >= e.target.scrollHeight) {
+            		// reached bottom of page - run our call for pagination
+
+            		if (cusElem.dataops.query == null || cusElem.dataops.query === undefined || cusElem.dataops.query === '') {
+            			if (cusElem.systemFilter !== null && cusElem.systemFilter !== undefined && cusElem.systemFilter !== '' && cusElem.systemFilter !== 'none') {
+            				cusElem.getRequests(null, cusElem.querytype.bysystem, true);
+            			}
+            			else {
+            				cusElem.getRequests(null, this.querytype.none, true);
+            				/*cusElem.getRequests(null, cusElem.dataops.querytype, true);*/
+            			}
+            		}
+            		else {
+            			if (cusElem.systemFilter !== null && cusElem.systemFilter !== undefined && cusElem.systemFilter !== '' && cusElem.systemFilter !== 'none') {
+            				cusElem.getRequests(cusElem.dataops.query, cusElem.querytype.bysystem, true);
+            			}
+            			else {
+            				cusElem.getRequests(cusElem.dataops.query, cusElem.querytype.bygame, true);
+            				/*cusElem.getRequests(cusElem.dataops.query, cusElem.dataops.querytype, true);*/
+            			}
+            		}
+            	}
+            },
+
+            doSearch: function (e) {
+            	var query = $('#search_input').val();
+
+            	var url = window.lfg.config.getGiantBombUrl(window.lfg.config.apiEndPoints.search);
+            	$('#search_dropdown').find('.search-loading-item').show();
+
+            	$.ajax({
+            	    url: url,
+            	    type: 'GET',
+            	    cache: false,
+            	    data: { search: query, limit: 4 },
+            	    dataType: 'json',
+            	    success: function (data) {
+            	        var html = '<li class="divider search-result-item"></li>';
+            	        $('#search_dropdown').find('.search-result-item').remove();
+
+            	        _.each(data.results, function (result) {
+            	            html += '<li class="search-result-item" data-result-id="' + result.id + '" style="padding: 7px 0px 7px 8.2%;">';
+
+            	            if (
+                                result.image !== null && result.image !== undefined &&
+                                result.image.screen_url !== null &&
+                                result.image.screen_url !== undefined &&
+                                result.image.screen_url !== '') {
+            	                html += '<span><span><img src="' + result.image.screen_url + '" width="100" style="margin-right:30px;" /></span>';
+            	            }
+            	            else {
+            	                html += '<span style="background-color:#FB8C00; width:100px; height:56px;"></span>';
+            	            }
+
+            	            html += '<span style="margin-top:-7px !important;"><a class="search-result-link orange-text text-darken-3">' + result.name + '</span></a></span></li>';
+            	        });
+            	        $('#search_dropdown').find('.search-loading-item').hide();
+            	        $('#search_dropdown').append(html);
+            	    },
+            	    error: function (err) {
+            	    }
+            	});
+            },
+
+            doSearchWithEnter: function (e) {
+                var query = $('#search_input').val();
+
+                if ((e.keyCode || e.which) === 13) {
+                    /* so the idea here is to take a the text and do a "LIKE" type of query to firebase using "startAt" and "endAt".
+					 * I'm not sure atm, whether if/when the user selects the suggested option within the search window, I want to -
+					 * still do a "LIKE" search or do an "EQUAL TO" search. The user might select the title "Street Fighter" but actually
+					 * not want street fighter from the 80s, but street fighter  4. Cuz we are using Giant Bomb as reference, whats returned in the
+					 * autocomplete ties to a gameid.
+					 *
+					 * For now, I'm going to always do a "LIKE" Search. We'll see how it plays out :| */
+                    query = query !== null && query !== undefined && query !== '' ? window.lfg.utils.clearWhiteSpace(query) : '';
+                    this.dataops.query = query;		//save the query incase we need it for scrolling
+                    //this.getRequests(this.dataops.sort, true, query.toLowerCase());
+
+                    //Account for the system filters
+                    if (this.systemFilter !== null && this.systemFilter !== undefined && this.systemFilter !== '' && this.systemFilter !== 'none') {
+                        this.getRequests(query.toLowerCase(), this.querytype.bysystem, false);
+                    }
+                    else {
+                        if (query !== null && query !== undefined && query !== '') {
+                            this.getRequests(query.toLowerCase(), this.querytype.bygame, false);
+                        }
+                        else {
+                            this.getRequests(null, this.querytype.none, false);
+                        }
+                    }
+                    //this.getRequests(query.toLowerCase(), this.querytype.bygame, false);
+                    $('#search_dropdown').fadeOut(100);
+                }
+            },
+
+            doResultSearchWithClick: function (e) {
+            	var polymer = this;		//bound to polymer elem
+            	var anchor = e.target;
+
+            	var li = $(anchor);
+            	if (anchor.tagName.toLowerCase() !== 'li') {
+            	    li = $(anchor).parents('li');
+            	}
+
+            	var giantbombid = $(li).data('resultId');
+            	var game = $(li).find('.search-result-link').html().toLowerCase();
+            	game = window.lfg.utils.clearWhiteSpace(game);
+
+            	//Account for the system filters
+            	if (this.systemFilter !== null && this.systemFilter !== undefined && this.systemFilter !== '' && this.systemFilter !== 'none') {
+            		polymer.getRequests(game, polymer.querytype.bysystem, false);
+            	}
+            	else {
+            		polymer.getRequests(game, polymer.querytype.bygame, false);
+            	}
+            	e.preventDefault();
+            },
+
+            formatDate: function (utc) {
+            	return window.lfg.utils.convertUtcToLocal(utc);
+            },
+
+            getRequests: function (query, querytype, paginate) {
+            	var customElem = this
+            	var requestsRef = customElem.firebaseRef.child('requests');
+            	var userid = window.lfg.utils.getUser();
+
+            	if (userid !== null && userid !== undefined && userid !== '') {
+            		if (paginate) {
+            			var lastrequest = customElem.requests[customElem.requests.length - 1];
+
+            			//determine query type
+            			switch (querytype) {
+            				case customElem.querytype.bygame:
+            					//Detach all firebase callbacks
+            					customElem.clearFirebaseCallbacks();
+
+            					query = window.lfg.utils.clearWhiteSpace(query).toLowerCase();
+
+            					//save the query & type (for pagination)
+            					this.dataops.query = query;
+            					this.dataops.querytype = querytype;
+
+            					//Using a custom index I created to reverse order entries
+            					var refFunc = requestsRef
+									.orderByChild('usergameindex')
+									.startAt(lastrequest.usergameindex)
+									.endAt(userid + query + '~')
+									.limitToFirst(customElem.dataops.limit + 1)
+									.on('child_added', function (snapshot) {
+										var request = snapshot.val() || {};
+										request.key = snapshot.key();
+										request.systemColor = customElem.getSystemColor(request.system);
+										request.description = customElem.truncateText(request.description, 65);
+										customElem.getUserProfile(request);
+										customElem.getCommentCount(request.key);
+										if (request.gameindex !== lastrequest.gameindex) { customElem.push('requests', request); };
+										customElem.removeSpinnerRoo();
+									});
+
+            					//Store the firebaseRef so we can access it later to detach any callbacks
+            					customElem.firebaseRefs.push({
+            						name: 'userrequests' + '_' + customElem.querytype.bygame + '_paginate',
+            						type: 'child_added',
+            						value: requestsRef,
+            						functionRef: refFunc
+            					});
+            					break;
+
+            				//case customElem.querytype.byid:
+            				//	//Detach all firebase callbacks
+            				//	customElem.clearFirebaseCallbacks();
+
+            				//	//save the query & type (for pagination)
+            				//	customElem.dataops.query = query;
+            				//	customElem.dataops.querytype = querytype;
+
+            				//	var refFunc = requestsRef
+							//		.orderByChild('giantbombindex')
+							//		.startAt(lastrequest.giantbombindex.toString())
+							//		.endAt(lastrequest.giantbombindex + '~')
+							//		.limitToFirst(customElem.dataops.limit + 1)
+							//		.on('child_added', function (snapshot) {
+							//			var request = snapshot.val() || {};
+							//			request.key = snapshot.key();
+							//			request.systemColor = customElem.getSystemColor(request.system);
+							//			request.description = customElem.truncateText(request.description, 65);
+							//			customElem.getUserProfile(request);
+							//			customElem.getCommentCount(request.key);
+							//			if (request.giantbombindex !== lastrequest.giantbombindex) { customElem.push('requests', request); };
+							//			customElem.removeSpinnerRoo();
+							//		});
+            				//	//Store the firebaseRef so we can access it later to detach any callbacks
+            				//	customElem.firebaseRefs.push({
+            				//		name: 'requests' + '_' + customElem.querytype.id + '_paginate',
+            				//		type: 'child_added',
+            				//		value: requestsRef,
+            				//		functionRef: refFunc
+            				//	});
+            				//	break;
+
+            				case customElem.querytype.bysystem:
+            					//Detach all firebase callbacks
+            					customElem.clearFirebaseCallbacks();
+
+            					var refFunc = requestsRef
+									.orderByChild('usersystemgameindex')
+									.startAt(lastrequest.usersystemgameindex.toString())
+									.endAt(lastrequest.usersystemgameindex.toString() + '~')
+									.limitToFirst(customElem.dataops.limit + 1)
+									.on('child_added', function (snapshot) {
+										var request = snapshot.val() || {};
+										request.key = snapshot.key();
+										request.systemColor = customElem.getSystemColor(request.system);
+										request.description = customElem.truncateText(request.description, 65);
+										customElem.getUserProfile(request);
+										customElem.getCommentCount(request.key);
+										if (request.systemgameindex !== lastrequest.systemgameindex) { customElem.push('requests', request); };
+										customElem.removeSpinnerRoo();
+									});
+            					//Store the firebaseRef so we can access it later to detach any callbacks
+            					customElem.firebaseRefs.push({
+            						name: 'userrequests' + '_' + customElem.querytype.bysystem + '_paginate',
+            						type: 'child_added',
+            						value: requestsRef,
+            						functionRef: refFunc
+            					});
+            					break;
+
+            				default:
+            					//Detach all firebase callbacks
+            					customElem.clearFirebaseCallbacks();
+
+            					//no query, so just go by priority
+            					//save the query & type (for pagination)
+            					customElem.dataops.querytype = querytype;
+
+            					var refFunc = requestsRef
+									.orderByChild('uid')
+									.startAt(lastrequest.uid)
+									.limitToFirst(customElem.dataops.limit + 1)
+									.on("child_added", function (snapshot) {
+										var request = snapshot.val() || {};
+										request.key = snapshot.key();
+										request.priority = snapshot.getPriority();
+										request.systemColor = customElem.getSystemColor(request.system);
+										request.description = customElem.truncateText(request.description, 65);
+										customElem.getUserProfile(request);
+										customElem.getCommentCount(request.key);
+										if (request.priority !== lastrequest.priority) { customElem.push('requests', request); };
+										customElem.removeSpinnerRoo();
+									}, function (errorObject) {
+										console.log("The read failed: " + errorObject.code);
+									});
+
+            					//Store the firebaseRef so we can access it later to detach any callbacks
+            					customElem.firebaseRefs.push({
+            						name: 'userrequests' + '_' + customElem.querytype.none + '_paginate',
+            						type: 'child_added',
+            						value: requestsRef,
+            						functionRef: refFunc
+            					});
+            					break;
+            			}
+            		}
+            		else {
+            			customElem.requests = [];
+            			//customElem.addSpinnerRoo();
+
+            			switch (querytype) {
+            				case customElem.querytype.bygame:
+            					//Detach all firebase callbacks
+            					customElem.clearFirebaseCallbacks();
+
+            					query = window.lfg.utils.clearWhiteSpace(query).toLowerCase();	//querying by game title, so prepare query
+
+            					//save the query & type (for pagination)
+            					customElem.dataops.query = query;
+            					customElem.dataops.querytype = querytype;
+
+            					var refFunc = requestsRef
+									.orderByChild('usergameindex')
+									.startAt(userid + query)
+									.endAt(userid + query + '~')
+									.limitToFirst(customElem.dataops.limit)
+									.on('child_added', function (snapshot) {
+										var request = snapshot.val() || {};
+										request.key = snapshot.key();
+										request.systemColor = customElem.getSystemColor(request.system);
+										request.description = customElem.truncateText(request.description, 65);
+										customElem.getUserProfile(request);
+										customElem.getCommentCount(request.key);
+										customElem.push('requests', request);
+										customElem.removeSpinnerRoo();
+									});
+
+            					//Store the firebaseRef so we can access it later to detach any callbacks
+            					customElem.firebaseRefs.push({
+            						name: 'userrequests' + '_' + customElem.querytype.bygame + '_nopaginate',
+            						type: 'child_added',
+            						value: requestsRef,
+            						functionRef: refFunc
+            					});
+            					break;
+
+            				//case customElem.querytype.byid:
+            				//	//Detach all firebase callbacks
+            				//	customElem.clearFirebaseCallbacks();
+
+            				//	//save the query & type (for pagination)
+            				//	customElem.dataops.query = query;
+            				//	customElem.dataops.querytype = querytype;
+
+            				//	var refFunc = requestsRef
+							//		.orderByChild('giantbombindex')
+							//		.startAt(query.toString())
+							//		.endAt(query + '~')
+							//		.limitToFirst(customElem.dataops.limit)
+							//		.on('child_added', function (snapshot) {
+							//			var request = snapshot.val() || {};
+							//			request.key = snapshot.key();
+							//			request.systemColor = customElem.getSystemColor(request.system);
+							//			request.description = customElem.truncateText(request.description, 65);
+							//			customElem.getUserProfile(request);
+							//			customElem.getCommentCount(request.key);
+							//			customElem.push('requests', request);
+							//			customElem.removeSpinnerRoo();
+							//		});
+
+            				//	//Store the firebaseRef so we can access it later to detach any callbacks
+            				//	customElem.firebaseRefs.push({
+            				//		name: 'requests' + '_' + customElem.querytype.byid + '_nopaginate',
+            				//		type: 'child_added',
+            				//		value: requestsRef,
+            				//		functionRef: refFunc
+            				//	});
+            				//	break;
+
+
+            				case customElem.querytype.bysystem:
+            					//Detach all firebase callbacks
+            					customElem.clearFirebaseCallbacks();
+
+            					var refFunc = requestsRef
+									.orderByChild('usersystemgameindex')
+									.startAt(query !== null && query !== undefined && query !== '' ? userid + customElem.systemFilter + query : userid + customElem.systemFilter)
+									.endAt(query !== null && query !== undefined && query !== '' ? userid + customElem.systemFilter + query + '~' : userid + customElem.systemFilter + '~')
+									.limitToFirst(customElem.dataops.limit)
+									.on('child_added', function (snapshot) {
+										var request = snapshot.val() || {};
+										request.key = snapshot.key();
+										request.systemColor = customElem.getSystemColor(request.system);
+										request.description = customElem.truncateText(request.description, 65);
+										customElem.getUserProfile(request);
+										customElem.getCommentCount(request.key);
+										customElem.push('requests', request);
+										customElem.removeSpinnerRoo();
+									});
+
+            					//Store the firebaseRef so we can access it later to detach any callbacks
+            					customElem.firebaseRefs.push({
+            						name: 'userrequests' + '_' + customElem.querytype.bysystem + '_nopaginate',
+            						type: 'child_added',
+            						value: requestsRef,
+            						functionRef: refFunc
+            					});
+            					break;
+
+            				default:
+            					//Detach all firebase callbacks
+            					customElem.clearFirebaseCallbacks();
+
+            					//save the query & type (for pagination)
+            					customElem.dataops.querytype = querytype;
+
+            					var refFunc = requestsRef
+									.orderByChild('uid')
+									.equalTo(userid)
+									.limitToFirst(customElem.dataops.limit)
+									.on("child_added", function (snapshot) {
+										var request = snapshot.val() || {};
+										request.priority = snapshot.getPriority();
+										request.key = snapshot.key();
+										request.systemColor = customElem.getSystemColor(request.system);
+										request.description = customElem.truncateText(request.description, 65);
+										customElem.getUserProfile(request);
+										customElem.getCommentCount(request.key);
+										customElem.push('requests', request);
+										customElem.removeSpinnerRoo();
+									}, function (errorObject) {
+										console.log("The read failed: " + errorObject.code);
+									});
+
+            					//Store the firebaseRef so we can access it later to detach any callbacks
+            					customElem.firebaseRefs.push({
+            						name: 'userrequests' + '_' + customElem.querytype.none + '_nopaginate',
+            						type: 'child_added',
+            						value: requestsRef,
+            						functionRef: refFunc
+            					});
+            					break;
+            			}
+            		}
+            	}
+            },
+
+            getCommentCount: function (requestid) {
+            	var customElem = this
+            	var commentsRef = customElem.firebaseRef.child('comments');
+
+            	commentsRef
+					.orderByChild('requestkey')
+					.equalTo(requestid)
+					.once('value', function (snapshot) {
+						var comment = snapshot.val();
+
+						if (comment) {
+							var request = _.findWhere(customElem.requests, { key: requestid });
+
+							if (request) {
+								request.commentCount = request.commentCount ? request.commentCount + 1 : 1;
+							}
+						}
+					});
+            },
+
+            getImageId: function (key) {
+            	return 'img' + key;
+            },
+
+            getTimeLapse: function (date) {
+            	var convDate = new Date(date);
+            	return window.lfg.utils.timeSince(window.lfg.utils.convertUtcToLocalDate(convDate));
+            },
+
+            getUserProfile: function (request) {
+            	var cusElem = this;
+            	var userRef = new Firebase(window.lfg.config.getFirebaseUrl() + 'users/' + request.uid);
+            	userRef.once("value", function (snapshot) {
+            		var user = snapshot.val() || {};
+            		if (user) {
+            			var profileImage = document.getElementById("img" + request.key);
+
+            			if (profileImage !== null && profileImage !== undefined) {
+            				document.getElementById("img" + request.key).src = user.profilepic;
+            			}
+            		}
+            	});
+            },
+
+            getGamerCount: function (count) {
+            	if (count <= 1) {
+            		return '1 Gamer';
+            	}
+            	else {
+            		return count + ' Gamers';
+            	}
+            },
+
+            getSystemType: function (system) {
+
+            	switch (system) {
+
+            		case 'pc':
+            			return 'PC';
+            			break;
+
+            		case 'ps3':
+            			return 'PS3';
+            			break;
+
+            		case 'ps4':
+            			return 'PS4';
+            			break;
+
+            		case 'xbox360':
+            			return 'X360';
+            			break;
+
+            		case 'xboxOne':
+            			return 'X1';
+            			break;
+
+            		case 'wii':
+            			return 'Wii';
+            			break;
+
+            		case 'wiiu':
+            			return 'Wii U';
+            			break;
+            	}
+            },
+
+            getSystemColor: function (system) {
+
+            	switch (system) {
+
+            		case 'pc':
+            			return 'background-color: #f44336;';
+            			break;
+
+            		case 'ps3':
+            			return 'background-color: #01579b;';
+            			break;
+
+            		case 'ps4':
+            			return 'background-color: #01579b;';
+            			break;
+
+            		case 'xbox360':
+            			return 'background-color: #5DCB17;';
+            			break;
+
+            		case 'xboxOne':
+            			return 'background-color: #5DCB17;';
+            			break;
+
+            		case 'wii':
+            			return 'background-color: #03a9f4;';
+            			break;
+
+            		case 'wiiu':
+            			return 'background-color: #03a9f4;';
+            			break;
+            	}
+            },
+
+            hideMessage: function (e) {
+            	$('#signin_message').slideUp();
+            },
+
+            isImageBlank: function (url) {
+            	return (url == null || url == undefined || url == '');
+            },
+
+            isLoggedIn: function () {
+            	return window.lfg.utils.isLoggedIn();
+            },
+
+            isLoggedOut: function () {
+            	return window.lfg.utils.isLoggedIn() === false;
+            },
+
+            loadRequest: function (e) {
+            	var listelem = e.target;
+            	if (listelem.className.indexOf('request-card-item') === -1 && listelem.className.indexOf('request-list-item') === -1) {
+            		var elem = $(listelem).parents('.request-card-item')[0];
+            		listelem = elem === null || elem === undefined ? $(listelem).parents('.request-list-item')[0] : elem;
+            	}
+
+            	var requestkey = listelem.dataset.requestKey;
+            	if (requestkey) {
+            		//document.querySelector('app-router').go('/request/' + requestkey);
+            		//var detailsHtml = '<request-details-overlay requestkey="' + requestkey + '"></request-details-overlay>';
+            		var dynamicEl = document.createElement("request-details-overlay");
+
+            		//dynamicEl.requestkey = this.requestkey;
+            		dynamicEl.setAttribute('requestkey', requestkey);
+            		this.$.overlay_details.innerHTML = '';
+            		this.$.overlay_details.appendChild(dynamicEl);
+            		$(this.$.details_overlay).fadeIn();
+            	}
+            },
+
+            removeSpinnerRoo: function () {
+            	$('.spinner-roo-item').hide();
+            },
+
+            showFilter: function () {
+            	$(this.$.filter_modal).openModal();
+            },
+
+            showSearch: function () {
+                $(this.$.search_dropdown).fadeIn(100, function () {
+                    $('#search_input').focus();
+                });
+            },
+
+            truncateText: function (text, limit) {
+				//TODO: Factor in the window/screen size
+            	return text.length <= limit ? text : text.substring(0, limit) + '...';
+            },
+
+
+			/* Init */
+            initializeData: function () {
+            	this.firebaseUrl = window.lfg.config.getFirebaseUrl() + '/requests';
+
+            	this.systems = [
+					{ name: 'PC', value: 'pc' },
+					{ name: 'PS3', value: 'ps3' },
+					{ name: 'PS4', value: 'ps4' },
+					{ name: 'Xbox 360', value: 'xbox360' },
+					{ name: 'Xbox One', value: 'xboxOne' },
+					{ name: 'Wii', value: 'wii' },
+					{ name: 'Wii U', value: 'wiiu' }
+            	];
+
+            	this.sortoptions = [
+					{ name: 'Date Created', column: 'created' },
+					{ name: 'Game', column: 'game' },
+            	];
+
+            	this.querytype = {
+            		bygame: 'bygame',
+            		byid: 'byid',
+					bysystem: 'bysystem',
+					none: 'none'
+            	};
+
+            	this.systemFilter = 'none';
+
+            	this.dataops = {
+					orderby: '',
+            		sort: 'created',
+            		filter: '',
+            		query: '',
+            		type: this.querytype.none,
+					limit: 10,
+            	}
+
+            	this.firebaseRef = new Firebase(window.lfg.config.getFirebaseUrl());
+            	this.firebaseRefs = [];
+
+            	this.requests = [];
+            	this.loggedIn = this.isLoggedIn();
+
+                //hide elements
+            	$(this.$.filter_modal).hide();
+            	$(this.$.search_dropdown).hide();
+            },
+
+            registerEvents: function () {
+            	$('#search_input').on('focusout', function () { $('#search_dropdown').fadeOut(100); })
+            	$('#search_input').on('input', _.debounce(this.doSearch.bind(this), 250));
+            	$('#search_input').on('keypress', this.doSearchWithEnter.bind(this));
+            	$('#mainContainer').scroll(this.containerScroll.bind(this));
+            	$(document).on('click', '.search-result-item', this.doResultSearchWithClick.bind(this));
+            	$('.filter-tags').click(this.activateFilterTag.bind(this));
+
+            	var ref = new Firebase(window.lfg.config.getFirebaseUrl());
+            	ref.onAuth(this.authDataCallback.bind(this));
+            },
+
+            registerPlugins: function() {
+            	$(this.$.sort_menu).dropdown({
+            		inDuration: 300,
+            		outDuration: 225,
+            		constrain_width: false, // Does not change width of dropdown to that of the activator
+            		hover: false, // Activate on hover
+            		gutter: 0, // Spacing from edge
+            		belowOrigin: false // Displays dropdown below the button
+            	});
+            },
+
+			/* Events */
+            newRequest: function (e) {
+            	e.preventDefault();
+                document.querySelector('app-router').go('/new');
+            },
+
+            ready: function () {
+                window.lfg.utils.automaticSignin();
+            	this.initializeData();
+            },
+
+            attached: function () {
+            	//this.getRequests(this.dataops.sort);
+            	this.getRequests(null, this.querytype.none, false);
+            	this.registerPlugins();
+            	this.registerEvents();
+            }
+        });
+    })(window);
+</script>

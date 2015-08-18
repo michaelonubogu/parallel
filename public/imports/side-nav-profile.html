@@ -1,0 +1,105 @@
+﻿<link rel="import" href="../components/bower_components/polymer/polymer.html">
+<link rel="import" href="../imports/layout.html">
+
+<!-- Fonts -->
+<link rel='import' href='../components/bower_components/font-roboto/roboto.html'>
+
+<link rel="import" href="../components/bower_components/iron-icons/iron-icons.html">
+<link rel="import" href="../components/bower_components/iron-icons/av-icons.html">
+<link rel="import" href="../components/bower_components/iron-icons/communication-icons.html">
+<link rel="import" href="../components/bower_components/iron-icons/iron-icons.html">
+<link rel="import" href="../components/bower_components/iron-icons/editor-icons.html">
+<link rel="import" href="../components/bower_components/iron-icons/hardware-icons.html">
+<link rel="import" href="../components/bower_components/iron-icons/image-icons.html">
+<link rel="import" href="../components/bower_components/iron-icons/maps-icons.html">
+<link rel="import" href="../components/bower_components/iron-icons/notification-icons.html">
+<link rel="import" href="../components/bower_components/iron-icons/social-icons.html">
+
+<link rel="import" href="../components/bower_components/paper-item/paper-item.html">
+<link rel="import" href="../components/bower_components/paper-ripple/paper-ripple.html">
+<link rel="import" href="../components/bower_components/paper-toolbar/paper-toolbar.html">
+
+<!-- Custom Imports -->
+<link rel="import" href="../imports/materialize.html" />
+
+<dom-module id="side-nav-profile">
+	<!-- CSS -->
+	<link rel="import" type="css" href='../assets/app/css/lfg.css'>
+
+	<style>
+		:host {
+		}
+
+		iron-icon {
+			margin-right: 1.5em;
+			color: #ffffff;
+		}
+
+		paper-item {
+			color: #ffffff;
+			cursor: pointer;
+		}
+
+		.lfg-drawer-toolbar{
+			--paper-toolbar:{
+				background: url('../assets/app/img/profile_background6.png');
+				background-size: 256px 192px;
+			};
+        }
+	</style>
+
+	<template>
+		<paper-toolbar class="tall lfg-drawer-toolbar">
+		</paper-toolbar>
+	</template>
+</dom-module>
+
+<script>
+    (function(window) {
+        var constructor = Polymer({
+
+        	is: 'side-nav-profile',
+
+            /**
+             * ...
+             *
+             * @attribute properties
+             * @type object
+             * @default
+             */
+            properties: {
+                firebase: {
+                    requests: null,
+                    games: null,
+                    users: null
+                },
+                name: 'Side Nav Profile Icon'
+            },
+
+        	/* Functions */
+
+
+            /* Init */
+            initializeData: function () {
+            	this.firebaseUrl = window.lfg.config.getFirebaseUrl();
+            	this.firebaseRef = new Firebase(window.lfg.config.getFirebaseUrl());
+            },
+
+            registerEvents: function () {
+            },
+
+            registerPlugins: function() {
+            },
+
+			/* Events */
+            ready: function () {
+            	this.initializeData();
+            },
+
+            attached: function () {
+            	this.registerPlugins();
+            	this.registerEvents();
+            }
+        });
+    })(window);
+</script>

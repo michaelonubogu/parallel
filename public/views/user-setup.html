@@ -1,0 +1,641 @@
+﻿<link rel="import" href="../components/bower_components/polymer/polymer.html">
+<link rel="import" href="../imports/layout.html">
+
+<!-- Fonts -->
+<link rel='import' href='../components/bower_components/font-roboto/roboto.html'>
+
+<link rel="import" href="../components/bower_components/iron-icon/iron-icon.html">
+<link rel="import" href="../components/bower_components/iron-iconset-svg/iron-iconset-svg.html">
+<link rel="import" href="../components/bower_components/iron-icons/iron-icons.html">
+<link rel="import" href="../components/bower_components/iron-icons/av-icons.html">
+<link rel="import" href="../components/bower_components/iron-icons/communication-icons.html">
+<link rel="import" href="../components/bower_components/iron-icons/iron-icons.html">
+<link rel="import" href="../components/bower_components/iron-icons/editor-icons.html">
+<link rel="import" href="../components/bower_components/iron-icons/hardware-icons.html">
+<link rel="import" href="../components/bower_components/iron-icons/image-icons.html">
+<link rel="import" href="../components/bower_components/iron-icons/maps-icons.html">
+<link rel="import" href="../components/bower_components/iron-icons/notification-icons.html">
+<link rel="import" href="../components/bower_components/iron-icons/social-icons.html">
+
+<link rel="import" href="../components/bower_components/iron-form/iron-form.html">
+<link rel="import" href="../components/bower_components/paper-drawer-panel/paper-drawer-panel.html">
+<link rel="import" href="../components/bower_components/paper-header-panel/paper-header-panel.html">
+<link rel="import" href="../components/bower_components/paper-scroll-header-panel/paper-scroll-header-panel.html">
+<link rel="import" href="../components/bower_components/paper-item/paper-item.html">
+<link rel="import" href="../components/bower_components/paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../components/bower_components/paper-fab/paper-fab.html">
+<link rel="import" href="../components/bower_components/paper-toolbar/paper-toolbar.html">
+
+<link rel="import" href="../components/bower_components/neon-animation/neon-animated-pages.html">
+<link rel="import" href="../components/bower_components/neon-animation/neon-animatable.html">
+<link rel="import" href="../components/bower_components/neon-animation/neon-animations.html">
+
+<!-- Custom Imports -->
+<link rel="import" href="../imports/font-awesome.html">
+<link rel="import" href="../imports/materialize.html" />
+<link rel="import" href="../imports/material_icons.html" />
+<link rel="import" href="../imports/flaticons.html" />
+
+<!--<link rel="import" href="../imports/crypto-js.html" />-->
+
+
+<dom-module id="user-setup">
+	<!-- CSS -->
+	<link rel="import" type="css" href='../assets/app/css/lfg.css'>
+
+	<style>
+        body {
+        }
+
+		:host {
+			background-color: #FB8C00 !important;
+		}
+
+		.profile-background {
+			background-color: transparent;
+			background:url('../assets/app/img/1662530.jpg');
+			background-size:cover;
+			border-bottom:solid 1px #ffee58;
+		}
+
+		.profile-overlay{  
+			background:rgba(0,0,0,.5);
+            text-align:center;
+            padding:45px 0 0 0;
+            opacity:0;
+            -webkit-transition: opacity .25s ease;
+			-moz-transition: opacity .25s ease;
+			 opacity:1;
+			 height: 100%;
+			 width: 100%;
+		}
+
+		.content-area{
+			/*margin-top:3%;*/
+			padding:0 3% 0 3%;
+            background-color:#fb8c00;
+        }
+
+		#done-button.btn:hover, #done-button.btn-large:hover {
+			background-color: #1b5e20;
+		}
+
+		.sign-in-flaticon-update {
+			font-size: 50px !important;
+			color: #ffffff;
+			margin-top: -15px;
+		}
+
+		.regular-text {
+			text-transform: none;
+		}
+
+		.sign-in-button {
+			width: 300px;
+		}
+		.lfg-input{
+            color: #e65100 !important;
+        }
+
+		.lfg-input.input-field textarea {
+			border-bottom: 1px solid transparent;
+            box-shadow: 0 1px 0 0 transparent;
+		}
+
+		.lfg-input.input-field textarea:focus {
+			border-bottom: 1px solid transparent;
+            box-shadow: 0 1px 0 0 transparent;
+		}
+
+        /* label color */
+        .lfg-input.input-field label {
+            color: #e65100;
+        }
+
+        .lfg-input.input-field input[type=text]{
+            border-bottom: 1px solid transparent;
+            box-shadow: 0 1px 0 0 transparent;
+            font-size: 1.5rem;
+        }
+
+		.lfg-input.input-field input[type=email]{
+            border-bottom: 1px solid transparent;
+            box-shadow: 0 1px 0 0 transparent;
+            font-size: 1.5rem;
+        }
+
+        /* label focus color */
+        .lfg-input.input-field input[type=text]:focus + label {
+            color: #e65100;
+        }
+
+		.lfg-input.input-field input[type=email]:focus + label {
+            color: #e65100;
+        }
+
+        /* label underline focus color */
+        .lfg-input.input-field input[type=text]:focus {
+            border-bottom: 1px solid transparent;
+            box-shadow: 0 1px 0 0 transparent;
+        }
+
+		.lfg-input.input-field input[type=email]:focus {
+            border-bottom: 1px solid transparent;
+            box-shadow: 0 1px 0 0 transparent;
+        }
+        /* valid color */
+        .lfg-input.input-field input[type=text].valid {
+            border-bottom: 1px solid transparent;
+            box-shadow: 0 1px 0 0 transparent;
+        }
+
+		.lfg-input.input-field input[type=email].valid {
+            border-bottom: 1px solid transparent;
+            box-shadow: 0 1px 0 0 transparent;
+        }
+
+        /* invalid color */
+        .lfg-input.input-field input[type=text].invalid {
+            border-bottom: 1px solid transparent !important;
+            box-shadow: 0 1px 0 0 transparent !important;
+        }
+
+		.lfg-input.input-field input[type=email].invalid {
+            border-bottom: 1px solid transparent !important;
+            box-shadow: 0 1px 0 0 transparent !important;
+        }
+
+		.lfg-input .select-wrapper input.select-dropdown .invalid {
+			border-bottom: 1px solid #f44336 !important;
+            box-shadow: 0 1px 0 0 #f44336 !important;
+		}
+
+        /* Icon prefix */
+        .lfg-input.input-field .prefix {
+            color: #e65100;
+        }
+
+        /* icon prefix focus color */
+        .lfg-input.input-field .prefix.active {
+            color: #e65100;
+        }
+
+		.lfg-input .select-wrapper input.select-dropdown{
+			border-bottom: 1px solid #ffffff;
+            box-shadow: 0 1px 0 0 #ffffff;
+		}
+
+		.requests-card-panel{
+            width: 100%;
+            box-shadow: 0 2px 5px 0 #e65100;
+            border-radius:0px;
+            padding:0px;
+			margin-top:20px;
+        }
+
+		.collection-modified li {
+			padding-left: 20px !important;
+		}
+
+		.collection-modified li i {
+			font-size:3rem;
+			color:#e65100;
+			margin-top: 15px;
+		}
+
+		.wizard-header {
+			text-shadow: 0px 2px 2px #8c9eff;
+		}
+
+		.wizard-input.row {
+			margin-bottom: 0 !important;
+			margin-top: 0 !important;
+			line-height: 1;
+		}
+
+		.photo-upload {
+			font-size:1rem;
+		}
+
+		.photo-upload material-icons:hover {
+			color: #ffff00 !important;
+		}
+
+	</style>
+
+	<template>
+		<neon-animated-pages id="pages" class="flex" selected="[[selected]]" entry-animation="[[entryAnimation]]" exit-animation="[[exitAnimation]]">
+			<neon-animatable>
+				<div class="orange darken-1">
+                    <div id="profile_background" class="profile-background" layout vertical center>
+                        <div class="profile-overlay">
+                            <!-- Navigational Butons -->
+                            <div class="layout horizontal center-justified" style="opacity:1.0 !important;">
+                                <!--<div layout no-wrap style="visibility:hidden;">
+                                    <a class="btn-flat white-text wizard-back" on-click="prevSetupSlide">
+                                        <i class="material-icons white-text left">arrow_back</i>
+                                        Back
+                                    </a>
+                                </div>-->
+                                <div flex></div>
+                                <div self-center class="col s6 center">
+                                    <h6 class="white-text thin" style="font-size:1.5rem;">{{providerText}}</h6>
+                                    <h6 class="white-text" style="font-size:0.85rem;">Enter your Username & Email, and upload a profile picture</h6>
+                                </div>
+                                <div flex></div>
+                                <!--<div layout no-wrap>
+                                    <a class="btn-flat white-text waves-effect waves-light thin wizard-next" on-click="nextSetupSlide">
+                                        <i class="material-icons white-text right thin">arrow_forward</i>
+                                        Next
+                                    </a>
+                                </div>-->
+                            </div>
+                            <div class="row" style="margin-top: 20px; opacity:1.0 !important; z-index:1000;">
+                                <div class="col s12 center center-aligned">
+                                    <img id="profile_pic" src="../assets/app/img/profile-photo-placeholder.jpg" alt="" class="circle responsive-img" style="border:solid 2px #ffffff; height:125px; width:125px;">
+                                </div>
+                                <div class="col s12 center" style="margin-top:-10px;">
+                                    <h4 class="light white-text" style="font-size:1.35rem;">{{user.username}}</h4>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col s12">
+                                        <div class="lfg-input input-field col s12 center" layout center>
+                                            <div class="file-field" layout horizontal center-center>
+                                                <a class="btn-flat center center-aligned white-text light photo-upload">
+                                                    <span><i class="material-icons left">backup</i> Upload Photo</span>
+                                                    <input id="profile_upload" type="file" accept="image/*" capture="camera" />
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Cover Photo Upload -->
+                                <!--<div class="row">
+                                    <div class="col s12">
+                                        <div class="lfg-input input-field col s12 center" layout center>
+                                            <div class="file-field" layout horizontal center-center>
+                                                <a class="btn center center-aligned blue darken-1" style="padding-left:42px; padding-right:42px;">
+                                                    <span><i class="material-icons left">panorama</i> Cover Photo</span>
+                                                    <input id="cover_upload" type="file" accept="image/*" capture="camera" />
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>-->
+                            </div>
+                        </div>
+                    </div>
+                    <div class="container content-area">
+                        <br />
+                        <div class="card-panel requests-card-panel">
+                            <ul class="collection collection-modified">
+                                <li class="collection-item avatar">
+                                    <div class="wizard-input row">
+                                        <div class="col s2"><i class="material-icons prefix">account_circle</i></div>
+                                        <div class="lfg-input input-field col s7">
+                                            <input id="username" placeholder="Username" autocomplete="off" type="text" class="validate" on-keypress="clearUsernameError" on-keyup="changeUsername" />
+                                        </div>
+                                        <div class="col s3" style="margin-top:30px;">
+                                            <span id="username_error" class="red-text"><strong></strong></span>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="collection-item avatar">
+                                    <div class="row">
+                                        <div class="col s2"><i class="material-icons prefix">email</i></div>
+                                        <div class="lfg-input input-field col s7">
+                                            <input id="email" placeholder="Email" autocomplete="off" type="text" class="validate" value="{{user.email}}" on-keypress="clearEmailError" />
+                                        </div>
+                                        <div class="col s3" style="margin-top:30px;">
+                                            <span id="email_error" class="red-text"><strong></strong></span>
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                        <br />
+                        <div class="row">
+                            <div class="col s12 center center-align">
+                                <a class="waves-effect waves-light orange darken-4 btn-large" on-click="finishSetUp"><i class="material-icons left">done</i>I'm Done. Get me in there!</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+			</neon-animatable>
+			<!--<neon-animatable>
+				<div layout vertical fit class="green darken-3" style="height:100vh;">
+					<div layout horizontal center-justified style="opacity:1.0 !important; margin-top:50px;">
+						<div layout no-wrap>
+							<a class="btn-flat white-text thin wizard-back" on-click="prevSetupSlide">
+								<i class="material-icons white-text left">arrow_back</i>
+								Back
+							</a>
+						</div>
+						<div flex></div>
+						<div self-center class="col s6 center"><h6 class="white-text thin" style="font-size:1.2rem;">Link your gaming accounts to your GWG profile</h6></div>
+						<div flex></div>
+						<div layout no-wrap>
+							<a class="btn-flat white-text waves-effect waves-light thin wizard-next" on-click="nextSetupSlide">
+								<i class="material-icons white-text right thin">arrow_forward</i>
+								Next
+							</a>
+						</div>
+					</div>
+					<div layout vertical center-center style="margin-top:7%;">
+						<div class="container">
+							<div layout vertical>
+								<div layout horizontal>
+									<div><iron-icon class="" src="../assets/app/img/playstation.svg" style="width:128px; height:128px;"></iron-icon></div>
+									<div style="margin-top:30px; margin-left:5%"><h4 class="white-text light">Rammone-X</h4></div>
+								</div>
+								<div layout horizontal style="margin-top:5%;">
+									<div><iron-icon class="" src="../assets/app/img/xbox.svg" style="width:128px; height:128px;"></iron-icon></div>
+									<div style="margin-top:30px;  margin-left:5%;"><h4 class="white-text light">Oceunmoon</h4></div>
+								</div>
+								<div layout horizontal style="margin-top:5%;">
+									<div><iron-icon class="" src="../assets/app/img/steam.svg" style="width:128px; height:128px;" on-click="startSteamVerify"></iron-icon></div>
+									<div style="margin-top:30px;  margin-left:5%;"><h4 class="white-text light">rammone4</h4></div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</neon-animatable>
+			<neon-animatable><h1>3</h1></neon-animatable>-->
+		</neon-animated-pages>
+	</template>
+</dom-module>
+
+<script>
+    (function(window) {
+        var constructor = Polymer({
+
+        	is: 'user-setup',
+
+            /**
+             * ...
+             *
+             * @attribute properties
+             * @type object
+             * @default
+             */
+            properties: {
+            	name: 'User Setup'
+            },
+
+            clearValidatorErrors: function () {
+            	this.clearUsernameError();
+            	this.clearEmailError();
+            },
+
+            clearUsernameError: function () {
+            	$(this.$.username_error).find('strong').html('');
+            },
+
+            clearEmailError: function () {
+            	$(this.$.email_error).find('strong').html('');
+            },
+
+        	/* Functions */
+            finishSetUp: function () {
+            	//Do some validation...
+            	var cusElem = this;
+            	if (this.validateInput(this.user)) {
+            		cusElem.user.username = $(cusElem.$.username).val();
+            		cusElem.user.email = $(cusElem.$.email).val();
+
+            		cusElem.usernameExists = null;
+            		cusElem.emailExists = null;
+
+            		var authJSON = sessionStorage.getItem(window.lfg.config.firebaseCacheKey);
+            		var authData = JSON.parse(authJSON);
+
+            		//check to see if the same username exists within our db, or the same email exists
+            		var usersRef = this.firebaseRef.child('users');
+
+            		var checkUnique = function () {
+            			if (cusElem.usernameExists !== null && cusElem.emailExists !== null) {
+            				window.clearInterval(cusElem.intervalId);
+            				if (cusElem.usernameExists === false && cusElem.emailExists === false) {
+            					cusElem.saveUserData(authData, cusElem.user);
+            				}
+            				else {
+            					if (cusElem.usernameExists === true) {
+            						$(cusElem.$.username_error).find('strong').html('*The username exists already!');
+            					}
+
+            					if (cusElem.emailExists === true) {
+            						$(cusElem.$.email_error).find('strong').html('*The email exists already!');
+            					}
+            				}
+            			}
+            		};
+
+            		cusElem.intervalId = window.setInterval(checkUnique, 500);
+
+            		//Get the user profile info. If none exists, redirect to Onboarding process...
+            		usersRef
+						.equalTo(this.user.username)
+						.once('value', function (snapshot) {
+							var user = snapshot.val();
+
+							//redirect to user setup page
+							if (user !== null && user !== undefined) {
+								cusElem.usernameExists = true;
+							}
+							else {
+								cusElem.usernameExists = false;
+							}
+						});
+
+            		usersRef
+						.equalTo(this.user.email)
+						.once('value', function (snapshot) {
+							var user = snapshot.val();
+
+							//redirect to user setup page
+							if (user !== null && user !== undefined) {
+								cusElem.emailExists = true;
+							}
+							else {
+								cusElem.emailExists = false;
+							}
+						});
+            	}
+            },
+
+            getProvider: function () {
+                var authData = window.lfg.utils.getAuthData();
+
+                if (authData !== null && authData !== undefined) {
+                    switch (authData.provider) {
+                        case 'facebook':
+                            this.provider = 'Facebook';
+                            break;
+
+                        case 'twitter':
+                            this.provider = 'Twitter';
+                            break;
+
+                        case 'google':
+                            this.provider = 'Google';
+                            break;
+
+                        case 'steam':
+                            this.provider = 'Steam';
+                            break;
+
+                        default:
+                            break;
+                    }
+                }
+
+                if (this.provider == null || this.provider == undefined || this.provider == '') {
+                    this.providerText = 'Thank you for signing in. Just one more step...';
+                }
+                else {
+                    this.providerText = 'Thank you for signing in through ' + this.provider + '. Just one more step...';
+                }
+            },
+
+            saveUserData: function (authData, userdata) {
+                var userRef = new Firebase(window.lfg.config.getFirebaseUrl() + 'users/' + authData.uid);
+                userdata.setupcomplete = true;
+            	userRef.set(userdata);
+            	document.querySelector('app-router').go('/requests');
+            },
+
+            validateInput: function () {
+            	var valid = true;
+            	this.clearValidatorErrors();
+
+            	var username = $(this.$.username).val();
+            	var email = $(this.$.email).val();
+
+            	if (username === null || username === undefined || username === '' ) {
+            		$(this.$.username_error).find('strong').html("*This can't be blank!");
+            		valid = false;
+            	}
+
+            	if (email === null || email === undefined || email === '') {
+            		$(this.$.email_error).find('strong').html("*This can't be blank!");
+            		valid = false;
+            	}
+            	else if (!window.lfg.utils.checkEmail(email)) {
+            		$(this.$.email_error).find('strong').html("*This email isn't valid!");
+            		valid = false;
+            	}
+
+            	//if (userdata.profilepic === null || userdata.profilepic === undefined) {
+            	//	valid = false;
+            	//}
+            	return valid;
+            },
+
+			/* Init */
+            initializeData: function () {
+				this.selected = 0;
+            	this.user = {
+            		username: "(What we'll call you)",
+            		email: ''
+            	};
+            	this.usernameExists = null;
+            	this.emailExists = null;
+            	this.provider = '';
+
+            	this.firebaseUrl = window.lfg.config.getFirebaseUrl();
+            	this.firebaseRef = new Firebase(window.lfg.config.getFirebaseUrl());
+
+            	this.getProvider();
+            },
+
+            registerEvents: function () {
+            	document.getElementById("profile_upload").addEventListener('change', this.handleFileSelect.bind(this), false);
+            	//document.getElementById("cover_upload").addEventListener('change', this.handleCoverFileSelect.bind(this), false);
+            	$(this.$.username).focus();
+            },
+
+            registerPlugins: function() {
+            },
+
+        	/* Events */
+            changeUsername: function (e) {
+            	//Despite how awesome Polymer 1.0 is, sometimes, you find some really annoying bugs in it - not complaining though
+				//It's not "data-binding" if I have to "manually" set the property to persist it's value. This should be automatic!!!!!!!
+            	var input = e.target;
+            	this.set('user.username', input.value);
+            },
+
+            handleFileSelect: function (evt) {
+            	//Thank you firepano over @ https://github.com/firebase/firepano
+            	var cusElem = this;
+            	var f = evt.target.files[0];
+            	var reader = new FileReader();
+            	reader.onload = (function (theFile) {
+            		return function (e) {
+            			var filePayload = e.target.result;
+            			cusElem.user.profilepic = filePayload;
+            			document.getElementById("profile_pic").src = e.target.result;
+            			//$(cusElem.$.file_upload).hide();
+
+            			// Generate a location that can't be guessed using the file's contents and a random number
+            			//var hash = CryptoJS.SHA256(Math.random() + CryptoJS.SHA256(filePayload));
+
+            			//var f = new Firebase(firebaseRef + 'pano/' + hash + '/filePayload');
+            			//spinner.spin(document.getElementById('spin'));
+
+            			// Set the file payload to Firebase and register an onComplete handler to stop the spinner and show the preview
+            			//f.set(filePayload, function () {
+            			//	spinner.stop();
+            			//	document.getElementById("pano").src = e.target.result;
+            			//	$('#file-upload').hide();
+            			//	// Update the location bar so the URL can be shared with others
+            			//	window.location.hash = hash;
+            			//});
+            		};
+            	})(f);
+            	reader.readAsDataURL(f);
+            },
+
+            handleCoverFileSelect: function (evt) {
+            	var cusElem = this;
+            	var f = evt.target.files[0];
+            	
+            	var reader = new FileReader();
+            	reader.onloadend = (function (theFile) {
+            		return function (e) {
+            			var filePayload = e.target.result;
+
+						//set the contents to our property
+            			cusElem.user.coverphoto = filePayload;
+            			document.getElementById("profile_background").style.backgroundImage = "url('" + reader.result + "')";
+            		};
+            	})(f);
+            	reader.readAsDataURL(f);
+            },
+
+            nextSetupSlide: function () {
+            	this.entryAnimation = 'slide-from-right-animation';
+            	this.exitAnimation = 'slide-left-animation';
+            	this.selected = this.selected === 2 ? 0 : (this.selected + 1);
+            },
+
+            prevSetupSlide: function () {
+            	this.entryAnimation = 'slide-from-left-animation';
+            	this.exitAnimation = 'slide-right-animation';
+            	this.selected = this.selected === 0 ? 2 : (this.selected - 1);
+            },
+
+            ready: function () {
+            	this.initializeData();
+            },
+
+            attached: function () {
+            	this.registerPlugins();
+            	this.registerEvents();
+            }
+        });
+    })(window);
+</script>
