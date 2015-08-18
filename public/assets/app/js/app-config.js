@@ -16,12 +16,12 @@
 		var lfg = window.lfg !== null && window.lfg !== undefined ? window.lfg : {};
 		var config = {
             appDevUrl: 'http://localhost:1337',
-            appTestUrl: 'https://lfgbase.firebaseapp.com',
+            appTestUrl: 'https://parallel-test.herokuapp.com/',
             appProdUrl: '',
             fayeDevUrl: 'http://localhost:8089',
-            fayeTestUrl: 'https://lfgbase.firebaseapp.com',
+            fayeTestUrl: 'https://parallel-test.herokuapp.com/',
             fayeProdUrl: '',
-            env: 'dev',
+            env: 'test',
 			apiEndPoints: {
 				games: 'api/giantbomb/games',
 				game: 'api/giantbomb/game',
