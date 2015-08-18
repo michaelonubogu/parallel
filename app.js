@@ -13,7 +13,7 @@ var domain = 'localhost';
 switch (config.appsettings.env) {
 
 	case 'test':
-		domain = '';
+		domain = 'https://parallel-test.herokuapp.com/';
 		break;
 
 	case 'prod':

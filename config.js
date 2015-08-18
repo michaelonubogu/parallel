@@ -9,7 +9,7 @@ var env = {
 
 module.exports = {
 	"appsettings" : {
-		"env" : env.dev
+		"env" : env.test
 	},
 	"giant_bomb": {
 		"url" : "http://www.giantbomb.com/api/",
