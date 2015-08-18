@@ -46,20 +46,22 @@
                 var url = '';
                 switch (this.env) {
                     case 'dev':
-                        url = this.appDevUrl + '/';
+                        url = this.appDevUrl;
                         break;
 
                     case 'test':
-                        url = this.appTestUrl + '/';
+                        url = this.appTestUrl;
                         break;
 
                     case 'prod':
-                        url = this.appProdUrl + '/';
+                        url = this.appProdUrl;
                         break;
 
                     default:
                         break;
                 }
+                
+                if(url[url.length - 1] !== '/'){ url += '/'; }
 
 				switch (entity) {
 					case this.apiEndPoints.games:
