@@ -122,7 +122,7 @@ router.get('/giantbomb/search', function (req, res) {
 		res.send(data);
 	}, function (err) {
 		console.error("%s; %s", err.message, url);
-		console.log("%j", err.res.statusCode);
+		//console.log("%j", err.res.statusCode);
 	});
 });
 
