@@ -1,4 +1,4 @@
-﻿#!/usr/bin/env node
+﻿
 var faye = require('faye');
 var debug = require('debug')('parallel');
 var app = require('../app');
