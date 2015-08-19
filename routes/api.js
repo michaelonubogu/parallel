@@ -17,7 +17,7 @@ var router = express.Router();
 var host = process.env.HOST;
 var port = process.env.PORT || 1337;
 var fayePort = process.env.PORT || 8089;
-var origin = ''
+var origin = '';
 
 switch (config.appsettings.env) {
     case 'dev':
