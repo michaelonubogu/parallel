@@ -18,18 +18,20 @@ var giantbomb = {
         }
         else {
             if (process.env.PROXIMO_URL) {
-                var proxy = url.parse(process.env.PROXIMO_URL)
+                var proxy = url.parse(process.env.PROXIMO_URL);
                 options = {
                     hostname: proxy.hostname,
                     port: proxy.port || 80,
                     path: gburl,
                     headers: { "Proxy-Authorization" : 'Basic #{new Buffer(proxy.auth).toString("base64")}' }
-                }
+                };
                 
-                return http.get(options, function (res) {
-                    console.log("status code", res.statusCode);
-                    console.log("headers", res.headers);
-                });
+                return rp(options);
+
+                //return http.get(options, function (res) {
+                //    console.log("status code", res.statusCode);
+                //    console.log("headers", res.headers);
+                //});
             }
         }
     },
