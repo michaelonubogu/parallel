@@ -3,21 +3,22 @@ var faye = require('faye');
 var debug = require('debug')('parallel');
 var app = require('../app');
 var http = require('http');
-var fs = require('fs');
+//var fs = require('fs');
 
 var port = process.env.PORT || 3000;
 
 
 app.set('port', process.env.PORT || 3000);
 
-var privateKey = fs.readFileSync('key.pem').toString();
-var certificate = fs.readFileSync('certificate.pem').toString();
-var credentials = {key: privateKey, cert: certificate};
+//var privateKey = fs.readFileSync('key.pem').toString();
+//var certificate = fs.readFileSync('certificate.pem').toString();
+//var credentials = {key: privateKey, cert: certificate};
 
 var faye_server = new faye.NodeAdapter({ mount: '/faye', timeout: 45 });
 console.log('Firing up faye server. . . ');
 
-var server = http.createServer(credentials, app);
+//var server = http.createServer(credentials, app);
+var server = http.createServer(app);
 faye_server.attach(server);
 
 server.listen(app.get('port'), function(){
