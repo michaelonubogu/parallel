@@ -4,16 +4,17 @@
 var rp = require('request-promise');
 var config = require('./config.js');
 var http = require('http');
+var url = require('url');
 
 var giantbomb = {
 
     getGames: function(query, max){
         var gbRef = config.giant_bomb;
         var limit = max !== null && max !== undefined ? max : gbRef.limit;
-        var url = gbRef.url + gbRef.endpoints.search + '/?api_key=' + gbRef.key + '&limit=' + limit + '&format=' + gbRef.formats.json + '&query="' + query + '"&resources=' + gbRef.resources.game + '&field_list=id,name,image,original_release_date';
+        var gburl = gbRef.url + gbRef.endpoints.search + '/?api_key=' + gbRef.key + '&limit=' + limit + '&format=' + gbRef.formats.json + '&query="' + query + '"&resources=' + gbRef.resources.game + '&field_list=id,name,image,original_release_date';
         
         if (config.appsettings.env == 'dev') {
-            return rp(url);
+            return rp(gburl);
         }
         else {
             if (process.env.PROXIMO_URL) {
@@ -21,7 +22,7 @@ var giantbomb = {
                 options = {
                     hostname: proxy.hostname,
                     port: proxy.port || 80,
-                    path: url,
+                    path: gburl,
                     headers: { "Proxy-Authorization" : 'Basic #{new Buffer(proxy.auth).toString("base64")}' }
                 }
                 
