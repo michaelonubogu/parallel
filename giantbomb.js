@@ -22,7 +22,7 @@ var giantbomb = {
                 options = {
                     hostname: proxy.hostname,
                     port: proxy.port || 80,
-                    path: gburl,
+                    uri: gburl,
                     headers: { "Proxy-Authorization" : 'Basic #{new Buffer(proxy.auth).toString("base64")}' }
                 };
                 
