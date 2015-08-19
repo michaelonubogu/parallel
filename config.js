@@ -9,7 +9,9 @@ var env = {
 
 module.exports = {
 	"appsettings" : {
-		"env" : env.test
+        "env" : env.test,
+        "testDomain" : 'https://parallel-test.herokuapp.com',
+        "prodDomain" : ''
 	},
 	"giant_bomb": {
 		"url" : "http://www.giantbomb.com/api/",
