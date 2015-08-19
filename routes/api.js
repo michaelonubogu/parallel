@@ -16,6 +16,7 @@ var app = express();
 var router = express.Router();
 var host = process.env.HOST;
 var port = process.env.PORT || 1337;
+var fayePort = process.env.PORT || 8089;
 var origin = ''
 
 switch (config.appsettings.env) {
@@ -39,14 +40,9 @@ switch (config.appsettings.env) {
 var server = http.createServer();
 var faye_server = new faye.NodeAdapter({ mount: '/faye', timeout: 45 });
 console.log('Firing up faye server. . . ');
-faye_server.attach(server);
 
-if (config.appsettings.env == 'dev') {
-    server.listen(8089);
-}
-else {
-    server.listen();
-}
+faye_server.attach(server);
+server.listen(fayePort);
 
 var relyingParty = new openid.RelyingParty(
 							origin + '/api/steam/authenticate/verify', // Verification URL (yours)
