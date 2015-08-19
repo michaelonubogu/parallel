@@ -40,7 +40,13 @@ var server = http.createServer();
 var faye_server = new faye.NodeAdapter({ mount: '/faye', timeout: 45 });
 console.log('Firing up faye server. . . ');
 faye_server.attach(server);
-server.listen(8089);
+
+if (config.appsettings.env == 'dev') {
+    server.listen(8089);
+}
+else {
+    server.listen();
+}
 
 var relyingParty = new openid.RelyingParty(
 							origin + '/api/steam/authenticate/verify', // Verification URL (yours)
