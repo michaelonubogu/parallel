@@ -10,8 +10,8 @@ var port = process.env.PORT || 3000;
 
 app.set('port', process.env.PORT || 3000);
 
-var privateKey = fs.readFileSync('cert/key.pem').toString();
-var certificate = fs.readFileSync('cert/certificate.pem').toString();
+var privateKey = fs.readFileSync('key.pem').toString();
+var certificate = fs.readFileSync('certificate.pem').toString();
 var credentials = {key: privateKey, cert: certificate};
 
 var faye_server = new faye.NodeAdapter({ mount: '/faye', timeout: 45 });
