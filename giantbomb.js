@@ -20,8 +20,6 @@ var giantbomb = {
             if (process.env.PROXIMO_URL) {
                 var proxy = url.parse(process.env.PROXIMO_URL);
                 options = {
-                    hostname: proxy.hostname,
-                    port: proxy.port || 80,
                     uri: gburl,
                     headers: { "Proxy-Authorization" : 'Basic #{new Buffer(proxy.auth).toString("base64")}' }
                 };

@@ -17,6 +17,7 @@ $RECYCLE.BIN/
 # VS Solution files
 *.dat
 *.njsproj
+*.tmp
 
 # Windows shortcuts
 *.lnk
