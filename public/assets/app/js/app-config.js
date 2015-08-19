@@ -16,10 +16,10 @@
 		var lfg = window.lfg !== null && window.lfg !== undefined ? window.lfg : {};
 		var config = {
             appDevUrl: 'http://localhost:1337',
-            appTestUrl: 'http://parallel-test.herokuapp.com/',
+            appTestUrl: 'https://parallel-test.herokuapp.com/',
             appProdUrl: '',
             fayeDevUrl: 'http://localhost:1337/faye',
-            fayeTestUrl: 'http://parallel-test.herokuapp.com/faye',
+            fayeTestUrl: 'https://parallel-test.herokuapp.com/faye',
             fayeProdUrl: '',
             env: 'test',
 			apiEndPoints: {
