@@ -1,1 +1,1 @@
-web: bin/proximo bin/www
+web: bin/proximo
