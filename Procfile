@@ -1,1 +1,1 @@
-web: bin/proximo giantbomb.js
+web: bin/proximo bin/www
