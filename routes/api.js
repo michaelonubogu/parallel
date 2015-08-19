@@ -89,6 +89,7 @@ router.get('/steam/authenticate', function (req, res) {
 });
 
 router.get('/steam/authenticate/verify', function (req, res) {
+    console.log('DING: Steam Authenticate Route Hit');
 	relyingParty.verifyAssertion(req, function (error, result) {
 		
 		var urlObj = url.parse(result.claimedIdentifier);
@@ -117,6 +118,7 @@ router.get('/steam/authenticate/verify', function (req, res) {
 });
 
 router.get('/giantbomb/search', function (req, res) {
+    console.log('DING: Giantbomb Search Route Hit');
 	giantbomb.getGames(req.query.search, req.query.limit)
 	.then(function (data) {
 		res.send(data);
