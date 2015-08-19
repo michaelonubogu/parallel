@@ -1,1 +1,1 @@
-web: bin/proximo node bin/www
+web: bin/proximo node app.js
