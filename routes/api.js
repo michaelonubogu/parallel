@@ -16,7 +16,6 @@ var app = express();
 var router = express.Router();
 var host = process.env.HOST;
 var port = process.env.PORT || 1337;
-
 var origin = 'http://' + host + ':' + port;
 
 //Faye websocket init
