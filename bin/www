@@ -1,9 +1,21 @@
 ﻿#!/usr/bin/env node
+var faye = require('faye');
 var debug = require('debug')('parallel');
 var app = require('../app');
+var port = process.env.PORT || 3000;
+var http = require('http');
 
 app.set('port', process.env.PORT || 3000);
 
-var server = app.listen(app.get('port'), function() {
-    debug('Express server listening on port ' + server.address().port);
+var faye_server = new faye.NodeAdapter({ mount: '/faye', timeout: 45 });
+console.log('Firing up faye server. . . ');
+
+var server = http.createServer(app);
+faye_server.attach(server);
+
+server.listen(app.get('port'), function(){
+  console.log('Express server listening on port ' + app.get('port'));
 });
+
+GLOBAL.faye_server = faye_server;
+

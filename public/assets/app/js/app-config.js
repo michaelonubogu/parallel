@@ -18,8 +18,8 @@
             appDevUrl: 'http://localhost:1337',
             appTestUrl: 'https://parallel-test.herokuapp.com/',
             appProdUrl: '',
-            fayeDevUrl: 'http://localhost:8089',
-            fayeTestUrl: 'https://parallel-test.herokuapp.com/',
+            fayeDevUrl: 'http://localhost:1337/faye',
+            fayeTestUrl: 'https://parallel-test.herokuapp.com/faye',
             fayeProdUrl: '',
             env: 'test',
 			apiEndPoints: {

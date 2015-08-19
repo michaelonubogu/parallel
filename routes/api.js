@@ -6,7 +6,7 @@ var http = require('http');
 var url = require('url');
 var path = require('path');
 var openid = require('openid');
-var faye = require('faye');
+//var faye = require('faye');
 var FirebaseTokenGenerator = require("firebase-token-generator");
 var giantbomb = require('../giantbomb');
 var config = require('../config');
@@ -16,7 +16,7 @@ var app = express();
 var router = express.Router();
 var host = process.env.HOST;
 var port = process.env.PORT || 1337;
-var fayePort = process.env.PORT || 8089;
+//var fayePort = process.env.PORT || 8089;
 var origin = '';
 
 switch (config.appsettings.env) {
@@ -37,12 +37,12 @@ switch (config.appsettings.env) {
 }
 
 //Faye websocket init
-var server = http.createServer();
-var faye_server = new faye.NodeAdapter({ mount: '/faye', timeout: 45 });
-console.log('Firing up faye server. . . ');
+//var server = http.createServer();
+//var faye_server = new faye.NodeAdapter({ mount: '/faye', timeout: 45 });
+//console.log('Firing up faye server. . . ');
 
-faye_server.attach(server);
-server.listen(fayePort);
+//faye_server.attach(server);
+//server.listen(fayePort);
 
 var relyingParty = new openid.RelyingParty(
 							origin + '/api/steam/authenticate/verify', // Verification URL (yours)
@@ -100,14 +100,18 @@ router.get('/steam/authenticate/verify', function (req, res) {
 			//Generate a firebase token for our steam auth user info
 			var tokenGenerator = new FirebaseTokenGenerator(config.firebase.secret);
 			var token = tokenGenerator.createToken({ uid: "steam:" + steamid  });
-			
-			//Send token to the client
-			faye_server.getClient().publish('/steamSuccess', 
-			{
-				pageName: 'sign-in.html',
-				steamid: steamid,
-				token: token
-			});
+            
+            var faye_server = GLOBAL.faye_server;
+            
+            if (faye_server !== null && faye_server !== undefined) {
+                //Send token to the client
+                faye_server.getClient().publish('/steamSuccess', 
+			    {
+                    pageName: 'sign-in.html',
+                    steamid: steamid,
+                    token: token
+                });
+            }
 		}
 	});
 });
