@@ -10,7 +10,7 @@ var env = {
 module.exports = {
 	"appsettings" : {
         "env" : env.test,
-        "testDomain" : 'https://parallel-test.herokuapp.com',
+        "testDomain" : 'http://parallel-test.azurewebsites.net',
         "prodDomain" : ''
 	},
 	"giant_bomb": {
