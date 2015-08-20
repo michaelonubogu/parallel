@@ -1197,8 +1197,8 @@
             		this.request.time.setMonth(request_date.getMonth(), request_date.getDate());
             		this.request.time.setDate(request_date.getDate());
             		
-            		var utcDate = this.convertDateToUtc(this.request.time);
-            		var createdUTC = this.convertDateToUtc(new Date.now());
+            		var gamedate = window.lfg.utils.convertDateToISO(this.request.time);
+            		var created = window.lfg.utils.convertDateToISO(new Date.now());
 
             		var requestsRef = this.firebaseRef.child('requests');
             		var newRequest = {
@@ -1208,10 +1208,10 @@
             			giantbombid: this.request.gameid,
             			gamercount: this.request.gamercount === null || this.request.gamercount === undefined || this.request.gamercount === '' ? '1' : this.request.gamercount,
             			system: this.request.system,
-            			datetime: utcDate,
+            			datetime: gamedate,
             			mic: this.request.mic,
             			description: this.request.description,
-            			created: createdUTC,
+            			created: created,
             			uid: authData.uid,
             			images: this.request.images
             		}
