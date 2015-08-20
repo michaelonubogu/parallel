@@ -180,15 +180,16 @@
 				);
 			},
 			
-			convertUtcToLocalDate: function (utcDate) {
-				var date = new Date(utcDate);
-				return date.setMinutes(date.getMinutes() + date.getTimezoneOffset());
+			convertUtcToLocalDate: function (utcSeconds) {
+                var tz = jstz.determine();
+                var date = moment.tz(utcSeconds, tz.name());
+                return date.toDate();
 			},
 			
-			convertUtcToLocal: function (utcDate) {
-				var date = new Date(utcDate);
-				date.setMinutes(date.getMinutes() + date.getTimezoneOffset());
-				return date.toString('MMM dd, yyyy h:mm tt');
+            convertUtcToLocal: function (utcDate) {
+                var tz = jstz.determine();
+                var date = moment.tz(utcSeconds, tz.name());
+                return date.toDate().toString('MMM dd, yyyy h:mm tt');
 			},
 			
 			convertToBase64: function (imageUrl) {

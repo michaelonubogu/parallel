@@ -1266,8 +1266,8 @@
             },
 
             getTimeLapse: function (date) {
-            	var convDate = new Date(date);
-            	return window.lfg.utils.timeSince(window.lfg.utils.convertUtcToLocalDate(convDate));
+                var convDate = window.lfg.utils.convertUtcToLocalDate(date);
+                return window.lfg.utils.timeSince(convDate);
             },
 
             getUserProfile: function (request) {

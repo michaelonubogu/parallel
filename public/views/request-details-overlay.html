@@ -862,9 +862,11 @@
 			},
 
 			showCommentField: function () {
-				$(this.$.comment_text).val('');
+			    var cusElem = this;
+			    $(cusElem.$.comment_text).val('');
 				$('.add-comment-message').hide(0, function () {
 					$('.add-comment-control').fadeIn();
+					$(cusElem.$.comment_text).focus();
 				});
 			},
 
