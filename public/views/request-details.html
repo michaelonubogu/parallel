@@ -410,6 +410,9 @@
 						<div class="col s6 offset-s3 center center-align">
 							<span class$="[[getSystemClass(request.system)]]">[[getSystemType(request.system)]]</span>
 							<span class="center center-align tag-neutral">[[getGamerCount(request.gamercount)]]</span>
+                            <template is="dom-if" if="{{request.mic}}">
+                                <span style="margin-left:7px;" class="grey-text"><i style="font-size:1.2rem;" class="material-icons">headset_mic</i></span>
+                            </template>
 						</div>
 						<div class="col s3 right right-align">
 							<h6 class="grey-text" style="font-size:0.85rem;">[[getTimeLapse(request.datetime)]]</h6>

@@ -230,37 +230,9 @@
 			cursor: pointer;
 		}
 
-		/*.lfg-main-toolbar {
-			--paper-toolbar-background:{
-				background-color: #ffffff !important;
-			};
-		}
-
-		.lfg-drawer-toolbar {
-			--paper-toolbar-background: #ef6c00;
-		}*/
-
 		#paper-header-panel {
 			border-bottom: solid 1px #ffffff;
 		}
-
-		/*.lfg-main-header-panel {
-			--paper-header-panel-cover-container:{
-				border: solid 1px #ffffff;
-			};
-		}
-
-		.lfg-paper-fab {
-			--paper-fab:{
-				position: fixed;
-				right: 0;
-				bottom: 0;
-				margin-right: 3%;
-				margin-bottom: 3%;
-			}; 
-			 
-			--paper-fab-background: #e65100;
-		}*/
 
 		.collection-item {
 			height: auto !important;
@@ -329,17 +301,6 @@
 			.logo-link {
 				margin-left: 0px;
 			}
-
-			/*.lfg-paper-fab {
-				--paper-fab:{
-					position: fixed;
-					right: 0;
-					bottom: 0;
-					margin-right: 3.5%;
-					margin-bottom: 3.5%;
-				}; 
-				--paper-fab-background: #e65100;
-			}*/
 		}
 	</style>
 
@@ -348,8 +309,6 @@
 			<div id="request_header_dopple" class="profile-background-dopple"></div>
 			<div id="request_header" class="profile-background"></div>
 			<div class="profile-background-overlay"></div>
-			<!--<paper-icon-button icon="menu" class="lfg-menu-icon" paper-drawer-toggle></paper-icon-button>
-			<paper-icon-button icon="arrow-back" class="lfg-menu-icon" on-click="goToList"></paper-icon-button>-->
 			<div flex></div>
 			<a id="to_facebook" class="center center-align filter-tags tag-facebook" on-click="postToFacebook">
 				<i class="fa fa-facebook"></i>
@@ -387,6 +346,9 @@
 				<div class="col s6 offset-s3 center center-align">
 					<span class$="[[getSystemClass(request.system)]]">[[getSystemType(request.system)]]</span>
 					<span class="center center-align tag-neutral">[[getGamerCount(request.gamercount)]]</span>
+                    <template is="dom-if" if="{{request.mic}}">
+                        <span style="margin-left:7px;" class="grey-text"><i style="font-size:1.2rem;" class="material-icons">headset_mic</i></span>
+                    </template>
 				</div>
 				<div class="col s3 right right-align">
 					<h6 class="grey-text" style="font-size:0.85rem;">[[getTimeLapse(request.datetime)]]</h6>
