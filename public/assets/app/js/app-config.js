@@ -170,25 +170,22 @@
 			},
 			
 			convertDateToUtc: function (date) {
-				return Date.UTC(
-					date.getFullYear(),
-						date.getMonth(),
-						date.getDate(),
-						date.getHours(),
-						date.getMinutes(),
-						date.getSeconds()
-				);
+				return date.toISOString();
 			},
 			
 			convertUtcToLocalDate: function (utcSeconds) {
                 var tz = jstz.determine();
-                var date = moment.tz(utcSeconds, tz.name());
-                return date.toDate();
+                var tz_name = tz.name();
+                var utcDate = new Date(utcSeconds);
+                var date = moment.tz(utcDate, tz_name).toDate();
+                return date;
 			},
 			
             convertUtcToLocal: function (utcDate) {
                 var tz = jstz.determine();
-                var date = moment.tz(utcSeconds, tz.name());
+                var tz_name = tz.name();
+                var utcDate = new Date(utcSeconds);
+                var date = moment.tz(utcDate, tz_name).toDate();
                 return date.toDate().toString('MMM dd, yyyy h:mm tt');
 			},
 			
