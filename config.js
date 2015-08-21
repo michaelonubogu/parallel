@@ -9,7 +9,7 @@ var env = {
 
 module.exports = {
 	"appsettings" : {
-        "env" : env.test,
+        "env" : env.dev,
         "testDomain" : 'http://parallel-test.azurewebsites.net',
         "prodDomain" : ''
 	},

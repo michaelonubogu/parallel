@@ -416,13 +416,13 @@
                     <div class="middle">
                     </div>
                     <div class="bottom">
-                        <template is="dom-if" if="{{!saveSuccess}}">
+                        <template is="dom-if" if="{{notSaved}}">
 							<label class="logo-link grey-text text-darken-2 light" style="margin-left: 12px;">New Gaming Request</label>
 						</template>
                     </div>
                 </paper-toolbar>
                 <div fit class="content-area">
-					<template is="dom-if" if="{{!saveSuccess}}">
+					<template is="dom-if" if="{{notSaved}}">
 						<div>Fill out this really short form and get your request going</div>
 					</template>
 						
@@ -431,18 +431,20 @@
 
 						<div id="new_request_form">
 							<!--Game-->
-							<div id="search_row" class="row" style="cursor:pointer;">
+							<div class="row" >
 								<div class="col s12" style="margin-bottom:10px;">
 									<label class="grey-text text-darken-2" style="font-size:1rem; margin-right:5px;">Game</label>
 									<label class="red-text error-message" style="font-size:1rem; display:none;">**This is required</label>
 								</div>
 								<div class="layout horizontal col s12">
-									<span class="layout vertical center-center game-image-placeholder grey lighten-2 white-text" style="width:160px; height:90px; border-radius:5px; padding:0 7px; margin-right:15px;">
+									<a on-click="showSearchModal" class="layout vertical center-center game-image-placeholder grey lighten-2 white-text" style="cursor:pointer; width:160px; height:90px; border-radius:5px; padding:0 7px; margin-right:15px;">
 										<i class="fa fa-search"></i>
-									</span>
-									<span id="selected_game_image_placeholder" class="layout vertical center-center game-image-placeholder white-text" style="display:none; background-color:#FB8C00; width:160px; height:90px; border-radius:5px; padding:0 7px; margin-right:15px; font-size:0.75rem;"></span>
-									<img id="selected_game_image" class="game-image" style="display:none; margin-right:15px;" width="160" height="90" />
-									<span id="selected_game" class="grey-text light" style="font-size:1.5rem; margin-top:30px;">Select Game</span>
+									</a>
+									<a on-click="showSearchModal" class=" layout horizontal" style="cursor:pointer;">
+                                        <span id="selected_game_image_placeholder" class="layout vertical center-center game-image-placeholder white-text" style="display:none; background-color:#FB8C00; width:160px; height:90px; border-radius:5px; padding:0 7px; margin-right:15px; margin-top:10px; font-size:0.75rem;"></span>
+                                        <img id="selected_game_image" class="game-image" style="display:none; margin-right:15px;" width="160" height="90" />
+                                        <span id="selected_game" class="grey-text light" style="font-size:1.5rem; margin-top:30px;">Select Game</span>
+                                    </a>
 								</div>
 							</div>
 
@@ -854,7 +856,7 @@
 
             initializeData: function () {
 
-            	this.saveSuccess = false;
+                this.notSaved = true;
 
             	this.request = {
             		title: '',
@@ -1020,7 +1022,7 @@
             	//});
 
                 $(document).on('keypress', '#request_gamer_count', this.verifyDigitOnly.bind(this));
-                $(document).on('input', '#search_request_game', _.debounce(this.doVideoGameSearch.bind(this), 250));
+                $(document).on('input', '#search_request_game', _.debounce(this.doVideoGameSearch.bind(this), 1000));
             	$(document).on('click', '.search-result-row', this.searchRowClick.bind(this));
             	$(document).on('click', '#search_row', this.showSearchModal.bind(this));
             	//$(document).on('click', '#time_right_now', function () { $(this).addClass('active'); })
@@ -1159,13 +1161,16 @@
             },
 
             showSuccessMessage: function () {
-            	this.saveSuccess = true;
-            	$(this.$.new_request_form).hide(0, function () {
-            		$('#success_message').fadeIn();
-            	});
+                var cusElem = this;
+                cusElem.notSaved = false;
+                cusElem.notifyPath('notSaved', cusElem.notSaved);
+
+                $(cusElem.$.new_request_form).hide(0, function () {
+                    $(cusElem.$.success_message).fadeIn();
+                });
             },
 
-            showSearchModal: function () {
+            showSearchModal: function (event) {
             	$(this.$.game_tag).openModal();
             	this.$.search_request_game.focus();
             },
@@ -1198,7 +1203,7 @@
             		this.request.time.setDate(request_date.getDate());
             		
             		var gamedate = window.lfg.utils.convertDateToISO(this.request.time);
-            		var created = window.lfg.utils.convertDateToISO(new Date.now());
+            		var created = window.lfg.utils.convertDateToISO(Date.now());
 
             		var requestsRef = this.firebaseRef.child('requests');
             		var newRequest = {
@@ -1217,9 +1222,12 @@
             		}
 
 					//Firebase Search Indexes
-            		//custom index for searching & ordering requests in lexicographical/chronologic order -  really just a hack
-            		var lexicoIndex = window.lfg.utils.getSearchIndex(this.convertDateToUtc(Date.now()));
+            	    //custom index for searching & ordering requests in lexicographical/chronologic order -  really just a hack
+            		var timeNow = this.convertDateToUtc(Date.now());
+            		var index = 0 - timeNow;
+            		var lexicoIndex = window.lfg.utils.getSearchIndex(timeNow);
 
+            		newRequest.index = index;   //getPriority is unreliable - use our own index
             		newRequest.gameindex = window.lfg.utils.clearWhiteSpace(newRequest.game) + lexicoIndex;
             		newRequest.giantbombindex = newRequest.giantbombid + lexicoIndex;
             		newRequest.systemgameindex = newRequest.system + newRequest.gameindex;
@@ -1229,7 +1237,7 @@
             		//Save new request content;
             		var newRequestRef = requestsRef.push(newRequest);
 
-            		newRequestRef.setWithPriority(newRequest, 0 - Date.now());	//Set the priority so that this comes first 
+            		newRequestRef.set(newRequest);	//Set the priority so that this comes first 
             		var requestid = newRequestRef.key();
 
             		if (requestid !== null && requestid !== undefined) {

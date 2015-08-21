@@ -569,7 +569,7 @@
 		</paper-drawer-panel>
 
 		<!-- New Game Modal -->
-		<div id="game_tag" class="modal">
+		<div id="search_game_modal" class="modal">
 			<div class="modal-content">
 				<h5>Search for a Video Game to tag</h5>
 
@@ -1281,11 +1281,11 @@
             	cusElem.saveTaggedGame(tagged);
 
             	//close modal
-            	$(cusElem.$.game_tag).closeModal();
+            	$(cusElem.$.search_game_modal).closeModal();
             },
 
             showAddModal: function () {
-                $(this.$.game_tag).openModal();
+                $(this.$.search_game_modal).openModal();
             },
 
             truncateText: function (text, limit) {
