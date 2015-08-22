@@ -774,24 +774,28 @@
             },
 
             clearFirebaseCallbacks: function (name) {
-                if (name) {
-                    var callbacks = _.findWhere(this.firebaseRefs, { name: name });
+                var cusElem = this;
+                if (name !== null && name !== undefined && name !== '') {
+                    var callbacks = _.findWhere(cusElem.firebaseRefs, { name: name });
                     if (callbacks) {
                         if (callbacks.isArray) {
-                            _.each(callbacks, function (ref) {
+                            _.each(callbacks, function (ref, index) {
                                 //Detach all currently attached firebase callbacks. Only one should be attached at one time
                                 ref.value.off(ref.type, ref.functionRef);
+                                cusElem.firebaseRefs.splice(index, 1);
                             });
                         }
                         else {
                             callbacks.value.off(callbacks.type, callbacks.functionRef);
+                            cusElem.firebaseRefs.splice(cusElem.firebaseRefs.indexOf(callbacks), 1);
                         }
                     }
                 }
                 else {
-                    _.each(this.firebaseRefs, function (ref) {
+                    _.each(this.firebaseRefs, function (ref, index) {
                         //Detach all currently attached firebase callbacks. Only one should be attached at one time
                         ref.value.off(ref.type, ref.functionRef);
+                        cusElem.firebaseRefs.splice(index, 1);
                     });
                 }
             },
@@ -1088,8 +1092,8 @@
                         case customElem.querytype.bysystem:
                             //Detach all firebase callbacks
                             customElem.clearFirebaseCallbacks('requests' + '_' + customElem.querytype.bysystem + '_nopaginate');
-                            customElem.clearFirebaseCallbacks('requests' + '_' + customElem.querytype.none + '_nopaginate');
                             customElem.clearFirebaseCallbacks('requests' + '_' + customElem.querytype.bysystem + '_paginate');
+                            customElem.clearFirebaseCallbacks('requests' + '_' + customElem.querytype.none + '_nopaginate');
                             customElem.clearFirebaseCallbacks('requests' + '_' + customElem.querytype.none + '_paginate');
 
                             var lastrequest = customElem.requests[customElem.requests.length - 1];
