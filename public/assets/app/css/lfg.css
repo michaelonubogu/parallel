@@ -150,4 +150,6 @@ ul.ui-autocomplete .ui-menu-item:hover {
 			border-radius:50%;
 		}
 
-
+#mainContainer{
+    height:1000px !important;
+}

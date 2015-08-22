@@ -199,7 +199,8 @@
         .request-list-item {
             cursor: pointer;
             min-height: 125px;
-            border: none !important;
+            padding-top: 30px !important;
+            /*border: none !important;*/
             /*padding-left:20px !important;*/
             /*margin-bottom:7px;*/
             /*margin-top:7px !important;*/
@@ -398,13 +399,13 @@
                     </div>
                     <div class="bottom" style="width:100%;">
                         <div class="layout horizontal wrap">
-                            <span class="center center-align filter-tags tag-neutral" data-system="ps3">PS3</span>
-                            <span class="center center-align filter-tags tag-neutral" data-system="ps4">PS4</span>
-                            <span class="center center-align filter-tags tag-neutral" data-system="xbox360">X360</span>
-                            <span class="center center-align filter-tags tag-neutral" data-system="xboxOne">X1</span>
-                            <span class="center center-align filter-tags tag-neutral" data-system="wii">Wii</span>
-                            <span class="center center-align filter-tags tag-neutral" data-system="wiiu">Wii U</span>
-                            <span class="center center-align filter-tags tag-neutral" data-system="pc">PC</span>
+                            <a class="center center-align filter-tags tag-neutral" data-system="ps3">PS3</a>
+                            <a class="center center-align filter-tags tag-neutral" data-system="ps4">PS4</a>
+                            <a class="center center-align filter-tags tag-neutral" data-system="xbox360">X360</a>
+                            <a class="center center-align filter-tags tag-neutral" data-system="xboxOne">X1</a>
+                            <a class="center center-align filter-tags tag-neutral" data-system="wii">Wii</a>
+                            <a class="center center-align filter-tags tag-neutral" data-system="wiiu">Wii U</a>
+                            <a class="center center-align filter-tags tag-neutral" data-system="pc">PC</a>
                         </div>
                     </div>
                 </paper-toolbar>
@@ -552,6 +553,11 @@
 
             activateFilterTag: function (e) {
                 var cusElem = this;
+
+                //unbind this annoying event - will be rebound if it is.
+                $('#mainContainer').unbind('scroll');
+                cusElem.scrollBound = false;
+
                 var system = e.target.dataset.system;
 
                 $('.filter-tags').each(function () {
@@ -767,11 +773,27 @@
                 });
             },
 
-            clearFirebaseCallbacks: function () {
-                _.each(this.firebaseRefs, function (ref) {
-                    //Detach all currently attached firebase callbacks. Only one should be attached at one time
-                    ref.value.off(ref.type, ref.functionRef);
-                });
+            clearFirebaseCallbacks: function (name) {
+                if (name) {
+                    var callbacks = _.findWhere(this.firebaseRefs, { name: name });
+                    if (callbacks) {
+                        if (callbacks.isArray) {
+                            _.each(callbacks, function (ref) {
+                                //Detach all currently attached firebase callbacks. Only one should be attached at one time
+                                ref.value.off(ref.type, ref.functionRef);
+                            });
+                        }
+                        else {
+                            callbacks.value.off(callbacks.type, callbacks.functionRef);
+                        }
+                    }
+                }
+                else {
+                    _.each(this.firebaseRefs, function (ref) {
+                        //Detach all currently attached firebase callbacks. Only one should be attached at one time
+                        ref.value.off(ref.type, ref.functionRef);
+                    });
+                }
             },
 
             clearNeutralTagClass: function (node) {
@@ -836,7 +858,7 @@
             containerScroll: function (e) {
                 var cusElem = this;
                 var container = e.target;
-                if ($(container).scrollTop() + $(container).innerHeight() >= e.target.scrollHeight) {
+                if (container.offsetHeight + container.scrollTop >= container.scrollHeight) {
                     // reached bottom of page - run our call for pagination
 
                     if (cusElem.dataops.query == null || cusElem.dataops.query === undefined || cusElem.dataops.query === '') {
@@ -969,7 +991,8 @@
                     switch (querytype) {
                         case customElem.querytype.bygame:
                             //Detach all firebase callbacks
-                            customElem.clearFirebaseCallbacks();
+                            customElem.clearFirebaseCallbacks('requests' + '_' + customElem.querytype.bygame + '_nopaginate');
+                            customElem.clearFirebaseCallbacks('requests' + '_' + customElem.querytype.bygame + '_paginate');
 
                             query = window.lfg.utils.clearWhiteSpace(query).toLowerCase();
 
@@ -995,7 +1018,13 @@
 								    customElem.getUserProfile(request);
 								    customElem.getCommentCount(request.key);
 								    if (request.gameindex !== lastreq.gameindex) {
-								        customElem.push('requests', request);
+								        if ((-1 * request.index) >= customElem.firebaseTimestamp) {
+								            customElem.firebaseTimestamp = (-1 * request.index);
+								            customElem.unshift('requests', request);
+								        }
+								        else {
+								            customElem.push('requests', request);
+								        }
 								        customElem.notifyPath('requests', customElem.requests);
 								    };
 								    customElem.removeSpinnerRoo();
@@ -1012,7 +1041,8 @@
 
                         case customElem.querytype.byid:
                             //Detach all firebase callbacks
-                            customElem.clearFirebaseCallbacks();
+                            customElem.clearFirebaseCallbacks('requests' + '_' + customElem.querytype.id + '_nopaginate');
+                            customElem.clearFirebaseCallbacks('requests' + '_' + customElem.querytype.id + '_paginate');
 
                             var lastrequest = customElem.requests[customElem.requests.length - 1];
 
@@ -1035,7 +1065,13 @@
 								    customElem.getUserProfile(request);
 								    customElem.getCommentCount(request.key);
 								    if (request.giantbombindex !== lastreq.giantbombindex) {
-								        customElem.push('requests', request);
+								        if ((-1 * request.index) >= customElem.firebaseTimestamp) {
+								            customElem.firebaseTimestamp = (-1 * request.index);
+								            customElem.unshift('requests', request);
+								        }
+								        else {
+								            customElem.push('requests', request);
+								        }
 								        customElem.notifyPath('requests', customElem.requests);
 								    };
 								    customElem.removeSpinnerRoo();
@@ -1051,13 +1087,21 @@
 
                         case customElem.querytype.bysystem:
                             //Detach all firebase callbacks
-                            customElem.clearFirebaseCallbacks();
+                            customElem.clearFirebaseCallbacks('requests' + '_' + customElem.querytype.bysystem + '_nopaginate');
+                            customElem.clearFirebaseCallbacks('requests' + '_' + customElem.querytype.none + '_nopaginate');
+                            customElem.clearFirebaseCallbacks('requests' + '_' + customElem.querytype.bysystem + '_paginate');
+                            customElem.clearFirebaseCallbacks('requests' + '_' + customElem.querytype.none + '_paginate');
+
                             var lastrequest = customElem.requests[customElem.requests.length - 1];
 
+                            if (query) {
+                                query = window.lfg.utils.clearWhiteSpace(query).toLowerCase();
+                            }
+
                             var refFunc = requestsRef
-								.orderByChild('systemgameindex')
-								.startAt(lastrequest.systemgameindex.toString())
-								.endAt(lastrequest.systemgameindex.toString() + '~')
+								.orderByChild(query !== null && query !== undefined && query !== '' ? 'systemgameindex' : 'systemindex')
+								.startAt(query !== null && query !== undefined && query !== '' ? lastrequest.systemgameindex.toString() : lastrequest.systemindex.toString())
+                                .endAt(query !== null && query !== undefined && query !== '' ? lastrequest.system + query + '~' : lastrequest.system + '~')
 								.limitToFirst(customElem.dataops.limit + 1)
 								.on('child_added', function (snapshot) {
 								    var request = snapshot.val() || {};
@@ -1069,7 +1113,13 @@
 								    customElem.getUserProfile(request);
 								    customElem.getCommentCount(request.key);
 								    if (request.systemgameindex !== lastreq.systemgameindex) {
-								        customElem.push('requests', request);
+								        if ((-1 * request.index) >= customElem.firebaseTimestamp) {
+								            customElem.firebaseTimestamp = (-1 * request.index);
+								            customElem.unshift('requests', request);
+								        }
+								        else {
+								            customElem.push('requests', request);
+								        }
 								        customElem.notifyPath('requests', customElem.requests);
 								    };
 								    customElem.removeSpinnerRoo();
@@ -1108,7 +1158,13 @@
 								    customElem.getUserProfile(request);
 								    customElem.getCommentCount(request.key);
 								    if (request.index !== lastreq.index) {
-								        customElem.push('requests', request);
+								        if ((-1 * request.index) >= customElem.firebaseTimestamp) {
+								            customElem.firebaseTimestamp = (-1 * request.index);
+								            customElem.unshift('requests', request);
+								        }
+								        else {
+								            customElem.push('requests', request);
+								        }
 								        customElem.notifyPath('requests', customElem.requests);
 								    };
 								    customElem.removeSpinnerRoo();
@@ -1133,7 +1189,7 @@
                     switch (querytype) {
                         case customElem.querytype.bygame:
                             //Detach all firebase callbacks
-                            customElem.clearFirebaseCallbacks();
+                            customElem.clearFirebaseCallbacks('requests' + '_' + customElem.querytype.bygame + '_nopaginate');
 
                             query = window.lfg.utils.clearWhiteSpace(query).toLowerCase();	//querying by game title, so prepare query    
 
@@ -1153,7 +1209,25 @@
 								    request.description = customElem.truncateText(request.description, 65);
 								    customElem.getUserProfile(request);
 								    customElem.getCommentCount(request.key);
-								    customElem.push('requests', request);
+								    
+								    if ((-1 * request.index) >= customElem.firebaseTimestamp) {
+								        customElem.firebaseTimestamp = (-1 * request.index);
+								        customElem.unshift('requests', request);
+								    }
+								    else {
+								        customElem.push('requests', request);
+								        customElem.requestRetrievalCounter += 1;
+
+								        //when we've gotten all the requests for the paged-limit, rebind the scroll event
+								        if (customElem.requestRetrievalCounter >= customElem.dataops.limit) {
+								            if (customElem.scrollBound == false) {
+								                $('#mainContainer').scroll(customElem.containerScroll.bind(customElem));
+								                customElem.requestRetrievalCounter = 0;
+								                customElem.scrollBound = true;
+								            }
+								        }
+								    }
+
 								    customElem.notifyPath('requests', customElem.requests);
 								    customElem.removeSpinnerRoo();
 								});
@@ -1169,7 +1243,7 @@
 
                         case customElem.querytype.byid:
                             //Detach all firebase callbacks
-                            customElem.clearFirebaseCallbacks();
+                            customElem.clearFirebaseCallbacks('requests' + '_' + customElem.querytype.byid + '_nopaginate');
 
                             //save the query & type (for pagination)
                             customElem.dataops.query = query;
@@ -1187,7 +1261,25 @@
 								    request.description = customElem.truncateText(request.description, 65);
 								    customElem.getUserProfile(request);
 								    customElem.getCommentCount(request.key);
-								    customElem.push('requests', request);
+								    
+								    if ((-1 * request.index) >= customElem.firebaseTimestamp) {
+								        customElem.firebaseTimestamp = (-1 * request.index);
+								        customElem.unshift('requests', request);
+								    }
+								    else {
+								        customElem.push('requests', request);
+								        customElem.requestRetrievalCounter += 1;
+
+								        //when we've gotten all the requests for the paged-limit, rebind the scroll event
+								        if (customElem.requestRetrievalCounter >= customElem.dataops.limit) {
+								            if (customElem.scrollBound == false) {
+								                $('#mainContainer').scroll(customElem.containerScroll.bind(customElem));
+								                customElem.requestRetrievalCounter = 0;
+								                customElem.scrollBound = true;
+								            }
+								        }
+								    }
+
 								    customElem.notifyPath('requests', customElem.requests);
 								    customElem.removeSpinnerRoo();
 								});
@@ -1204,12 +1296,19 @@
 
                         case customElem.querytype.bysystem:
                             //Detach all firebase callbacks
-                            customElem.clearFirebaseCallbacks();
+                            customElem.clearFirebaseCallbacks('requests' + '_' + customElem.querytype.bysystem + '_nopaginate');
+                            customElem.clearFirebaseCallbacks('requests' + '_' + customElem.querytype.none + '_nopaginate');
+                            customElem.clearFirebaseCallbacks('requests' + '_' + customElem.querytype.bysystem + '_paginate');
+                            customElem.clearFirebaseCallbacks('requests' + '_' + customElem.querytype.none + '_paginate');
+
+                            if (query) {
+                                query = window.lfg.utils.clearWhiteSpace(query).toLowerCase();
+                            }
 
                             var refFunc = requestsRef
-								.orderByChild('systemgameindex')
+								.orderByChild( query !== null && query !== undefined && query !== '' ? 'systemgameindex' : 'systemindex')
 								.startAt(query !== null && query !== undefined && query !== '' ? customElem.systemFilter + query : customElem.systemFilter)
-								.endAt(query !== null && query !== undefined && query !== '' ? customElem.systemFilter + query + '~' : customElem.systemFilter + '~')
+                                .endAt(query !== null && query !== undefined && query !== '' ? customElem.systemFilter + query + '~' : customElem.systemFilter + '~')
 								.limitToFirst(customElem.dataops.limit)
 								.on('child_added', function (snapshot) {
 								    var request = snapshot.val() || {};
@@ -1218,7 +1317,25 @@
 								    request.description = customElem.truncateText(request.description, 65);
 								    customElem.getUserProfile(request);
 								    customElem.getCommentCount(request.key);
-								    customElem.push('requests', request);
+								    
+								    if ((-1 * request.index) >= customElem.firebaseTimestamp) {
+								        customElem.firebaseTimestamp = (-1 * request.index);
+								        customElem.unshift('requests', request);
+								    }
+								    else {
+								        customElem.push('requests', request);
+								        customElem.requestRetrievalCounter += 1;
+
+								        //when we've gotten all the requests for the paged-limit, rebind the scroll event
+								        if (customElem.requestRetrievalCounter >= customElem.dataops.limit) {
+								            if (customElem.scrollBound == false) {
+								                $('#mainContainer').scroll(customElem.containerScroll.bind(customElem));
+								                customElem.requestRetrievalCounter = 0;
+								                customElem.scrollBound = true;
+								            }
+								        }
+								    }
+
 								    customElem.notifyPath('requests', customElem.requests);
 								    customElem.removeSpinnerRoo();
 								});
@@ -1258,10 +1375,21 @@
 								    }
 								    else {
 								        customElem.push('requests', request);
+								        customElem.requestRetrievalCounter += 1;
+
+								        //when we've gotten all the requests for the paged-limit, rebind the scroll event
+								        if (customElem.requestRetrievalCounter >= customElem.dataops.limit) {
+								            if (customElem.scrollBound == false) {
+								                $('#mainContainer').scroll(customElem.containerScroll.bind(customElem));
+								                customElem.requestRetrievalCounter = 0;
+								                customElem.scrollBound = true;
+								            }
+								        }
 								    }
 
 								    customElem.notifyPath('requests', customElem.requests);
 								    customElem.removeSpinnerRoo();
+
 								}, function (errorObject) {
 								    console.log("The read failed: " + errorObject.code);
 								});
@@ -1496,6 +1624,8 @@
                 this.firebaseRef = new Firebase(window.lfg.config.getFirebaseUrl());
                 this.firebaseRefs = [];
                 this.firebaseTimestamp = window.lfg.utils.convertDateToUtc(Date.now());
+                this.requestRetrievalCounter = 0;
+                this.scrollBound = true;
 
                 this.requests = [];
 

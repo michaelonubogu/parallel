@@ -417,13 +417,13 @@
                     </div>
                     <div class="bottom">
                         <template is="dom-if" if="{{notSaved}}">
-							<label class="logo-link grey-text text-darken-2 light" style="margin-left: 12px;">New Gaming Request</label>
+							<label class="logo-link grey-text text-darken-2 light not-saved" style="margin-left: 12px;">New Gaming Request</label>
 						</template>
                     </div>
                 </paper-toolbar>
                 <div fit class="content-area">
 					<template is="dom-if" if="{{notSaved}}">
-						<div>Fill out this really short form and get your request going</div>
+						<div class="not-saved">Fill out this really short form and get your request going</div>
 					</template>
 						
 						<br>
@@ -555,7 +555,7 @@
 							<br /><br />
 						</div>
 
-						<div id="success_message" class="center-align" style="display:none;">
+						<div id="nr_success_message" class="center-align" style="display:none;">
 							<h4 class="orange-text text-darken-2">Your Gaming Request was created!</h4>
 							<h5 class="orange-text text-darken-2">Now go tell the world about it!</h5>
 							<br /><br /><br />
@@ -886,7 +886,7 @@
 					{ name: 'Wii U', value: 'wiiu' }
             	];
 
-            	this.newRequest = null;
+            	this.newRequest = {};
 
             	this.firebaseRef = new Firebase(window.lfg.config.getFirebaseUrl());
             },
@@ -1161,12 +1161,12 @@
             },
 
             showSuccessMessage: function () {
-                var cusElem = this;
-                cusElem.notSaved = false;
-                cusElem.notifyPath('notSaved', cusElem.notSaved);
+                //cusElem.notSaved = false;
+                //cusElem.notifyPath('notSaved', cusElem.notSaved);
 
-                $(cusElem.$.new_request_form).hide(0, function () {
-                    $(cusElem.$.success_message).fadeIn();
+                $('.not-saved').hide();
+                $('#new_request_form').hide(0, function () {
+                    $('#nr_success_message').show();
                 });
             },
 
@@ -1189,6 +1189,9 @@
             		authData = JSON.parse(localJSON);
             	}
 
+                //Hack - sometimes the system is empty
+            	this.request.system = $('.filter-tags.filter-active').data('system');
+
             	if (this.validateGameRequest(this.request) !== false && authData !== null && authData !== undefined) {
 
 					//If the date or time is null, do this
@@ -1201,7 +1204,7 @@
             		this.request.time.setFullYear(request_date.getFullYear());
             		this.request.time.setMonth(request_date.getMonth(), request_date.getDate());
             		this.request.time.setDate(request_date.getDate());
-            		
+
             		var gamedate = window.lfg.utils.convertDateToISO(this.request.time);
             		var created = window.lfg.utils.convertDateToISO(Date.now());
 
@@ -1230,14 +1233,15 @@
             		newRequest.index = index;   //getPriority is unreliable - use our own index
             		newRequest.gameindex = window.lfg.utils.clearWhiteSpace(newRequest.game) + lexicoIndex;
             		newRequest.giantbombindex = newRequest.giantbombid + lexicoIndex;
+            		newRequest.systemindex = newRequest.system + lexicoIndex;
             		newRequest.systemgameindex = newRequest.system + newRequest.gameindex;
             		newRequest.usergameindex = authData.uid + newRequest.gameindex;
             		newRequest.usersystemgameindex = authData.uid + newRequest.systemgameindex;
 
             		//Save new request content;
-            		var newRequestRef = requestsRef.push(newRequest);
+            		var newRequestRef = requestsRef.push();
 
-            		newRequestRef.set(newRequest);	//Set the priority so that this comes first 
+            		newRequestRef.setWithPriority(newRequest, (0 - Date.now()));	//Set the priority so that this comes first 
             		var requestid = newRequestRef.key();
 
             		if (requestid !== null && requestid !== undefined) {
