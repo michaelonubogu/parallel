@@ -1237,6 +1237,9 @@
             		newRequest.systemgameindex = newRequest.system + newRequest.gameindex;
             		newRequest.usergameindex = authData.uid + newRequest.gameindex;
             		newRequest.usersystemgameindex = authData.uid + newRequest.systemgameindex;
+            		newRequest.usersystemindex = authData.uid + newRequest.systemindex;
+            		newRequest.usergiantbombindex = authData.uid + newRequest.giantbombindex;
+            		newRequest.userindex = authData.uid + lexicoIndex;
 
             		//Save new request content;
             		var newRequestRef = requestsRef.push();

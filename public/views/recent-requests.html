@@ -213,8 +213,8 @@
         }
 
         .request-profile-image {
-            width: 42px;
-            height: 42px;
+            width: 30px;
+            height: 30px;
             overflow: hidden;
             left: 15px;
             display: inline-block;
@@ -408,37 +408,37 @@
                             </div>
                         </li>
 
-                        <template is="dom-repeat" items="{{requests}}">
-                            <li data-request-key$="[[item.key]]" class="collection-item request-list-item" on-click="loadRequest">
+                        <template is="dom-repeat" items="{{recentRequests}}">
+                            <li data-request-key$="[[item.request.key]]" class="collection-item request-list-item" on-click="loadRequest">
                                 <div style="width:100%" class="right right-align">
-                                    <h6 class="grey-text" style="font-size: 0.75rem;margin: 0px 20px 0 0;position: absolute;right: 0;">[[getTimeLapse(item.datetime)]]</h6>
+                                    <h6 class="grey-text" style="font-size: 0.75rem;margin: 0px 20px 0 0;position: absolute;right: 0;">[[getTimeLapse(item.request.datetime)]]</h6>
                                 </div>
                                 <div class="row">
                                     <div class="col s10 layout horizontal">
                                         <div style="margin-right:20px;">
-                                            <template is="dom-if" if="{{item.images.list_url}}">
-                                                <img class="request-list-image" src="[[item.images.list_url]]" width="160" />
+                                            <template is="dom-if" if="{{item.request.images.list_url}}">
+                                                <img class="request-list-image" src="[[item.request.images.list_url]]" width="160" />
                                             </template>
-                                            <template is="dom-if" if="{{isImageBlank(item.images.list_url)}}">
+                                            <template is="dom-if" if="{{isImageBlank(item.request.images.list_url)}}">
                                                 <div class="layout vertical center-center white-text" style="background-color:#FB8C00; width:160px; height:90px; border-radius: 5px; padding:0 7px;">
-                                                    <label class="white-text">{{item.gametitle}}</label>
+                                                    <label class="white-text">{{item.request.gametitle}}</label>
                                                 </div>
                                             </template>
                                         </div>
                                         <div>
                                             <div class="item-content-container">
-                                                <div><span class="grey-text text-darken-2" style="font-size:0.75rem;">[[item.gametitle]]</span></div>
-                                                <div><span style="font-size:1.15rem; margin-top:-5px; font-weight:500;">[[item.title]]</span></div>
-                                                <div><span class="grey-text" style="font-size:0.9rem;">[[item.description]]</span></div>
+                                                <div><span class="grey-text text-darken-2" style="font-size:0.75rem;">[[item.request.gametitle]]</span></div>
+                                                <div><span style="font-size:1.15rem; margin-top:-5px; font-weight:500;">[[item.request.title]]</span></div>
+                                                <div><span class="grey-text" style="font-size:0.9rem;">[[item.request.description]]</span></div>
                                                 <div>
-                                                    <span class="white-text center center-align system-tag" style$="[[item.systemColor]]">[[getSystemType(item.system)]]</span>
-                                                    <span class="grey-text text-lighten-1 center center-align" style="background-color:#ffffff; font-size:0.7rem; padding:3px 10px; border:solid 1px #BDBDBD; border-radius:5px;">[[getGamerCount(item.gamercount)]]</span>
-                                                    <template is="dom-if" if="{{item.mic}}">
+                                                    <span class="white-text center center-align system-tag" style$="[[item.request.systemColor]]">[[getSystemType(item.request.system)]]</span>
+                                                    <span class="grey-text text-lighten-1 center center-align" style="background-color:#ffffff; font-size:0.7rem; padding:3px 10px; border:solid 1px #BDBDBD; border-radius:5px;">[[getGamerCount(item.request.gamercount)]]</span>
+                                                    <template is="dom-if" if="{{item.request.mic}}">
                                                         <span style="margin-left:7px; vertical-align:text-top;" class="grey-text"><i style="font-size:1.0rem;" class="material-icons">headset_mic</i></span>
                                                     </template>
 
-                                                    <template is="dom-if" if="{{item.commentCount}}">
-                                                        <span style="margin-left:7px;" class="grey-text"><i class="fa fa-comments grey-text"></i>&nbsp;<span style="font-size:0.7rem">{{item.commentCount}}</span></span>
+                                                    <template is="dom-if" if="{{item.request.commentCount}}">
+                                                        <span style="margin-left:7px;" class="grey-text"><i class="fa fa-comments grey-text"></i>&nbsp;<span style="font-size:0.7rem">{{item.request.commentCount}}</span></span>
                                                     </template>
                                                 </div>
                                             </div>
@@ -731,10 +731,30 @@
             },
 
             clearFirebaseCallbacks: function () {
-            	_.each(this.firebaseRefs, function (ref) {
-					//Detach all currently attached firebase callbacks. Only one should be attached at one time
-            		ref.value.off(ref.type, ref.functionRef);
-            	});
+                var cusElem = this;
+                if (name !== null && name !== undefined && name !== '') {
+                    var callbacks = _.findWhere(cusElem.firebaseRefs, { name: name });
+                    if (callbacks) {
+                        if (callbacks.isArray) {
+                            _.each(callbacks, function (ref, index) {
+                                //Detach all currently attached firebase callbacks. Only one should be attached at one time
+                                ref.value.off(ref.type, ref.functionRef);
+                                cusElem.firebaseRefs.splice(index, 1);
+                            });
+                        }
+                        else {
+                            callbacks.value.off(callbacks.type, callbacks.functionRef);
+                            cusElem.firebaseRefs.splice(cusElem.firebaseRefs.indexOf(callbacks), 1);
+                        }
+                    }
+                }
+                else {
+                    _.each(this.firebaseRefs, function (ref, index) {
+                        //Detach all currently attached firebase callbacks. Only one should be attached at one time
+                        ref.value.off(ref.type, ref.functionRef);
+                        cusElem.firebaseRefs.splice(index, 1);
+                    });
+                }
             },
 
             clearNeutralTagClass: function (node) {
@@ -797,30 +817,30 @@
             },
 
             containerScroll: function (e) {
-            	var cusElem = this;
-            	var container = e.target;
-            	if ($(container).scrollTop() + $(container).innerHeight() >= e.target.scrollHeight) {
-            		// reached bottom of page - run our call for pagination
+                var cusElem = this;
+                var container = e.target;
+                if (container.offsetHeight + container.scrollTop >= container.scrollHeight) {
+                    // reached bottom of page - run our call for pagination
 
-            		if (cusElem.dataops.query == null || cusElem.dataops.query === undefined || cusElem.dataops.query === '') {
-            			if (cusElem.systemFilter !== null && cusElem.systemFilter !== undefined && cusElem.systemFilter !== '' && cusElem.systemFilter !== 'none') {
-            				cusElem.getRequests(null, cusElem.querytype.bysystem, true);
-            			}
-            			else {
-            				cusElem.getRequests(null, this.querytype.none, true);
-            				/*cusElem.getRequests(null, cusElem.dataops.querytype, true);*/
-            			}
-            		}
-            		else {
-            			if (cusElem.systemFilter !== null && cusElem.systemFilter !== undefined && cusElem.systemFilter !== '' && cusElem.systemFilter !== 'none') {
-            				cusElem.getRequests(cusElem.dataops.query, cusElem.querytype.bysystem, true);
-            			}
-            			else {
-            				cusElem.getRequests(cusElem.dataops.query, cusElem.querytype.bygame, true);
-            				/*cusElem.getRequests(cusElem.dataops.query, cusElem.dataops.querytype, true);*/
-            			}
-            		}
-            	}
+                    if (cusElem.dataops.query == null || cusElem.dataops.query === undefined || cusElem.dataops.query === '') {
+                        if (cusElem.systemFilter !== null && cusElem.systemFilter !== undefined && cusElem.systemFilter !== '' && cusElem.systemFilter !== 'none') {
+                            cusElem.getRequests(null, cusElem.querytype.bysystem, true);
+                        }
+                        else {
+                            cusElem.getRequests(null, this.querytype.none, true);
+                            /*cusElem.getRequests(null, cusElem.dataops.querytype, true);*/
+                        }
+                    }
+                    else {
+                        if (cusElem.systemFilter !== null && cusElem.systemFilter !== undefined && cusElem.systemFilter !== '' && cusElem.systemFilter !== 'none') {
+                            cusElem.getRequests(cusElem.dataops.query, cusElem.querytype.bysystem, true);
+                        }
+                        else {
+                            cusElem.getRequests(cusElem.dataops.query, cusElem.querytype.bygame, true);
+                            /*cusElem.getRequests(cusElem.dataops.query, cusElem.dataops.querytype, true);*/
+                        }
+                    }
+                }
             },
 
             doSearch: function (e) {
@@ -923,43 +943,57 @@
             	    var recentRequestsRef = new Firebase(window.lfg.config.getFirebaseUrl() + 'users/' + userid + '/recentrequests');
 
             		if (paginate) {
-            		    var lastrequest = customElem.requests[customElem.requests.length - 1];
+            		    var lastRecentRequest = customElem.recentRequests[customElem.recentRequests.length - 1];
+            		    var lastrequest = lastRecentRequest.request;
 
             		    //Detach all firebase callbacks
-            		    customElem.clearFirebaseCallbacks();
+            		    customElem.clearFirebaseCallbacks('recentrequests_nopaginate');
+            		    customElem.clearFirebaseCallbacks('recentrequests_paginate');
 
             		    //no query, so just go by priority
             		    //save the query & type (for pagination)
             		    customElem.dataops.querytype = querytype;
 
             		    var refFunc = recentRequestsRef
-                                        .orderByChild('requestindex')
-                                        .startAt(lastrequest.requestindex)
-                                        .limitToFirst(customElem.dataops.limit + 1)
-                                        .on("child_added", function (snapshot) {
+                                .orderByChild('requestindex')
+                                .startAt(lastRecentRequest.requestindex)
+                                .limitToFirst(customElem.dataops.limit + 1)
+                                .on("child_added", function (snapshot) {
 
-                                            var recentRequest = snapshot.val();
-                                            var requestRef = new Firebase(window.lfg.config.getFirebaseUrl() + 'requests/' + recentRequest.requestid);
+                                    var recentRequest = snapshot.val();
+                                    var requestRef = new Firebase(window.lfg.config.getFirebaseUrl() + 'requests/' + recentRequest.requestid);
 
-                                            requestRef
-                                                .once("value", function (snapshot) {
-                                                    var request = snapshot.val() || {};
-                                                    request.key = snapshot.key();
-                                                    request.priority = snapshot.getPriority();
-                                                    request.systemColor = customElem.getSystemColor(request.system);
-                                                    request.description = customElem.truncateText(request.description, 65);
-                                                    customElem.getUserProfile(request);
-                                                    customElem.getCommentCount(request.key);
-                                                    if (request.priority !== lastrequest.priority) { customElem.push('requests', request); };
+                                    requestRef
+                                        .once("value", function (snapshot) {
+                                            var request = snapshot.val() || {};
+                                            request.key = snapshot.key();
+                                            request.priority = snapshot.getPriority();
+                                            request.systemColor = customElem.getSystemColor(request.system);
+                                            request.description = customElem.truncateText(request.description, 65);
+                                            customElem.getUserProfile(request);
+                                            customElem.getCommentCount(request.key);
 
-                                                    customElem.removeSpinnerRoo();
-                                                }, function (errorObject) {
-                                                    console.log("The read failed: " + errorObject.code);
-                                                });
+                                            recentRequest.request = request;
 
+                                            if (request.priority !== lastrequest.priority) {
+                                                if ((-1 * recentRequest.index) >= customElem.firebaseTimestamp) {
+                                                    customElem.firebaseTimestamp = (-1 * request.index);
+                                                    customElem.unshift('recentRequests', recentRequest);
+                                                }
+                                                else {
+                                                    customElem.push('recentRequests', recentRequest);
+                                                }
+                                                customElem.notifyPath('requests', customElem.requests);
+                                            };
+
+                                            customElem.removeSpinnerRoo();
                                         }, function (errorObject) {
                                             console.log("The read failed: " + errorObject.code);
                                         });
+
+                                }, function (errorObject) {
+                                    console.log("The read failed: " + errorObject.code);
+                                });
 
             		    //Store the firebaseRef so we can access it later to detach any callbacks
             		    customElem.firebaseRefs.push({
@@ -970,7 +1004,8 @@
             		    });
             		}
             		else {
-            			customElem.requests = [];
+            		    customElem.requests = [];
+            		    customElem.recentRequests = [];
             		    //customElem.addSpinnerRoo();
 
             		    //Detach all firebase callbacks
@@ -996,7 +1031,18 @@
                                                     request.description = customElem.truncateText(request.description, 65);
                                                     customElem.getUserProfile(request);
                                                     customElem.getCommentCount(request.key);
-                                                    customElem.push('requests', request);
+
+                                                    //make the request a child item of the recentRequests
+                                                    recentRequest.request = request;
+
+                                                    if ((-1 * recentRequest.index) >= customElem.firebaseTimestamp) {
+                                                        customElem.firebaseTimestamp = (-1 * request.index);
+                                                        customElem.unshift('recentRequests', recentRequest);
+                                                    }
+                                                    else {
+                                                        customElem.push('recentRequests', recentRequest);
+                                                        customElem.requestRetrievalCounter += 1;
+                                                    }
 
                                                     customElem.removeSpinnerRoo();
                                                 }, function (errorObject) {
@@ -1006,6 +1052,18 @@
                                         }, function (errorObject) {
                                             console.log("The read failed: " + errorObject.code);
                                         });
+
+            		    //Listen to the "child_removed" event - incase the user views a previously-viewed request again
+            			//recentRequestsRef.on('child_removed', function (oldChildSnapshot) {
+            			//    // remove child from requests array
+            			//    var oldRecRequest = oldChildSnapshot.val();
+            			//    var foundRequest = _.findWhere(customElem.requests, { requestid: oldRecRequest.requestid });
+
+            			//    if (foundRequest) {
+            			//        customElem.requests.splice(customElem.requests.indexOf(foundRequest), 1);
+            			//        customElem.notifyPath('requests', customElem.requests);
+            			//    }
+            			//});
 
             		    //Store the firebaseRef so we can access it later to detach any callbacks
             			customElem.firebaseRefs.push({
@@ -1235,8 +1293,10 @@
 
             	this.firebaseRef = new Firebase(window.lfg.config.getFirebaseUrl());
             	this.firebaseRefs = [];
+            	this.firebaseTimestamp = window.lfg.utils.convertDateToUtc(Date.now());
 
             	this.requests = [];
+            	this.recentRequests = [];
             	this.loggedIn = this.isLoggedIn();
 
                 //hide elements

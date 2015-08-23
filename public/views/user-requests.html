@@ -216,8 +216,8 @@
 		}
 
 		.request-profile-image {
-			width: 42px;
-			height: 42px;
+			width: 30px;
+			height: 30px;
 			overflow: hidden;
 			left: 15px;
 			display: inline-block;
@@ -535,6 +535,10 @@
             	var cusElem = this;
             	var system = e.target.dataset.system;
 
+                //unbind this annoying event - will be rebound if it is.
+            	$('#mainContainer').unbind('scroll');
+            	cusElem.scrollBound = false;
+
             	$('.filter-tags').each(function () {
             		cusElem.clearSystemTagClass($(this).get(0));
             	});
@@ -746,10 +750,30 @@
             },
 
             clearFirebaseCallbacks: function () {
-            	_.each(this.firebaseRefs, function (ref) {
-					//Detach all currently attached firebase callbacks. Only one should be attached at one time
-            		ref.value.off(ref.type, ref.functionRef);
-            	});
+                var cusElem = this;
+                if (name !== null && name !== undefined && name !== '') {
+                    var callbacks = _.findWhere(cusElem.firebaseRefs, { name: name });
+                    if (callbacks) {
+                        if (callbacks.isArray) {
+                            _.each(callbacks, function (ref, index) {
+                                //Detach all currently attached firebase callbacks. Only one should be attached at one time
+                                ref.value.off(ref.type, ref.functionRef);
+                                cusElem.firebaseRefs.splice(index, 1);
+                            });
+                        }
+                        else {
+                            callbacks.value.off(callbacks.type, callbacks.functionRef);
+                            cusElem.firebaseRefs.splice(cusElem.firebaseRefs.indexOf(callbacks), 1);
+                        }
+                    }
+                }
+                else {
+                    _.each(this.firebaseRefs, function (ref, index) {
+                        //Detach all currently attached firebase callbacks. Only one should be attached at one time
+                        ref.value.off(ref.type, ref.functionRef);
+                        cusElem.firebaseRefs.splice(index, 1);
+                    });
+                }
             },
 
             clearNeutralTagClass: function (node) {
@@ -812,30 +836,30 @@
             },
 
             containerScroll: function (e) {
-            	var cusElem = this;
-            	var container = e.target;
-            	if ($(container).scrollTop() + $(container).innerHeight() >= e.target.scrollHeight) {
-            		// reached bottom of page - run our call for pagination
+                var cusElem = this;
+                var container = e.target;
+                if (container.offsetHeight + container.scrollTop >= container.scrollHeight) {
+                    // reached bottom of page - run our call for pagination
 
-            		if (cusElem.dataops.query == null || cusElem.dataops.query === undefined || cusElem.dataops.query === '') {
-            			if (cusElem.systemFilter !== null && cusElem.systemFilter !== undefined && cusElem.systemFilter !== '' && cusElem.systemFilter !== 'none') {
-            				cusElem.getRequests(null, cusElem.querytype.bysystem, true);
-            			}
-            			else {
-            				cusElem.getRequests(null, this.querytype.none, true);
-            				/*cusElem.getRequests(null, cusElem.dataops.querytype, true);*/
-            			}
-            		}
-            		else {
-            			if (cusElem.systemFilter !== null && cusElem.systemFilter !== undefined && cusElem.systemFilter !== '' && cusElem.systemFilter !== 'none') {
-            				cusElem.getRequests(cusElem.dataops.query, cusElem.querytype.bysystem, true);
-            			}
-            			else {
-            				cusElem.getRequests(cusElem.dataops.query, cusElem.querytype.bygame, true);
-            				/*cusElem.getRequests(cusElem.dataops.query, cusElem.dataops.querytype, true);*/
-            			}
-            		}
-            	}
+                    if (cusElem.dataops.query == null || cusElem.dataops.query === undefined || cusElem.dataops.query === '') {
+                        if (cusElem.systemFilter !== null && cusElem.systemFilter !== undefined && cusElem.systemFilter !== '' && cusElem.systemFilter !== 'none') {
+                            cusElem.getRequests(null, cusElem.querytype.bysystem, true);
+                        }
+                        else {
+                            cusElem.getRequests(null, this.querytype.none, true);
+                            /*cusElem.getRequests(null, cusElem.dataops.querytype, true);*/
+                        }
+                    }
+                    else {
+                        if (cusElem.systemFilter !== null && cusElem.systemFilter !== undefined && cusElem.systemFilter !== '' && cusElem.systemFilter !== 'none') {
+                            cusElem.getRequests(cusElem.dataops.query, cusElem.querytype.bysystem, true);
+                        }
+                        else {
+                            cusElem.getRequests(cusElem.dataops.query, cusElem.querytype.bygame, true);
+                            /*cusElem.getRequests(cusElem.dataops.query, cusElem.dataops.querytype, true);*/
+                        }
+                    }
+                }
             },
 
             doSearch: function (e) {
@@ -938,287 +962,431 @@
             },
 
             getRequests: function (query, querytype, paginate) {
-            	var customElem = this
-            	var requestsRef = customElem.firebaseRef.child('requests');
-            	var userid = window.lfg.utils.getUser();
+                var customElem = this
+                var requestsRef = customElem.firebaseRef.child('requests');
+                var userid = window.lfg.utils.getUser();
 
-            	if (userid !== null && userid !== undefined && userid !== '') {
-            		if (paginate) {
-            			var lastrequest = customElem.requests[customElem.requests.length - 1];
+                if (paginate) {
+                    //determine query type
+                    switch (querytype) {
+                        case customElem.querytype.bygame:
+                            //Detach all firebase callbacks
+                            customElem.clearFirebaseCallbacks('requests' + '_' + customElem.querytype.bygame + '_nopaginate');
+                            customElem.clearFirebaseCallbacks('requests' + '_' + customElem.querytype.bygame + '_paginate');
 
-            			//determine query type
-            			switch (querytype) {
-            				case customElem.querytype.bygame:
-            					//Detach all firebase callbacks
-            					customElem.clearFirebaseCallbacks();
+                            query = window.lfg.utils.clearWhiteSpace(query).toLowerCase();
 
-            					query = window.lfg.utils.clearWhiteSpace(query).toLowerCase();
+                            //save the query & type (for pagination)
+                            this.dataops.query = query;
+                            this.dataops.querytype = querytype;
 
-            					//save the query & type (for pagination)
-            					this.dataops.query = query;
-            					this.dataops.querytype = querytype;
+                            //Using a custom index I created to reverse order entries
+                            var lastrequest = customElem.requests[customElem.requests.length - 1];
 
-            					//Using a custom index I created to reverse order entries
-            					var refFunc = requestsRef
-									.orderByChild('usergameindex')
-									.startAt(lastrequest.usergameindex)
-									.endAt(userid + query + '~')
-									.limitToFirst(customElem.dataops.limit + 1)
-									.on('child_added', function (snapshot) {
-										var request = snapshot.val() || {};
-										request.key = snapshot.key();
-										request.systemColor = customElem.getSystemColor(request.system);
-										request.description = customElem.truncateText(request.description, 65);
-										customElem.getUserProfile(request);
-										customElem.getCommentCount(request.key);
-										if (request.gameindex !== lastrequest.gameindex) { customElem.push('requests', request); };
-										customElem.removeSpinnerRoo();
-									});
+                            var refFunc = requestsRef
+								.orderByChild('usergameindex')
+								.startAt(lastrequest.usergameindex)
+								.endAt(lastrequest.uid + query + '~')
+								.limitToFirst(customElem.dataops.limit + 1)
+								.on('child_added', function (snapshot) {
+								    var request = snapshot.val() || {};
+								    var lastreq = customElem.requests[customElem.requests.length - 1];
 
-            					//Store the firebaseRef so we can access it later to detach any callbacks
-            					customElem.firebaseRefs.push({
-            						name: 'userrequests' + '_' + customElem.querytype.bygame + '_paginate',
-            						type: 'child_added',
-            						value: requestsRef,
-            						functionRef: refFunc
-            					});
-            					break;
+								    request.key = snapshot.key();
+								    request.systemColor = customElem.getSystemColor(request.system);
+								    request.description = customElem.truncateText(request.description, 65);
+								    customElem.getUserProfile(request);
+								    customElem.getCommentCount(request.key);
+								    if (request.gameindex !== lastreq.gameindex) {
+								        if ((-1 * request.index) >= customElem.firebaseTimestamp) {
+								            customElem.firebaseTimestamp = (-1 * request.index);
+								            customElem.unshift('requests', request);
+								        }
+								        else {
+								            customElem.push('requests', request);
+								        }
+								        customElem.notifyPath('requests', customElem.requests);
+								    };
+								    customElem.removeSpinnerRoo();
+								});
 
-            				//case customElem.querytype.byid:
-            				//	//Detach all firebase callbacks
-            				//	customElem.clearFirebaseCallbacks();
+                            //Store the firebaseRef so we can access it later to detach any callbacks
+                            customElem.firebaseRefs.push({
+                                name: 'requests' + '_' + customElem.querytype.bygame + '_paginate',
+                                type: 'child_added',
+                                value: requestsRef,
+                                functionRef: refFunc
+                            });
+                            break;
 
-            				//	//save the query & type (for pagination)
-            				//	customElem.dataops.query = query;
-            				//	customElem.dataops.querytype = querytype;
+                        case customElem.querytype.byid:
+                            //Detach all firebase callbacks
+                            customElem.clearFirebaseCallbacks('requests' + '_' + customElem.querytype.id + '_nopaginate');
+                            customElem.clearFirebaseCallbacks('requests' + '_' + customElem.querytype.id + '_paginate');
 
-            				//	var refFunc = requestsRef
-							//		.orderByChild('giantbombindex')
-							//		.startAt(lastrequest.giantbombindex.toString())
-							//		.endAt(lastrequest.giantbombindex + '~')
-							//		.limitToFirst(customElem.dataops.limit + 1)
-							//		.on('child_added', function (snapshot) {
-							//			var request = snapshot.val() || {};
-							//			request.key = snapshot.key();
-							//			request.systemColor = customElem.getSystemColor(request.system);
-							//			request.description = customElem.truncateText(request.description, 65);
-							//			customElem.getUserProfile(request);
-							//			customElem.getCommentCount(request.key);
-							//			if (request.giantbombindex !== lastrequest.giantbombindex) { customElem.push('requests', request); };
-							//			customElem.removeSpinnerRoo();
-							//		});
-            				//	//Store the firebaseRef so we can access it later to detach any callbacks
-            				//	customElem.firebaseRefs.push({
-            				//		name: 'requests' + '_' + customElem.querytype.id + '_paginate',
-            				//		type: 'child_added',
-            				//		value: requestsRef,
-            				//		functionRef: refFunc
-            				//	});
-            				//	break;
+                            var lastrequest = customElem.requests[customElem.requests.length - 1];
 
-            				case customElem.querytype.bysystem:
-            					//Detach all firebase callbacks
-            					customElem.clearFirebaseCallbacks();
+                            //save the query & type (for pagination)
+                            customElem.dataops.query = query;
+                            customElem.dataops.querytype = querytype;
 
-            					var refFunc = requestsRef
-									.orderByChild('usersystemgameindex')
-									.startAt(lastrequest.usersystemgameindex.toString())
-									.endAt(lastrequest.usersystemgameindex.toString() + '~')
-									.limitToFirst(customElem.dataops.limit + 1)
-									.on('child_added', function (snapshot) {
-										var request = snapshot.val() || {};
-										request.key = snapshot.key();
-										request.systemColor = customElem.getSystemColor(request.system);
-										request.description = customElem.truncateText(request.description, 65);
-										customElem.getUserProfile(request);
-										customElem.getCommentCount(request.key);
-										if (request.systemgameindex !== lastrequest.systemgameindex) { customElem.push('requests', request); };
-										customElem.removeSpinnerRoo();
-									});
-            					//Store the firebaseRef so we can access it later to detach any callbacks
-            					customElem.firebaseRefs.push({
-            						name: 'userrequests' + '_' + customElem.querytype.bysystem + '_paginate',
-            						type: 'child_added',
-            						value: requestsRef,
-            						functionRef: refFunc
-            					});
-            					break;
+                            var refFunc = requestsRef
+								.orderByChild('usergiantbombindex')
+								.startAt(lastrequest.usergiantbombindex.toString())
+								.endAt(lastrequest.uid + lastrequest.giantbombid + '~')
+								.limitToFirst(customElem.dataops.limit + 1)
+								.on('child_added', function (snapshot) {
+								    var request = snapshot.val() || {};
+								    var lastreq = customElem.requests[customElem.requests.length - 1];
 
-            				default:
-            					//Detach all firebase callbacks
-            					customElem.clearFirebaseCallbacks();
+								    request.key = snapshot.key();
+								    request.systemColor = customElem.getSystemColor(request.system);
+								    request.description = customElem.truncateText(request.description, 65);
+								    customElem.getUserProfile(request);
+								    customElem.getCommentCount(request.key);
+								    if (request.giantbombindex !== lastreq.giantbombindex) {
+								        if ((-1 * request.index) >= customElem.firebaseTimestamp) {
+								            customElem.firebaseTimestamp = (-1 * request.index);
+								            customElem.unshift('requests', request);
+								        }
+								        else {
+								            customElem.push('requests', request);
+								        }
+								        customElem.notifyPath('requests', customElem.requests);
+								    };
+								    customElem.removeSpinnerRoo();
+								});
+                            //Store the firebaseRef so we can access it later to detach any callbacks
+                            customElem.firebaseRefs.push({
+                                name: 'requests' + '_' + customElem.querytype.id + '_paginate',
+                                type: 'child_added',
+                                value: requestsRef,
+                                functionRef: refFunc
+                            });
+                            break;
 
-            					//no query, so just go by priority
-            					//save the query & type (for pagination)
-            					customElem.dataops.querytype = querytype;
+                        case customElem.querytype.bysystem:
+                            //Detach all firebase callbacks
+                            customElem.clearFirebaseCallbacks('requests' + '_' + customElem.querytype.bysystem + '_nopaginate');
+                            customElem.clearFirebaseCallbacks('requests' + '_' + customElem.querytype.bysystem + '_paginate');
+                            customElem.clearFirebaseCallbacks('requests' + '_' + customElem.querytype.none + '_nopaginate');
+                            customElem.clearFirebaseCallbacks('requests' + '_' + customElem.querytype.none + '_paginate');
 
-            					var refFunc = requestsRef
-									.orderByChild('uid')
-									.startAt(lastrequest.uid)
-									.limitToFirst(customElem.dataops.limit + 1)
-									.on("child_added", function (snapshot) {
-										var request = snapshot.val() || {};
-										request.key = snapshot.key();
-										request.priority = snapshot.getPriority();
-										request.systemColor = customElem.getSystemColor(request.system);
-										request.description = customElem.truncateText(request.description, 65);
-										customElem.getUserProfile(request);
-										customElem.getCommentCount(request.key);
-										if (request.priority !== lastrequest.priority) { customElem.push('requests', request); };
-										customElem.removeSpinnerRoo();
-									}, function (errorObject) {
-										console.log("The read failed: " + errorObject.code);
-									});
+                            var lastrequest = customElem.requests[customElem.requests.length - 1];
 
-            					//Store the firebaseRef so we can access it later to detach any callbacks
-            					customElem.firebaseRefs.push({
-            						name: 'userrequests' + '_' + customElem.querytype.none + '_paginate',
-            						type: 'child_added',
-            						value: requestsRef,
-            						functionRef: refFunc
-            					});
-            					break;
-            			}
-            		}
-            		else {
-            			customElem.requests = [];
-            			//customElem.addSpinnerRoo();
+                            if (query) {
+                                query = window.lfg.utils.clearWhiteSpace(query).toLowerCase();
+                            }
 
-            			switch (querytype) {
-            				case customElem.querytype.bygame:
-            					//Detach all firebase callbacks
-            					customElem.clearFirebaseCallbacks();
+                            var refFunc = requestsRef
+								.orderByChild(query !== null && query !== undefined && query !== '' ? 'usersystemgameindex' : 'usersystemindex')
+								.startAt(query !== null && query !== undefined && query !== '' ? lastrequest.usersystemgameindex.toString() : lastrequest.usersystemindex.toString())
+                                .endAt(query !== null && query !== undefined && query !== '' ? lastrequest.uid + lastrequest.system + query + '~' : lastrequest.uid + lastrequest.system + '~')
+								.limitToFirst(customElem.dataops.limit + 1)
+								.on('child_added', function (snapshot) {
+								    var request = snapshot.val() || {};
+								    var lastreq = customElem.requests[customElem.requests.length - 1];
 
-            					query = window.lfg.utils.clearWhiteSpace(query).toLowerCase();	//querying by game title, so prepare query
+								    request.key = snapshot.key();
+								    request.systemColor = customElem.getSystemColor(request.system);
+								    request.description = customElem.truncateText(request.description, 65);
+								    customElem.getUserProfile(request);
+								    customElem.getCommentCount(request.key);
+								    if (request.systemgameindex !== lastreq.systemgameindex) {
+								        if ((-1 * request.index) >= customElem.firebaseTimestamp) {
+								            customElem.firebaseTimestamp = (-1 * request.index);
+								            customElem.unshift('requests', request);
+								        }
+								        else {
+								            customElem.push('requests', request);
+								        }
+								        customElem.notifyPath('requests', customElem.requests);
+								    };
+								    customElem.removeSpinnerRoo();
+								});
+                            //Store the firebaseRef so we can access it later to detach any callbacks
+                            customElem.firebaseRefs.push({
+                                name: 'requests' + '_' + customElem.querytype.bysystem + '_paginate',
+                                type: 'child_added',
+                                value: requestsRef,
+                                functionRef: refFunc
+                            });
+                            break;
 
-            					//save the query & type (for pagination)
-            					customElem.dataops.query = query;
-            					customElem.dataops.querytype = querytype;
+                        default:
+                            //Detach all firebase callbacks
+                            customElem.clearFirebaseCallbacks();
 
-            					var refFunc = requestsRef
-									.orderByChild('usergameindex')
-									.startAt(userid + query)
-									.endAt(userid + query + '~')
-									.limitToFirst(customElem.dataops.limit)
-									.on('child_added', function (snapshot) {
-										var request = snapshot.val() || {};
-										request.key = snapshot.key();
-										request.systemColor = customElem.getSystemColor(request.system);
-										request.description = customElem.truncateText(request.description, 65);
-										customElem.getUserProfile(request);
-										customElem.getCommentCount(request.key);
-										customElem.push('requests', request);
-										customElem.removeSpinnerRoo();
-									});
+                            var lastrequest = customElem.requests[customElem.requests.length - 1];
 
-            					//Store the firebaseRef so we can access it later to detach any callbacks
-            					customElem.firebaseRefs.push({
-            						name: 'userrequests' + '_' + customElem.querytype.bygame + '_nopaginate',
-            						type: 'child_added',
-            						value: requestsRef,
-            						functionRef: refFunc
-            					});
-            					break;
+                            //no query, so just go by priority
+                            //save the query & type (for pagination)
+                            customElem.dataops.querytype = querytype;
 
-            				//case customElem.querytype.byid:
-            				//	//Detach all firebase callbacks
-            				//	customElem.clearFirebaseCallbacks();
+                            var refFunc = requestsRef
+								.orderByChild('userindex')
+                                .startAt(lastrequest.userindex)
+                                .endAt(userid + '~')
+								.limitToFirst(customElem.dataops.limit + 1)
+								.on("child_added", function (snapshot) {
+								    var request = snapshot.val() || {};
+								    request.key = snapshot.key();
+								    var lastreq = customElem.requests[customElem.requests.length - 1];
 
-            				//	//save the query & type (for pagination)
-            				//	customElem.dataops.query = query;
-            				//	customElem.dataops.querytype = querytype;
+								    request.priority = snapshot.getPriority();
+								    request.systemColor = customElem.getSystemColor(request.system);
+								    request.description = customElem.truncateText(request.description, 65);
+								    customElem.getUserProfile(request);
+								    customElem.getCommentCount(request.key);
+								    if (request.index !== lastreq.index) {
+								        if ((-1 * request.index) >= customElem.firebaseTimestamp) {
+								            customElem.firebaseTimestamp = (-1 * request.index);
+								            customElem.unshift('requests', request);
+								        }
+								        else {
+								            customElem.push('requests', request);
+								        }
+								        customElem.notifyPath('requests', customElem.requests);
+								    };
+								    customElem.removeSpinnerRoo();
+								}, function (errorObject) {
+								    console.log("The read failed: " + errorObject.code);
+								});
 
-            				//	var refFunc = requestsRef
-							//		.orderByChild('giantbombindex')
-							//		.startAt(query.toString())
-							//		.endAt(query + '~')
-							//		.limitToFirst(customElem.dataops.limit)
-							//		.on('child_added', function (snapshot) {
-							//			var request = snapshot.val() || {};
-							//			request.key = snapshot.key();
-							//			request.systemColor = customElem.getSystemColor(request.system);
-							//			request.description = customElem.truncateText(request.description, 65);
-							//			customElem.getUserProfile(request);
-							//			customElem.getCommentCount(request.key);
-							//			customElem.push('requests', request);
-							//			customElem.removeSpinnerRoo();
-							//		});
+                            //Store the firebaseRef so we can access it later to detach any callbacks
+                            customElem.firebaseRefs.push({
+                                name: 'requests' + '_' + customElem.querytype.none + '_paginate',
+                                type: 'child_added',
+                                value: requestsRef,
+                                functionRef: refFunc
+                            });
+                            break;
+                    }
+                }
+                else {
+                    customElem.requests = [];
+                    //customElem.addSpinnerRoo();
 
-            				//	//Store the firebaseRef so we can access it later to detach any callbacks
-            				//	customElem.firebaseRefs.push({
-            				//		name: 'requests' + '_' + customElem.querytype.byid + '_nopaginate',
-            				//		type: 'child_added',
-            				//		value: requestsRef,
-            				//		functionRef: refFunc
-            				//	});
-            				//	break;
+                    switch (querytype) {
+                        case customElem.querytype.bygame:
+                            //Detach all firebase callbacks
+                            customElem.clearFirebaseCallbacks('requests' + '_' + customElem.querytype.bygame + '_nopaginate');
+
+                            query = window.lfg.utils.clearWhiteSpace(query).toLowerCase();	//querying by game title, so prepare query    
+
+                            //save the query & type (for pagination)
+                            customElem.dataops.query = query;
+                            customElem.dataops.querytype = querytype;
+
+                            var refFunc = requestsRef
+								.orderByChild('usergameindex')
+                                .startAt(userid + query)
+								.endAt(userid + query + '~')
+								.limitToFirst(customElem.dataops.limit)
+								.on('child_added', function (snapshot) {
+								    var request = snapshot.val() || {};
+								    request.key = snapshot.key();
+								    request.systemColor = customElem.getSystemColor(request.system);
+								    request.description = customElem.truncateText(request.description, 65);
+								    customElem.getUserProfile(request);
+								    customElem.getCommentCount(request.key);
+
+								    if ((-1 * request.index) >= customElem.firebaseTimestamp) {
+								        customElem.firebaseTimestamp = (-1 * request.index);
+								        customElem.unshift('requests', request);
+								    }
+								    else {
+								        customElem.push('requests', request);
+								        customElem.requestRetrievalCounter += 1;
+
+								        //when we've gotten all the requests for the paged-limit, rebind the scroll event
+								        if (customElem.requestRetrievalCounter >= customElem.dataops.limit) {
+								            if (customElem.scrollBound == false) {
+								                $('#mainContainer').scroll(customElem.containerScroll.bind(customElem));
+								                customElem.requestRetrievalCounter = 0;
+								                customElem.scrollBound = true;
+								            }
+								        }
+								    }
+
+								    customElem.notifyPath('requests', customElem.requests);
+								    customElem.removeSpinnerRoo();
+								});
+
+                            //Store the firebaseRef so we can access it later to detach any callbacks
+                            customElem.firebaseRefs.push({
+                                name: 'requests' + '_' + customElem.querytype.bygame + '_nopaginate',
+                                type: 'child_added',
+                                value: requestsRef,
+                                functionRef: refFunc
+                            });
+                            break;
+
+                        case customElem.querytype.byid:
+                            //Detach all firebase callbacks
+                            customElem.clearFirebaseCallbacks('requests' + '_' + customElem.querytype.byid + '_nopaginate');
+
+                            //save the query & type (for pagination)
+                            customElem.dataops.query = query;
+                            customElem.dataops.querytype = querytype;
+
+                            var refFunc = requestsRef
+								.orderByChild('usergiantbombindex')
+                                .equalTo(query !== null && query !== undefined && query !== '' ? userid + query.toString() : userid)
+								.limitToFirst(customElem.dataops.limit)
+								.on('child_added', function (snapshot) {
+								    var request = snapshot.val() || {};
+								    request.key = snapshot.key();
+								    request.systemColor = customElem.getSystemColor(request.system);
+								    request.description = customElem.truncateText(request.description, 65);
+								    customElem.getUserProfile(request);
+								    customElem.getCommentCount(request.key);
+
+								    if ((-1 * request.index) >= customElem.firebaseTimestamp) {
+								        customElem.firebaseTimestamp = (-1 * request.index);
+								        customElem.unshift('requests', request);
+								    }
+								    else {
+								        customElem.push('requests', request);
+								        customElem.requestRetrievalCounter += 1;
+
+								        //when we've gotten all the requests for the paged-limit, rebind the scroll event
+								        if (customElem.requestRetrievalCounter >= customElem.dataops.limit) {
+								            if (customElem.scrollBound == false) {
+								                $('#mainContainer').scroll(customElem.containerScroll.bind(customElem));
+								                customElem.requestRetrievalCounter = 0;
+								                customElem.scrollBound = true;
+								            }
+								        }
+								    }
+
+								    customElem.notifyPath('requests', customElem.requests);
+								    customElem.removeSpinnerRoo();
+								});
+
+                            //Store the firebaseRef so we can access it later to detach any callbacks
+                            customElem.firebaseRefs.push({
+                                name: 'requests' + '_' + customElem.querytype.byid + '_nopaginate',
+                                type: 'child_added',
+                                value: requestsRef,
+                                functionRef: refFunc
+                            });
+                            break;
 
 
-            				case customElem.querytype.bysystem:
-            					//Detach all firebase callbacks
-            					customElem.clearFirebaseCallbacks();
+                        case customElem.querytype.bysystem:
+                            //Detach all firebase callbacks
+                            customElem.clearFirebaseCallbacks('requests' + '_' + customElem.querytype.bysystem + '_nopaginate');
+                            customElem.clearFirebaseCallbacks('requests' + '_' + customElem.querytype.none + '_nopaginate');
+                            customElem.clearFirebaseCallbacks('requests' + '_' + customElem.querytype.bysystem + '_paginate');
+                            customElem.clearFirebaseCallbacks('requests' + '_' + customElem.querytype.none + '_paginate');
 
-            					var refFunc = requestsRef
-									.orderByChild('usersystemgameindex')
-									.startAt(query !== null && query !== undefined && query !== '' ? userid + customElem.systemFilter + query : userid + customElem.systemFilter)
-									.endAt(query !== null && query !== undefined && query !== '' ? userid + customElem.systemFilter + query + '~' : userid + customElem.systemFilter + '~')
-									.limitToFirst(customElem.dataops.limit)
-									.on('child_added', function (snapshot) {
-										var request = snapshot.val() || {};
-										request.key = snapshot.key();
-										request.systemColor = customElem.getSystemColor(request.system);
-										request.description = customElem.truncateText(request.description, 65);
-										customElem.getUserProfile(request);
-										customElem.getCommentCount(request.key);
-										customElem.push('requests', request);
-										customElem.removeSpinnerRoo();
-									});
+                            if (query) {
+                                query = window.lfg.utils.clearWhiteSpace(query).toLowerCase();
+                            }
 
-            					//Store the firebaseRef so we can access it later to detach any callbacks
-            					customElem.firebaseRefs.push({
-            						name: 'userrequests' + '_' + customElem.querytype.bysystem + '_nopaginate',
-            						type: 'child_added',
-            						value: requestsRef,
-            						functionRef: refFunc
-            					});
-            					break;
+                            var refFunc = requestsRef
+								.orderByChild(query !== null && query !== undefined && query !== '' ? 'usersystemgameindex' : 'usersystemindex')
+                                .startAt(query !== null && query !== undefined && query !== '' ? userid + customElem.systemFilter + query : userid + customElem.systemFilter)
+								.endAt(query !== null && query !== undefined && query !== '' ? userid + customElem.systemFilter + query + '~' : userid + customElem.systemFilter + '~')
+								.limitToFirst(customElem.dataops.limit)
+								.on('child_added', function (snapshot) {
+								    var request = snapshot.val() || {};
+								    request.key = snapshot.key();
+								    request.systemColor = customElem.getSystemColor(request.system);
+								    request.description = customElem.truncateText(request.description, 65);
+								    customElem.getUserProfile(request);
+								    customElem.getCommentCount(request.key);
 
-            				default:
-            					//Detach all firebase callbacks
-            					customElem.clearFirebaseCallbacks();
+								    if ((-1 * request.index) >= customElem.firebaseTimestamp) {
+								        customElem.firebaseTimestamp = (-1 * request.index);
+								        customElem.unshift('requests', request);
+								    }
+								    else {
+								        customElem.push('requests', request);
+								        customElem.requestRetrievalCounter += 1;
 
-            					//save the query & type (for pagination)
-            					customElem.dataops.querytype = querytype;
+								        //when we've gotten all the requests for the paged-limit, rebind the scroll event
+								        if (customElem.requestRetrievalCounter >= customElem.dataops.limit) {
+								            if (customElem.scrollBound == false) {
+								                $('#mainContainer').scroll(customElem.containerScroll.bind(customElem));
+								                customElem.requestRetrievalCounter = 0;
+								                customElem.scrollBound = true;
+								            }
+								        }
+								    }
 
-            					var refFunc = requestsRef
-									.orderByChild('uid')
-									.equalTo(userid)
-									.limitToFirst(customElem.dataops.limit)
-									.on("child_added", function (snapshot) {
-										var request = snapshot.val() || {};
-										request.priority = snapshot.getPriority();
-										request.key = snapshot.key();
-										request.systemColor = customElem.getSystemColor(request.system);
-										request.description = customElem.truncateText(request.description, 65);
-										customElem.getUserProfile(request);
-										customElem.getCommentCount(request.key);
-										customElem.push('requests', request);
-										customElem.removeSpinnerRoo();
-									}, function (errorObject) {
-										console.log("The read failed: " + errorObject.code);
-									});
+								    customElem.notifyPath('requests', customElem.requests);
+								    customElem.removeSpinnerRoo();
+								});
 
-            					//Store the firebaseRef so we can access it later to detach any callbacks
-            					customElem.firebaseRefs.push({
-            						name: 'userrequests' + '_' + customElem.querytype.none + '_nopaginate',
-            						type: 'child_added',
-            						value: requestsRef,
-            						functionRef: refFunc
-            					});
-            					break;
-            			}
-            		}
-            	}
+                            //Store the firebaseRef so we can access it later to detach any callbacks
+                            customElem.firebaseRefs.push({
+                                name: 'requests' + '_' + customElem.querytype.bysystem + '_nopaginate',
+                                type: 'child_added',
+                                value: requestsRef,
+                                functionRef: refFunc
+                            });
+                            break;
+
+                        default:
+
+                            //Detach all firebase callbacks
+                            customElem.clearFirebaseCallbacks();
+
+                            //save the query & type (for pagination)
+                            customElem.dataops.querytype = querytype;
+
+                            var refFunc = requestsRef
+								.orderByChild('userindex')
+								.startAt(userid)
+                                .endAt(userid + '~')
+								.limitToFirst(customElem.dataops.limit)
+								.on("child_added", function (snapshot) {
+								    var request = snapshot.val() || {};
+								    request.key = snapshot.key();
+								    request.priority = snapshot.getPriority();
+								    request.systemColor = customElem.getSystemColor(request.system);
+								    request.description = customElem.truncateText(request.description, 65);
+								    customElem.getUserProfile(request);
+								    customElem.getCommentCount(request.key);
+
+
+								    if ((-1 * request.index) >= customElem.firebaseTimestamp) {
+								        customElem.firebaseTimestamp = (-1 * request.index);
+								        customElem.unshift('requests', request);
+								    }
+								    else {
+								        customElem.push('requests', request);
+								        customElem.requestRetrievalCounter += 1;
+
+								        //when we've gotten all the requests for the paged-limit, rebind the scroll event
+								        if (customElem.requestRetrievalCounter >= customElem.dataops.limit) {
+								            if (customElem.scrollBound == false) {
+								                $('#mainContainer').scroll(customElem.containerScroll.bind(customElem));
+								                customElem.requestRetrievalCounter = 0;
+								                customElem.scrollBound = true;
+								            }
+								        }
+								    }
+
+								    customElem.notifyPath('requests', customElem.requests);
+								    customElem.removeSpinnerRoo();
+
+								}, function (errorObject) {
+								    console.log("The read failed: " + errorObject.code);
+								});
+
+                            //Store the firebaseRef so we can access it later to detach any callbacks
+                            customElem.firebaseRefs.push({
+                                name: 'requests' + '_' + customElem.querytype.none + '_nopaginate',
+                                type: 'child_added',
+                                value: requestsRef,
+                                functionRef: refFunc
+                            });
+                            break;
+                    }
+                }
             },
 
             getCommentCount: function (requestid) {
@@ -1438,6 +1606,9 @@
 
             	this.firebaseRef = new Firebase(window.lfg.config.getFirebaseUrl());
             	this.firebaseRefs = [];
+            	this.firebaseTimestamp = window.lfg.utils.convertDateToUtc(Date.now());
+            	this.requestRetrievalCounter = 0;
+            	this.scrollBound = true;
 
             	this.requests = [];
             	this.loggedIn = this.isLoggedIn();

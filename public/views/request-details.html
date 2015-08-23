@@ -953,14 +953,15 @@
                         .once('value', function (snapshot) {
                             var item = snapshot.val();
 
-                            if (item !== null && item !== undefined) {
-                                var itemArray = _.map(item, function (elem, key) { elem.id = key; return elem; });
-                                _.each(itemArray, function (elem, index) {
-                                    var recordkey = elem.id;
-                                    var recentRequestItemRef = new Firebase(window.lfg.config.getFirebaseUrl() + 'users/' + userid + '/recentrequests/' + recordkey);
-                                    recentRequestItemRef.remove();
-                                });
-                            }
+                            //commented - for now, messes up paging on recent requests
+                            //if (item !== null && item !== undefined) {
+                            //    var itemArray = _.map(item, function (elem, key) { elem.id = key; return elem; });
+                            //    _.each(itemArray, function (elem, index) {
+                            //        var recordkey = elem.id;
+                            //        var recentRequestItemRef = new Firebase(window.lfg.config.getFirebaseUrl() + 'users/' + userid + '/recentrequests/' + recordkey);
+                            //        recentRequestItemRef.remove();
+                            //    });
+                            //}
 
                             //add the record
                             var newHistory = {
@@ -969,6 +970,11 @@
 
                             var lexicoIndex = window.lfg.utils.getSearchIndex(customElem.convertDateToUtc(Date.now()));
                             newHistory.requestindex = lexicoIndex;
+
+                            var timeNow = window.lfg.utils.convertDateToUtc(Date.now());
+                            var index = 0 - timeNow;
+
+                            newHistory.index = index;
                             recentRequestRef.push(newHistory);
                         });
                 }
