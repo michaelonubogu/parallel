@@ -1,5 +1,5 @@
 <link rel="import" href="../components/bower_components/polymer/polymer.html">
-<link rel="import" href="../imports/layout.html">
+<!--<link rel="import" href="../imports/layout.html">-->
 
 <!-- Fonts -->
 <link rel='import' href='../components/bower_components/font-roboto/roboto.html'>
@@ -341,7 +341,7 @@
             <paper-header-panel mode="seamed" drawer>
                 <paper-toolbar class="medium-tall lfg-drawer-toolbar">
                 </paper-toolbar>
-                <div fit class="orange darken-3">
+                <div class="fit orange darken-3">
                     <template is="dom-if" if="{{loggedIn}}">
                         <a class="new-request-button" on-click="newRequest">New Request</a>
                     </template>
@@ -352,7 +352,7 @@
             <paper-header-panel mode="seamed" main class="lfg-main-header-panel white">
                 <paper-toolbar class="medium-tall white lfg-main-toolbar">
                     <paper-icon-button icon="menu" class="grey-text" paper-drawer-toggle></paper-icon-button>
-                    <div flex></div>
+                    <div class="flex"></div>
                     <!--<paper-icon-button id="search_button" icon="search" class="grey-text" on-click="showSearch"></paper-icon-button>-->
                     <ul id='dropdown1' class='dropdown-content'>
                         <template is="dom-repeat" items="[[sortoptions]]">
@@ -445,7 +445,7 @@
                                         </div>
                                     </div>
                                     <div class="col s2 right right-align">
-                                        <img id$="{{getImageId(item.key)}}" src="../assets/app/img/profile-photo-placeholder.jpg" alt="" style="position:relative; margin-top:35px; margin-right:15px;" class="circle request-profile-image">
+                                        <img class="circle request-profile-image" id$="{{item.request.profilepicid}}" src="../assets/app/img/profile-photo-placeholder.jpg" alt="" style="position:relative; margin-top:35px; margin-right:15px;">
                                     </div>
                                 </div>
                             </li>
@@ -970,6 +970,7 @@
                                             request.priority = snapshot.getPriority();
                                             request.systemColor = customElem.getSystemColor(request.system);
                                             request.description = customElem.truncateText(request.description, 65);
+                                            request.profilepicid = customElem.getImageId(request.key);
                                             customElem.getUserProfile(request);
                                             customElem.getCommentCount(request.key);
 
@@ -1029,6 +1030,7 @@
                                                     request.priority = snapshot.getPriority();
                                                     request.systemColor = customElem.getSystemColor(request.system);
                                                     request.description = customElem.truncateText(request.description, 65);
+                                                    request.profilepicid = customElem.getImageId(request.key);
                                                     customElem.getUserProfile(request);
                                                     customElem.getCommentCount(request.key);
 
@@ -1097,7 +1099,8 @@
             },
 
             getImageId: function (key) {
-            	return 'img' + key;
+                var string = window.lfg.utils.randomShortString(10);
+            	return 'img' + key + string;
             },
 
             getTimeLapse: function (date) {
@@ -1111,10 +1114,10 @@
             	userRef.once("value", function (snapshot) {
             		var user = snapshot.val() || {};
             		if (user) {
-            			var profileImage = document.getElementById("img" + request.key);
+            		    var profileImage = document.getElementById(request.profilepicid);
 
             			if (profileImage !== null && profileImage !== undefined) {
-            				document.getElementById("img" + request.key).src = user.profilepic;
+            			    profileImage.src = user.profilepic;
             			}
             		}
             	});

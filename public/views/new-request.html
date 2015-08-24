@@ -1,5 +1,5 @@
 <link rel="import" href="../components/bower_components/polymer/polymer.html">
-<link rel="import" href="../imports/layout.html">
+<!--<link rel="import" href="../imports/layout.html">-->
 
 <link rel='import' href='../components/bower_components/font-roboto/roboto.html'>
 
@@ -220,7 +220,7 @@
 			border-bottom: none;
             box-shadow: none;
 			margin:-2px 10px 0 10px !important;
-			height:40px;
+			height:90px;
 		}
 
 		.lfg-input-details.input-field textarea:focus {
@@ -403,7 +403,7 @@
                 <paper-toolbar class="medium-tall lfg-drawer-toolbar">
 
                 </paper-toolbar>
-                <div fit class="orange darken-3">
+                <div class="fit orange darken-3">
                     <sign-in-button></sign-in-button>
 					<side-nav-contents></side-nav-contents>
 				</div>
@@ -412,7 +412,7 @@
                 <paper-toolbar class="medium-tall lfg-main-toolbar">
                     <paper-icon-button class="grey-text" icon="menu" paper-drawer-toggle></paper-icon-button>
                     <paper-icon-button class="grey-text" icon="arrow-back" on-click="goToList"></paper-icon-button>
-                    <div flex></div>
+                    <div class="flex"></div>
                     <div class="middle">
                     </div>
                     <div class="bottom">
@@ -421,7 +421,7 @@
 						</template>
                     </div>
                 </paper-toolbar>
-                <div fit class="content-area">
+                <div class="fit content-area">
 					<template is="dom-if" if="{{notSaved}}">
 						<div class="not-saved">Fill out this really short form and get your request going</div>
 					</template>
@@ -431,7 +431,7 @@
 
 						<div id="new_request_form">
 							<!--Game-->
-							<div class="row" >
+							<div class="row select-game-row" >
 								<div class="col s12" style="margin-bottom:10px;">
 									<label class="grey-text text-darken-2" style="font-size:1rem; margin-right:5px;">Game</label>
 									<label class="red-text error-message" style="font-size:1rem; display:none;">**This is required</label>
@@ -1277,10 +1277,10 @@
             		valid = false;
             	}
 
-            	//if (request.game === null || request.game === undefined || request.game === '') {
-            	//	$(this.$.request_game).addClass('invalid');
-            	//	valid = false;
-            	//}
+            	if (request.game === null || request.game === undefined || request.game === '') {
+            	    $('.select-game-row').find('.error-message').show();
+            		valid = false;
+            	}
 
             	//if (request.gamercount !== null && request.gamercount !== undefined && request.gamercount !== '') {
             	//	if (!$.isNumeric(request.gamercount)) {

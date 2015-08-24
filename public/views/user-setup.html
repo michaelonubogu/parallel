@@ -1,5 +1,5 @@
 ﻿<link rel="import" href="../components/bower_components/polymer/polymer.html">
-<link rel="import" href="../imports/layout.html">
+<!--<link rel="import" href="../imports/layout.html">-->
 
 <!-- Fonts -->
 <link rel='import' href='../components/bower_components/font-roboto/roboto.html'>
@@ -227,7 +227,7 @@
 		<neon-animated-pages id="pages" class="flex" selected="[[selected]]" entry-animation="[[entryAnimation]]" exit-animation="[[exitAnimation]]">
 			<neon-animatable>
 				<div class="orange darken-1">
-                    <div id="profile_background" class="profile-background" layout vertical center>
+                    <div id="profile_background" class="layout vertical center profile-background">
                         <div class="profile-overlay">
                             <!-- Navigational Butons -->
                             <div class="layout horizontal center-justified" style="opacity:1.0 !important;">
@@ -237,12 +237,12 @@
                                         Back
                                     </a>
                                 </div>-->
-                                <div flex></div>
-                                <div self-center class="col s6 center">
+                                <div class="flex"></div>
+                                <div class="col s6 center self-center">
                                     <h6 class="white-text thin" style="font-size:1.5rem;">{{providerText}}</h6>
                                     <h6 class="white-text" style="font-size:0.85rem;">Enter your Username & Email, and upload a profile picture</h6>
                                 </div>
-                                <div flex></div>
+                                <div class="flex"></div>
                                 <!--<div layout no-wrap>
                                     <a class="btn-flat white-text waves-effect waves-light thin wizard-next" on-click="nextSetupSlide">
                                         <i class="material-icons white-text right thin">arrow_forward</i>
@@ -260,8 +260,8 @@
 
                                 <div class="row">
                                     <div class="col s12">
-                                        <div class="lfg-input input-field col s12 center" layout center>
-                                            <div class="file-field" layout horizontal center-center>
+                                        <div class="lfg-input input-field col s12 center layout center">
+                                            <div class="layout horizontal center-center file-field">
                                                 <a class="btn-flat center center-aligned white-text light photo-upload">
                                                     <span><i class="material-icons left">backup</i> Upload Photo</span>
                                                     <input id="profile_upload" type="file" accept="image/*" capture="camera" />
