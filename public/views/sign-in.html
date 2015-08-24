@@ -31,8 +31,8 @@
 <link rel="import" href="../imports/material_icons.html" />
 <link rel="import" href="../imports/flaticons.html" />
 
-<script type="text/javascript" src="http://parallel-test.azurewebsites.net/faye/client.js"></script>
-<!--<script type="text/javascript" src="http://localhost:1337/faye/client.js"></script>-->
+<!--<script type="text/javascript" src="http://parallel-test.azurewebsites.net/faye/client.js"></script>-->
+<script type="text/javascript" src="http://localhost:1337/faye/client.js"></script>
 
 <dom-module id="sign-in">
 	<!-- CSS -->
@@ -402,24 +402,36 @@
 
             	var faye_client = new Faye.Client(url);
 
+            	var cusElem = this;
+
 				//Callback for Steam Authentication
             	var faye_subscription = faye_client.subscribe('/steamSuccess', function (message) {
 
             		if (customElem.steamWindow != null && customElem.steamWindow != undefined) {
-            			customElem.steamWindow.close();
-            			var authData = {
-            				auth: {
-            					provider: 'steam',
-            					uid: 'steam:' + message.steamid
-            				},
-            				provider: 'steam',
-            				uid: 'steam:' + message.steamid,
-							token: message.token
-            			};
+            		    customElem.steamWindow.close();
 
-            			customElem.cacheLoginCredentials(authData);
-            			console.log("Authenticated Successfully via Steam with payload:", authData);
-            			customElem.startIntroProcess(authData);
+            		    var ref = new Firebase(cusElem.firebaseUrl);
+            		    ref.authWithCustomToken(message.token, function (error, authData) {
+            		        if (error) {
+            		            console.log("Login Failed!", error);
+            		        } else {
+            		            console.log("Login Succeeded!", authData);
+
+            		            var authData = {
+            		                auth: {
+            		                    provider: 'steam',
+            		                    uid: 'steam:' + message.steamid
+            		                },
+            		                provider: 'steam',
+            		                uid: 'steam:' + message.steamid,
+            		                token: message.token
+            		            };
+
+            		            customElem.cacheLoginCredentials(authData);
+            		            console.log("Authenticated Successfully via Steam with payload:", authData);
+            		            customElem.startIntroProcess(authData);
+            		        }
+            		    });
             		}
             	});
             },

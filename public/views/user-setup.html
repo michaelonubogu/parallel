@@ -365,6 +365,40 @@
 			</neon-animatable>
 			<neon-animatable><h1>3</h1></neon-animatable>-->
 		</neon-animated-pages>
+
+        <!--<div id="finish_modal" class="modal orange darken-4">
+            <div class="modal-content center center-align" style="padding:30px 0;">
+                <h5 class="white-text light">{{loadingMessage}}</h5>
+                <div class="preloader-wrapper big active">
+                    <div class="spinner-layer spinner-yellow-only" style="border-color:#ffffff;">
+                        <div class="circle-clipper left">
+                            <div class="circle"></div>
+                        </div><div class="gap-patch">
+                            <div class="circle"></div>
+                        </div><div class="circle-clipper right">
+                            <div class="circle"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>-->
+
+        <!--<div id="loading_overlay" class="layout fit" style="background-color:#FB8C00; z-index:1000;">
+            <div layout vertical fit center-center>
+                <h4 class="yellow-text text-accent-2 light">Creating your account</h4>
+                <div class="preloader-wrapper big active">
+                    <div class="spinner-layer spinner-yellow-only" style="border-color:#ffff00;">
+                        <div class="circle-clipper left">
+                            <div class="circle"></div>
+                        </div><div class="gap-patch">
+                            <div class="circle"></div>
+                        </div><div class="circle-clipper right">
+                            <div class="circle"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>-->
 	</template>
 </dom-module>
 
@@ -503,8 +537,16 @@
             saveUserData: function (authData, userdata) {
                 var userRef = new Firebase(window.lfg.config.getFirebaseUrl() + 'users/' + authData.uid);
                 userdata.setupcomplete = true;
-            	userRef.set(userdata);
-            	document.querySelector('app-router').go('/requests');
+                userRef.set(userdata);
+
+                var userid = userRef.key();
+
+                if (userid !== null && userid !== undefined) {
+                    document.querySelector('app-router').go('/');
+                }
+                else {
+                    //Show error message
+                }
             },
 
             validateInput: function () {
@@ -548,6 +590,7 @@
             	this.firebaseUrl = window.lfg.config.getFirebaseUrl();
             	this.firebaseRef = new Firebase(window.lfg.config.getFirebaseUrl());
 
+            	this.loadingMessage = 'Creating your account';
             	this.getProvider();
             },
 
@@ -629,7 +672,7 @@
             },
 
             ready: function () {
-            	this.initializeData();
+                this.initializeData();
             },
 
             attached: function () {

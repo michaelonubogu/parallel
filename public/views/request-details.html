@@ -657,7 +657,7 @@
             			requestkey: requestkey,
             			uid: authData.uid,
             			comment: userComment,
-            			created: this.convertDateToUtc(new Date.now())
+            			created: window.lfg.utils.convertDateToISO(Date.now())
             		});
             		var key = newCommentRef.key();
             		if (key !== null && key !== undefined && key !== '')
