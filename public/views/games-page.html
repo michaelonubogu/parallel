@@ -1050,8 +1050,10 @@
             	return window.lfg.utils.convertUtcToLocal(utc);
             },
 
-            getRequestListUrl: function(game){
-                var url = window.lfg.config.getAppUrl() + '/#/requests?game=' + window.lfg.utils.clearWhiteSpace(game.game) + '&system=' + game.system;
+            getRequestListUrl: function (game) {
+                var appUrl = window.lfg.config.getAppUrl();
+                if (appUrl[appUrl.length - 1] !== '/') { appUrl += '/'; }
+                var url = appUrl + '#/requests?game=' + window.lfg.utils.clearWhiteSpace(game.game) + '&system=' + game.system;
                 return url;
             },
 
