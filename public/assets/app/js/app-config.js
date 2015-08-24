@@ -37,8 +37,7 @@
 			},
 			firebaseCacheKey: 'firebase:session::lfgbase',
 			tunneling: false,
-            tempSecureTunnel: 'http://fb40516a.ngrok.io',
-            
+            tempSecureTunnel: 'http://fb40516a.ngrok.io',           
             getAppUrl: function (){
                 switch (this.env) {
                     case 'dev':
