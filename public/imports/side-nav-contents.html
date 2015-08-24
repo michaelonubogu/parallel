@@ -37,6 +37,7 @@
 		paper-item {
 			color: #ffffff;
 			cursor: pointer;
+            padding:0;
 		}
 
 		.sign-in-button {
@@ -63,28 +64,32 @@
 			font-weight:500;
 			box-shadow: 0 2px 5px 0 #e65100;
 		}
+
+        .nav-links {
+            display:block;
+            width:100%;
+            padding:12px 16px;
+            font-size:18px;
+        }
+
+        .nav-links span{
+            font-weight:300;
+        }
 	</style>
 
 	<template>
 		<div style="padding-top:20px; height:45vh;">
 			<template is="dom-if" if="{{loggedIn}}">
-				<paper-item class="waves-effect waves-light">
-					<a href="#/" class="white-text"><iron-icon icon="view-day"></iron-icon><span class="thin">Requests</span></a>
-				</paper-item>
-				<paper-item class="waves-effect waves-light">
-					<a href="#/userrequests" class="white-text"><iron-icon icon="bookmark-border"></iron-icon><span class="thin">My Requests</span></a>
-				</paper-item>
-				<paper-item class="waves-effect waves-light">
-					<a href="#/recent" class="white-text"><iron-icon icon="history"></iron-icon><span class="thin">Recent Requests</span></a>
-				</paper-item>
-				<paper-item class="waves-effect waves-light">
-					<a href="#/games" class="white-text"><iron-icon icon="hardware:gamepad"></iron-icon><span class="thin">Games</span></a>
-				</paper-item>
+                <a href="#/" class="white-text nav-links"><iron-icon icon="view-day"></iron-icon><span class="thin">Requests</span></a>
+                <a href="#/userrequests" class="white-text nav-links"><iron-icon icon="bookmark-border"></iron-icon><span class="thin">My Requests</span></a>
+                <a href="#/recent" class="white-text nav-links"><iron-icon icon="history"></iron-icon><span class="thin">Recent Requests</span></a>
+                <a href="#/games" class="white-text nav-links"><iron-icon icon="hardware:gamepad"></iron-icon><span class="thin">Games</span></a>
 			</template>
 		</div>
 		<div style="padding-top:20px;">
 			<template is="dom-if" if="{{loggedIn}}">
-				<paper-item class="waves-effect waves-light" on-click="logOut"><iron-icon icon="arrow-back"></iron-icon><span class="thin">Sign Out</span></paper-item>
+                <a href="#/games" class="white-text nav-links" on-click="logOut"><iron-icon icon="arrow-back"></iron-icon><span class="thin">Sign Out</span></a>
+				
 			</template>
 		</div>
 	</template>
