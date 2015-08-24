@@ -446,7 +446,7 @@
                         <template is="dom-repeat" items="{{requests}}">
                             <li data-request-key$="[[item.key]]" class="collection-item request-list-item" on-click="loadRequest">
                                 <div style="width:100%" class="right right-align">
-                                    <h6 class="grey-text" style="font-size: 0.75rem;margin: 0px 20px 0 0;position: absolute;right: 0;">[[getTimeLapse(item.datetime)]]</h6>
+                                    <h6 class="grey-text" style="font-size: 0.75rem;margin: 0px 20px 0 0;position: absolute;right: 0;">[[getTimeLapse(item.created)]]</h6>
                                 </div>
                                 <div class="row">
                                     <div class="col s10 layout horizontal">
@@ -1385,8 +1385,9 @@
 								    customElem.getUserProfile(request);
 								    customElem.getCommentCount(request.key);
 
+								    var reqIndex = (-1 * parseInt(request.index));
 
-								    if ((-1 * request.index) >= customElem.firebaseTimestamp) {
+								    if (reqIndex >= parseInt(customElem.firebaseTimestamp)) {
 								        customElem.firebaseTimestamp = (-1 * request.index);
 								        customElem.unshift('requests', request);
 								    }
@@ -1448,8 +1449,8 @@
             },
 
             getTimeLapse: function (date) {
-                var convDate = window.lfg.utils.convertUtcToLocalDate(date);
-                return window.lfg.utils.timeSince(convDate);
+                var convDate = new Date(date);
+                return window.lfg.utils.timeSince(date);
             },
 
             getUserProfile: function (request) {
@@ -1688,6 +1689,7 @@
             },
 
             ready: function () {
+                
                 this.initializeData();
             },
 
