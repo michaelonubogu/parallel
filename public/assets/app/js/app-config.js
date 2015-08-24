@@ -21,7 +21,7 @@
             fayeDevUrl: 'http://localhost:1337/faye',
             fayeTestUrl: 'http://parallel-test.azurewebsites.net/faye',
             fayeProdUrl: '',
-            env: 'dev',
+            env: 'test',
 			apiEndPoints: {
 				games: 'api/giantbomb/games',
 				game: 'api/giantbomb/game',
@@ -37,7 +37,24 @@
 			},
 			firebaseCacheKey: 'firebase:session::lfgbase',
 			tunneling: false,
-			tempSecureTunnel: 'http://fb40516a.ngrok.io',
+            tempSecureTunnel: 'http://fb40516a.ngrok.io',
+            
+            getAppUrl: function (){
+                switch (this.env) {
+                    case 'dev':
+                        return this.appDevUrl;
+                        break;
+
+                    case 'test':
+                        return this.appTestUrl;
+                        break;
+
+                    case 'prod':
+                        return this.appProdUrl;
+                        break;
+                }
+            },
+
 			getFirebaseUrl: function () {
 				return this.firebaseUrl;
 			},
@@ -281,7 +298,18 @@
                 }
 
 				return authData !== null && authData !== undefined && authData.uid !== null && authData.uid !== undefined && authData.uid !== '' ? authData.uid : null;
-			},
+            },
+            
+            getQueryStringParam: function (name, url) {
+                if (!url) {
+                    url = window.location.href;
+                }
+                var results = new RegExp('[\\?&]' + name + '=([^&#]*)').exec(url);
+                if (!results) {
+                    return null;
+                }
+                return results[1] || null;
+            },
 			
             isLoggedIn: function () {
                 //Check the client first - session storage

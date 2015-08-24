@@ -538,13 +538,18 @@
 										<img class="activator" src="{{item.imageUrl}}">
 									</div>
 									<div class="card-content">
-										<span class$="{{getSystemLabelClass(item.system)}}" data-system="pc" style="margin-right:5px;">{{getSystemType(item.system)}}</span>
+										<span class$="{{getSystemLabelClass(item.system)}}" data-system="[[item.system]]" style="margin-right:5px;">{{getSystemType(item.system)}}</span>
 										<label class="grey-text text-darken-2 activator" style="font-size:1rem; cursor:pointer;">{{truncateText(item.gametitle, 20)}}
 										</label>
 									</div>
 									<div class="card-reveal">
-										<span class="card-title grey-text text-darken-4">{{item.gametitle}}<i class="material-icons right">close</i></span>
-										<div><span class$="{{getSystemLabelClass(item.system)}}" data-system="pc" style="margin-right:5px;">{{getSystemType(item.system)}}</span></div>
+										<span class="card-title grey-text text-darken-4" style="font-size:1rem;">{{item.gametitle}}<i class="material-icons right">close</i></span><br />
+										<div><span class$="{{getSystemLabelClass(item.system)}}" data-system="[[item.system]]" style="margin-right:5px;">{{getSystemType(item.system)}}</span></div>
+                                        <br /><br />
+                                        <a href="{{getRequestListUrl(item)}}" class="orange-text text-darken-4" style="cursor:pointer; font-size:1.05rem;">
+                                            <i class="fa fa-arrow-right fa-lg"></i>&nbsp;
+                                            View requests
+                                        </a>
 									</div>
 								</div>
 							</div>
@@ -1043,6 +1048,11 @@
 
             formatDate: function (utc) {
             	return window.lfg.utils.convertUtcToLocal(utc);
+            },
+
+            getRequestListUrl: function(game){
+                var url = window.lfg.config.getAppUrl() + '/#/requests?game=' + window.lfg.utils.clearWhiteSpace(game.game) + '&system=' + game.system;
+                return url;
             },
 
             getSystemType: function (system) {

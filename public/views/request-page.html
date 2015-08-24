@@ -885,6 +885,20 @@
                 }
             },
 
+            determineRequestsToGet: function () {
+                var pageurl = window.location.href;
+                var game = window.lfg.utils.getQueryStringParam('game', pageurl);
+                var system = window.lfg.utils.getQueryStringParam('system', pageurl);
+
+                if (game !== null && system !== null) {
+                    this.systemFilter = system;
+                    this.getRequests(game, this.querytype.bysystem, false);
+                }
+                else {
+                    this.getRequests(null, this.querytype.none, false);
+                }
+            },
+
             doSearch: function (e) {
                 var query = $('#search_input').val();
 
@@ -1679,7 +1693,8 @@
 
             attached: function () {
                 //this.getRequests(this.dataops.sort);
-                this.getRequests(null, this.querytype.none, false);
+                //this.getRequests(null, this.querytype.none, false);
+                this.determineRequestsToGet();
                 this.registerPlugins();
                 this.registerEvents();
             }
