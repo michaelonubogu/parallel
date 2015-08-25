@@ -685,7 +685,7 @@
 					commentHtml += '<span><label id="' + requestcomment.userlabelid + '" class="grey-text text-darken-3" style="font-size:1.25rem; margin-right:20px;"></label>';
 					commentHtml += '<label class="grey-text" style="font-size:0.85rem;">' + requestcomment.created + '</label>';
 					commentHtml += '</span>';
-					commentHtml += '<p style="padding:0 0 0 85px; font-size:0.85rem; margin-top:-6px;">' + requestcomment.comment + '</p>';
+					commentHtml += '<p class="force-wrap" style="padding:0 0 0 85px; font-size:0.85rem; margin-top:-6px;">' + requestcomment.comment + '</p>';
 					commentHtml += '</div>';
 
 					$(customElem.$.request_comments_list).prepend(commentHtml);

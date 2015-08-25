@@ -890,7 +890,7 @@
 
             determineRequestsToGet: function () {
                 var pageurl = window.location.href;
-                var game = window.lfg.utils.getQueryStringParam('game', pageurl);
+                var game = decodeURIComponent(window.lfg.utils.getQueryStringParam('game', pageurl)).replace(/&amp;/g, "&");
                 var system = window.lfg.utils.getQueryStringParam('system', pageurl);
 
                 if (game !== null && system !== null) {

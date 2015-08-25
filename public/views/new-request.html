@@ -423,7 +423,7 @@
                 </paper-toolbar>
                 <div class="fit content-area">
 					<template is="dom-if" if="{{notSaved}}">
-						<div class="not-saved">Fill out this really short form and get your request going</div>
+						<div class="not-saved">Fill out this short form and get your request going</div>
 					</template>
 						
 						<br>
@@ -1271,9 +1271,9 @@
 
             		var requestsRef = this.firebaseRef.child('requests');
             		var newRequest = {
-            			title: this.request.title,
-            			game: this.request.game.toLowerCase(),
-            			gametitle: this.request.game,
+            		    title: this.request.title,
+            		    game: unescape(this.request.game.toLowerCase()).replace( /\&amp;/g, '&' ),
+            		    gametitle: unescape(this.request.game).replace(/\&amp;/g, '&'),
             			giantbombid: this.request.gameid,
             			gamercount: this.request.gamercount === null || this.request.gamercount === undefined || this.request.gamercount === '' ? '1' : this.request.gamercount,
             			system: this.request.system,

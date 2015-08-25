@@ -1058,7 +1058,7 @@
             getRequestListUrl: function (game) {
                 var appUrl = window.lfg.config.getAppUrl();
                 if (appUrl[appUrl.length - 1] !== '/') { appUrl += '/'; }
-                var url = appUrl + '#/requests?game=' + window.lfg.utils.clearWhiteSpace(game.game) + '&system=' + game.system;
+                var url = appUrl + '#/requests?game=' + encodeURIComponent(window.lfg.utils.clearWhiteSpace(game.game).replace(/&amp;/g, "&")) + '&system=' + game.system;
                 return url;
             },
 
@@ -1325,8 +1325,8 @@
 
             	var tagged = {
             		giantbombid: gameid,
-            		game: gametitle.toLowerCase(),
-            		gametitle: gametitle,
+            		game: unescape(gametitle.toLowerCase()).replace(/\&amp;/g, '&'),
+            		gametitle: unescape(gametitle).replace(/\&amp;/g, '&'),
             		imageUrl: imageUrl,
             		system: this.systemTagged,
             		gameindex: gameindex,
