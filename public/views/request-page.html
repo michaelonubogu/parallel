@@ -791,11 +791,13 @@
                     }
                 }
                 else {
-                    _.each(this.firebaseRefs, function (ref, index) {
-                        //Detach all currently attached firebase callbacks. Only one should be attached at one time
-                        ref.value.off(ref.type, ref.functionRef);
-                        cusElem.firebaseRefs.splice(index, 1);
-                    });
+                    if (this.firebaseRefs.length > 0) {
+                        _.each(this.firebaseRefs, function (ref, index) {
+                            //Detach all currently attached firebase callbacks. Only one should be attached at one time
+                            ref.value.off(ref.type, ref.functionRef);
+                            cusElem.firebaseRefs.splice(index, 1);
+                        });
+                    }
                 }
             },
 
@@ -1007,9 +1009,15 @@
                     //determine query type
                     switch (querytype) {
                         case customElem.querytype.bygame:
-                            //Detach all firebase callbacks
-                            customElem.clearFirebaseCallbacks('requests' + '_' + customElem.querytype.bygame + '_nopaginate');
+                            //Detach all firebase callbacks EXECPT this callback's counter part - i.e. no paginate 
+                            //customElem.clearFirebaseCallbacks('requests' + '_' + customElem.querytype.bygame + '_nopaginate');
                             customElem.clearFirebaseCallbacks('requests' + '_' + customElem.querytype.bygame + '_paginate');
+                            customElem.clearFirebaseCallbacks('requests' + '_' + customElem.querytype.id + '_nopaginate');
+                            customElem.clearFirebaseCallbacks('requests' + '_' + customElem.querytype.id + '_paginate');
+                            customElem.clearFirebaseCallbacks('requests' + '_' + customElem.querytype.bysystem + '_nopaginate');
+                            customElem.clearFirebaseCallbacks('requests' + '_' + customElem.querytype.bysystem + '_paginate');
+                            customElem.clearFirebaseCallbacks('requests' + '_' + customElem.querytype.none + '_paginate');
+                            customElem.clearFirebaseCallbacks('requests' + '_' + customElem.querytype.none + '_nopaginate');
 
                             query = window.lfg.utils.clearWhiteSpace(query).toLowerCase();
 
@@ -1057,9 +1065,15 @@
                             break;
 
                         case customElem.querytype.byid:
-                            //Detach all firebase callbacks
-                            customElem.clearFirebaseCallbacks('requests' + '_' + customElem.querytype.id + '_nopaginate');
+                            //Detach all firebase callbacks EXCEPT this callback's counterpart
+                            customElem.clearFirebaseCallbacks('requests' + '_' + customElem.querytype.bygame + '_nopaginate');
+                            customElem.clearFirebaseCallbacks('requests' + '_' + customElem.querytype.bygame + '_paginate');
+                            //customElem.clearFirebaseCallbacks('requests' + '_' + customElem.querytype.id + '_nopaginate');
                             customElem.clearFirebaseCallbacks('requests' + '_' + customElem.querytype.id + '_paginate');
+                            customElem.clearFirebaseCallbacks('requests' + '_' + customElem.querytype.bysystem + '_nopaginate');
+                            customElem.clearFirebaseCallbacks('requests' + '_' + customElem.querytype.bysystem + '_paginate');
+                            customElem.clearFirebaseCallbacks('requests' + '_' + customElem.querytype.none + '_paginate');
+                            customElem.clearFirebaseCallbacks('requests' + '_' + customElem.querytype.none + '_nopaginate');
 
                             var lastrequest = customElem.requests[customElem.requests.length - 1];
 
@@ -1103,11 +1117,15 @@
                             break;
 
                         case customElem.querytype.bysystem:
-                            //Detach all firebase callbacks
+                            //Detach all firebase callbacks EXCEPT this callback's counter-part
+                            //customElem.clearFirebaseCallbacks('requests' + '_' + customElem.querytype.bygame + '_nopaginate');
+                            customElem.clearFirebaseCallbacks('requests' + '_' + customElem.querytype.bygame + '_paginate');
+                            customElem.clearFirebaseCallbacks('requests' + '_' + customElem.querytype.id + '_nopaginate');
+                            customElem.clearFirebaseCallbacks('requests' + '_' + customElem.querytype.id + '_paginate');
                             customElem.clearFirebaseCallbacks('requests' + '_' + customElem.querytype.bysystem + '_nopaginate');
                             customElem.clearFirebaseCallbacks('requests' + '_' + customElem.querytype.bysystem + '_paginate');
-                            customElem.clearFirebaseCallbacks('requests' + '_' + customElem.querytype.none + '_nopaginate');
                             customElem.clearFirebaseCallbacks('requests' + '_' + customElem.querytype.none + '_paginate');
+                            customElem.clearFirebaseCallbacks('requests' + '_' + customElem.querytype.none + '_nopaginate');
 
                             var lastrequest = customElem.requests[customElem.requests.length - 1];
 
@@ -1151,8 +1169,15 @@
                             break;
 
                         default:
-                            //Detach all firebase callbacks
-                            customElem.clearFirebaseCallbacks();
+                            //Detach all firebase callbacks EXCEPT this callback's counter-part
+                            customElem.clearFirebaseCallbacks('requests' + '_' + customElem.querytype.bygame + '_nopaginate');
+                            customElem.clearFirebaseCallbacks('requests' + '_' + customElem.querytype.bygame + '_paginate');
+                            customElem.clearFirebaseCallbacks('requests' + '_' + customElem.querytype.id + '_nopaginate');
+                            customElem.clearFirebaseCallbacks('requests' + '_' + customElem.querytype.id + '_paginate');
+                            customElem.clearFirebaseCallbacks('requests' + '_' + customElem.querytype.bysystem + '_nopaginate');
+                            customElem.clearFirebaseCallbacks('requests' + '_' + customElem.querytype.bysystem + '_paginate');
+                            customElem.clearFirebaseCallbacks('requests' + '_' + customElem.querytype.none + '_paginate');
+                            //customElem.clearFirebaseCallbacks('requests' + '_' + customElem.querytype.none + '_nopaginate');
 
                             var lastrequest = customElem.requests[customElem.requests.length - 1];
 
@@ -1206,7 +1231,7 @@
                     switch (querytype) {
                         case customElem.querytype.bygame:
                             //Detach all firebase callbacks
-                            customElem.clearFirebaseCallbacks('requests' + '_' + customElem.querytype.bygame + '_nopaginate');
+                            customElem.clearFirebaseCallbacks();
 
                             query = window.lfg.utils.clearWhiteSpace(query).toLowerCase();	//querying by game title, so prepare query    
 
@@ -1260,7 +1285,7 @@
 
                         case customElem.querytype.byid:
                             //Detach all firebase callbacks
-                            customElem.clearFirebaseCallbacks('requests' + '_' + customElem.querytype.byid + '_nopaginate');
+                            customElem.clearFirebaseCallbacks();
 
                             //save the query & type (for pagination)
                             customElem.dataops.query = query;
@@ -1313,10 +1338,7 @@
 
                         case customElem.querytype.bysystem:
                             //Detach all firebase callbacks
-                            customElem.clearFirebaseCallbacks('requests' + '_' + customElem.querytype.bysystem + '_nopaginate');
-                            customElem.clearFirebaseCallbacks('requests' + '_' + customElem.querytype.none + '_nopaginate');
-                            customElem.clearFirebaseCallbacks('requests' + '_' + customElem.querytype.bysystem + '_paginate');
-                            customElem.clearFirebaseCallbacks('requests' + '_' + customElem.querytype.none + '_paginate');
+                            customElem.clearFirebaseCallbacks();
 
                             if (query) {
                                 query = window.lfg.utils.clearWhiteSpace(query).toLowerCase();
@@ -1641,7 +1663,7 @@
 
                 this.firebaseRef = new Firebase(window.lfg.config.getFirebaseUrl());
                 this.firebaseRefs = [];
-                this.firebaseTimestamp = (-1 * (0 - Date.now()));;
+                this.firebaseTimestamp = (-1 * (0 - Date.now()));
                 this.requestRetrievalCounter = 0;
                 this.scrollBound = true;
 

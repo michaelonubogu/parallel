@@ -749,11 +749,13 @@
                     }
                 }
                 else {
-                    _.each(this.firebaseRefs, function (ref, index) {
-                        //Detach all currently attached firebase callbacks. Only one should be attached at one time
-                        ref.value.off(ref.type, ref.functionRef);
-                        cusElem.firebaseRefs.splice(index, 1);
-                    });
+                    if (this.firebaseRefs.length > 0) {
+                        _.each(this.firebaseRefs, function (ref, index) {
+                            //Detach all currently attached firebase callbacks. Only one should be attached at one time
+                            ref.value.off(ref.type, ref.functionRef);
+                            cusElem.firebaseRefs.splice(index, 1);
+                        });
+                    }
                 }
             },
 
@@ -947,7 +949,7 @@
             		    var lastrequest = lastRecentRequest.request;
 
             		    //Detach all firebase callbacks
-            		    customElem.clearFirebaseCallbacks('recentrequests_nopaginate');
+            		    //customElem.clearFirebaseCallbacks('recentrequests_nopaginate');
             		    customElem.clearFirebaseCallbacks('recentrequests_paginate');
 
             		    //no query, so just go by priority
