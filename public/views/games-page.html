@@ -1036,6 +1036,11 @@
             				$(cusElem.$.search_results_table).find('tbody').html(listHtml);
             				$('.search-loading-container').hide();
             				$('.game-title-results').show();
+
+            			    //Now we have to make sure all the images are good
+            				$(cusElem.$.search_results_table).find('img').each(function () {
+            				    cusElem.resolveGbBrokenImage($(this).get(0));
+            				});
             			},
             			error: function (err) {
             			}
@@ -1219,6 +1224,46 @@
 
             isLoggedIn: function () {
             	return window.lfg.utils.isLoggedIn();
+            },
+
+            resolveGbBrokenImage: function (imgElem) {
+                //Giantbomb Hack - switch the url from whatever it is to .png or .jpg. (Most of the onerror solutions just wouldnt work)
+                var http = jQuery.ajax({
+                    type: "HEAD",
+                    url: imgElem.src,
+                    success: function (data, textStatus, xhr) {
+                        if (xhr.status == 404) {
+                            var ext = imgElem.src.substring(((imgElem.src.length - 1) - 3));
+                            switch (ext.toLowerCase()) {
+                                case '.png':
+                                    var oldExt = imgElem.src.substring(((imgElem.src.length - 1) - 3));
+                                    imgElem.src = imgElem.src.replace(oldExt, '.jpg');
+                                    break;
+
+                                case '.jpg':
+                                    var oldExt = imgElem.src.substring(((imgElem.src.length - 1) - 3));
+                                    imgElem.src = imgElem.src.replace(oldExt, '.png');
+                                    break;
+                            }
+                        }
+                    },
+                    error: function (error) {
+                        if (error.status == 404) {
+                            var ext = imgElem.src.substring(((imgElem.src.length - 1) - 3));
+                            switch (ext.toLowerCase()) {
+                                case '.png':
+                                    var oldExt = imgElem.src.substring(((imgElem.src.length - 1) - 3));
+                                    imgElem.src = imgElem.src.replace(oldExt, '.jpg');
+                                    break;
+
+                                case '.jpg':
+                                    var oldExt = imgElem.src.substring(((imgElem.src.length - 1) - 3));
+                                    imgElem.src = imgElem.src.replace(oldExt, '.png');
+                                    break;
+                            }
+                        }
+                    }
+                });
             },
 
             saveTaggedGame: function (tagged) {

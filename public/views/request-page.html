@@ -1041,6 +1041,7 @@
 								    request.key = snapshot.key();
 								    request.systemColor = customElem.getSystemColor(request.system);
 								    request.description = customElem.truncateText(request.description, 65);
+								    request.title = customElem.truncateText(request.title, 35);
 								    customElem.getUserProfile(request);
 								    customElem.getCommentCount(request.key);
 								    if (request.gameindex !== lastreq.gameindex) {
@@ -1093,6 +1094,7 @@
 
 								    request.key = snapshot.key();
 								    request.systemColor = customElem.getSystemColor(request.system);
+								    request.title = customElem.truncateText(request.title, 35);
 								    request.description = customElem.truncateText(request.description, 65);
 								    customElem.getUserProfile(request);
 								    customElem.getCommentCount(request.key);
@@ -1145,6 +1147,7 @@
 
 								    request.key = snapshot.key();
 								    request.systemColor = customElem.getSystemColor(request.system);
+								    request.title = customElem.truncateText(request.title, 35);
 								    request.description = customElem.truncateText(request.description, 65);
 								    customElem.getUserProfile(request);
 								    customElem.getCommentCount(request.key);
@@ -1197,6 +1200,7 @@
 
 								    request.priority = snapshot.getPriority();
 								    request.systemColor = customElem.getSystemColor(request.system);
+								    request.title = customElem.truncateText(request.title, 35);
 								    request.description = customElem.truncateText(request.description, 65);
 								    customElem.getUserProfile(request);
 								    customElem.getCommentCount(request.key);
@@ -1249,6 +1253,7 @@
 								    var request = snapshot.val() || {};
 								    request.key = snapshot.key();
 								    request.systemColor = customElem.getSystemColor(request.system);
+								    request.title = customElem.truncateText(request.title, 35);
 								    request.description = customElem.truncateText(request.description, 65);
 								    customElem.getUserProfile(request);
 								    customElem.getCommentCount(request.key);
@@ -1301,6 +1306,7 @@
 								    var request = snapshot.val() || {};
 								    request.key = snapshot.key();
 								    request.systemColor = customElem.getSystemColor(request.system);
+								    request.title = customElem.truncateText(request.title, 35);
 								    request.description = customElem.truncateText(request.description, 65);
 								    customElem.getUserProfile(request);
 								    customElem.getCommentCount(request.key);
@@ -1354,6 +1360,7 @@
 								    var request = snapshot.val() || {};
 								    request.key = snapshot.key();
 								    request.systemColor = customElem.getSystemColor(request.system);
+								    request.title = customElem.truncateText(request.title, 35);
 								    request.description = customElem.truncateText(request.description, 65);
 								    customElem.getUserProfile(request);
 								    customElem.getCommentCount(request.key);
@@ -1404,6 +1411,7 @@
 								    request.key = snapshot.key();
 								    request.priority = snapshot.getPriority();
 								    request.systemColor = customElem.getSystemColor(request.system);
+								    request.title = customElem.truncateText(request.title, 35);
 								    request.description = customElem.truncateText(request.description, 65);
 								    customElem.getUserProfile(request);
 								    customElem.getCommentCount(request.key);

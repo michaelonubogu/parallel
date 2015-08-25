@@ -204,8 +204,8 @@
 			color: #757575 !important;
 			border:solid 2px #D5D5D5; 
 			border-radius:5px;
-			height:150px !important;
-			padding-right:5px;
+			height:120px !important;
+			padding-right:10px;
 			overflow-y:auto;
 			overflow-x:hidden;
 		}
@@ -219,8 +219,8 @@
 		.lfg-input-details.input-field textarea {
 			border-bottom: none;
             box-shadow: none;
-			margin:-2px 10px 0 10px !important;
-			height:90px;
+			margin:-10px 10px 0 10px !important;
+			height:60px;
 		}
 
 		.lfg-input-details.input-field textarea:focus {
@@ -502,8 +502,9 @@
 									<label class="red-text error-message" style="font-size:1rem; display:none;">**This is required</label>
 								</div>
 								<div class="lfg-input input-field col s12">
-									<input id="request_title" type="text" placeholder="Title of your request" class="validate" value="{{request.title::input}}" />
+									<input id="request_title" maxlength="100" type="text" placeholder="Title of your request" class="validate" value="{{request.title::input}}" />
 								</div>
+                                <span class="character-counter grey-text" style="float: right; font-size: 12px; height: 1px;">{{requestTitleCountMessage}}</span>
 							</div>
 
 							<br />
@@ -515,8 +516,9 @@
 									<label class="red-text error-message" style="font-size:1rem; display:none;">**This is required</label>
 								</div>
 								<div class="lfg-input-details input-field col s12">
-									<textarea id="request_description" class="materialize-textarea validate" placeholder="Details of your request" value="{{request.description::input}}"></textarea>
+									<textarea id="request_description" maxlength="300" class="materialize-textarea validate" placeholder="Details of your request" value="{{request.description::input}}"></textarea>
 								</div>
+                                <span class="character-counter grey-text" style="float: right; font-size: 12px; height: 1px;">{{requestDescriptionCountMessage}}</span>
 							</div>
 
 							<br />
@@ -726,7 +728,7 @@
 									element.image.screen_url !== null &&
 									element.image.screen_url !== undefined &&
 									element.image.screen_url !== '') {
-            						listHtml += '<img class="search-image" style="border-radius: 5px !important;" src="' + element.image.screen_url + '" width="100" />';
+            					    listHtml += '<img class="search-image" style="border-radius: 5px !important;" src="' + element.image.screen_url + '" width="100" />';
             					}
             					else {
             						listHtml += '<div style="background-color:#FB8C00; width:100px; height:56px;"></div>';
@@ -744,6 +746,11 @@
             				$(cusElem.$.search_results_table).find('tbody').html(listHtml);
             				$('.search-loading-container').hide();
             				$('.game-title-results').show();
+
+            			    //Now we have to make sure all the images are good
+            				$(cusElem.$.search_results_table).find('img').each(function () {
+            				    cusElem.resolveGbBrokenImage($(this).get(0));
+            				});
             			},
             			error: function (err) {
             			}
@@ -843,6 +850,9 @@
             		$(cusElem.$.selected_game_image).get(0).src = imageUrl;
             		$(cusElem.selected_game_image_placeholder).hide();
             		$(cusElem.$.selected_game_image).show();
+
+            	    //check to see if the image is ok
+            		cusElem.resolveGbBrokenImage($(cusElem.$.selected_game_image).get(0));
             	}
             	else {
             		$(cusElem.$.selected_game_image_placeholder).html(cusElem.request.game);
@@ -887,6 +897,13 @@
             	];
 
             	this.newRequest = {};
+            	this.requestDescriptionLength = 300;
+            	this.requestDescriptionCounter = 0;
+            	this.requestDescriptionCountMessage = this.requestDescriptionCounter.toString() + '/' + this.requestDescriptionLength.toString();
+
+            	this.requestTitleLength = 100;
+            	this.requestTitleCounter = 0;
+            	this.requestTitleCountMessage = this.requestTitleCounter.toString() + '/' + this.requestTitleLength.toString();
 
             	this.firebaseRef = new Firebase(window.lfg.config.getFirebaseUrl());
             },
@@ -974,6 +991,8 @@
 
             	$(this.$.request_details_container).collapsible();
 
+            	$(this.$.request_description).characterCounter();
+
             	$(this.$.request_game).autocomplete({
             		source: function (request, response) {
             			var url = window.lfg.config.getGiantBombUrl(window.lfg.config.apiEndPoints.search);
@@ -1017,19 +1036,24 @@
             },
 
             registerEvents: function () {
-            	//$(document).on('change', '#' + this.$.request_date.id, function () {
-            	//	$(this).removeClass('invalid');
-            	//});
+                var customElem = this;
 
-                $(document).on('keypress', '#request_gamer_count', this.verifyDigitOnly.bind(this));
-                $(document).on('input', '#search_request_game', _.debounce(this.doVideoGameSearch.bind(this), 1000));
-            	$(document).on('click', '.search-result-row', this.searchRowClick.bind(this));
-            	$(document).on('click', '#search_row', this.showSearchModal.bind(this));
-            	//$(document).on('click', '#time_right_now', function () { $(this).addClass('active'); })
-            	$(document).on('click', '#time_future_date', this.showDateSelection.bind(this));
-            	$('.filter-tags').click(this.selectConsole.bind(this));
-            	//$(document).on('click', '#post_fb', this.postToFacebook.bind(this));
-            	//$(document).on('click', '#post_twitter', this.postToTwitter.bind(this));
+                $(document).on('keypress', '#request_gamer_count', customElem.verifyDigitOnly.bind(customElem));
+                $(document).on('input', '#search_request_game', _.debounce(customElem.doVideoGameSearch.bind(customElem), 1000));
+                $(document).on('click', '.search-result-row', customElem.searchRowClick.bind(customElem));
+                $(document).on('click', '#search_row', customElem.showSearchModal.bind(customElem));
+                $(document).on('click', '#time_future_date', customElem.showDateSelection.bind(customElem));
+                $('.filter-tags').click(customElem.selectConsole.bind(customElem));
+
+                $(document).on('input', '#request_description', function () {
+                    customElem.requestDescriptionCounter = $(this).val().length;
+                    customElem.requestDescriptionCountMessage = customElem.requestDescriptionCounter.toString() + '/' + customElem.requestDescriptionLength.toString();
+                });
+
+                $(document).on('input', '#request_title', function () {
+                    customElem.requestTitleCounter = $(this).val().length;
+                    customElem.requestTitleCountMessage = customElem.requestTitleCounter.toString() + '/' + customElem.requestTitleLength.toString();
+                });
             },
 
             registerDropListPlugin: function () {
@@ -1044,9 +1068,46 @@
 				$(this.$.request_system).material_select();
 				$(this.$.request_city).material_select();
 				$(this.$.request_state).material_select();
+            },
 
-				//option selected event
-				//$(document).on('change', '#' + this.$.request_system.id, this.optionSelected);
+            resolveGbBrokenImage: function (imgElem) {
+                //Giantbomb Hack - switch the url from whatever it is to .png or .jpg. (Most of the onerror solutions just wouldnt work)
+                var http = jQuery.ajax({
+                    type: "HEAD",
+                    url: imgElem.src,
+                    success: function (data, textStatus, xhr) {
+                        if (xhr.status == 404) {
+                            var ext = imgElem.src.substring(((imgElem.src.length - 1) - 3));
+                            switch (ext.toLowerCase()) {
+                                case '.png':
+                                    var oldExt = imgElem.src.substring(((imgElem.src.length - 1) - 3));
+                                    imgElem.src = imgElem.src.replace(oldExt, '.jpg');
+                                    break;
+
+                                case '.jpg':
+                                    var oldExt = imgElem.src.substring(((imgElem.src.length - 1) - 3));
+                                    imgElem.src = imgElem.src.replace(oldExt, '.png');
+                                    break;
+                            }
+                        }
+                    },
+                    error: function (error) {
+                        if (error.status == 404) {
+                            var ext = imgElem.src.substring(((imgElem.src.length - 1) - 3));
+                            switch (ext.toLowerCase()) {
+                                case '.png':
+                                    var oldExt = imgElem.src.substring(((imgElem.src.length - 1) - 3));
+                                    imgElem.src = imgElem.src.replace(oldExt, '.jpg');
+                                    break;
+
+                                case '.jpg':
+                                    var oldExt = imgElem.src.substring(((imgElem.src.length - 1) - 3));
+                                    imgElem.src = imgElem.src.replace(oldExt, '.png');
+                                    break;
+                            }
+                        }
+                    }
+                });
             },
 
             selectConsole: function (e) {
