@@ -21,7 +21,7 @@
             fayeDevUrl: 'http://localhost:1337/faye',
             fayeTestUrl: 'http://parallel-test.azurewebsites.net/faye',
             fayeProdUrl: '',
-            env: 'test',
+            env: 'dev',
 			apiEndPoints: {
 				games: 'api/giantbomb/games',
 				game: 'api/giantbomb/game',
@@ -190,14 +190,8 @@
             },
 			
 			convertDateToUtc: function (date) {
-				return Date.UTC(
-					date.getFullYear(),
-						date.getMonth(),
-						date.getDate(),
-						date.getHours(),
-						date.getMinutes(),
-						date.getSeconds()
-				);
+				//return Math.round((date).getTime() / 1000);
+                return (0 - date);
 			},
 			
 			convertUtcToLocalDate: function (utcSeconds) {

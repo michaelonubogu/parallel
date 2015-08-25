@@ -1641,7 +1641,7 @@
 
                 this.firebaseRef = new Firebase(window.lfg.config.getFirebaseUrl());
                 this.firebaseRefs = [];
-                this.firebaseTimestamp = window.lfg.utils.convertDateToUtc(Date.now());
+                this.firebaseTimestamp = (-1 * (0 - Date.now()));;
                 this.requestRetrievalCounter = 0;
                 this.scrollBound = true;
 

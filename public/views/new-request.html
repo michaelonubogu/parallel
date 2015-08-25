@@ -1226,8 +1226,8 @@
 
 					//Firebase Search Indexes
             	    //custom index for searching & ordering requests in lexicographical/chronologic order -  really just a hack
-            		var timeNow = this.convertDateToUtc(Date.now());
-            		var index = 0 - timeNow;
+            		var timeNow = 0 - Date.now();
+            		var index = timeNow;
             		var lexicoIndex = window.lfg.utils.getSearchIndex(timeNow);
 
             		newRequest.index = index;   //getPriority is unreliable - use our own index
