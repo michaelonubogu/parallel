@@ -739,7 +739,7 @@
                             _.each(callbacks, function (ref, index) {
                                 //Detach all currently attached firebase callbacks. Only one should be attached at one time
                                 ref.value.off(ref.type, ref.functionRef);
-                                cusElem.firebaseRefs.splice(index, 1);
+                                cusElem.firebaseRefs.splice(cusElem.firebaseRefs.indexOf(ref), 1);
                             });
                         }
                         else {
@@ -749,11 +749,12 @@
                     }
                 }
                 else {
-                    if (this.firebaseRefs.length > 0) {
-                        _.each(this.firebaseRefs, function (ref, index) {
+                    if (cusElem.firebaseRefs.length > 0) {
+                        var clone = cusElem.firebaseRefs.slice(0);
+                        _.each(clone, function (ref, index) {
                             //Detach all currently attached firebase callbacks. Only one should be attached at one time
                             ref.value.off(ref.type, ref.functionRef);
-                            cusElem.firebaseRefs.splice(index, 1);
+                            cusElem.firebaseRefs.splice(cusElem.firebaseRefs.indexOf(ref), 1);
                         });
                     }
                 }
