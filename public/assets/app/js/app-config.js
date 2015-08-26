@@ -173,10 +173,6 @@
                 return false;
             },
             
-            blockContent: function (elemId, html){
-
-            },
-			
 			checkEmail: function (email) {
 				var reg = /^\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/
 				if (reg.test(email)) {
@@ -319,7 +315,7 @@
                     loggedIn = false;
                 }
                 else {
-                    utils.setAuthToken(JSON.stringify(authData));
+                    utils.setAuthToken(authData);
                 }
 
 				//return (authData !== null && authData !== undefined);
