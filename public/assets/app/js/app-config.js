@@ -147,20 +147,18 @@
             
             automaticSignin: function () {
                 //Check if the user is logged in on the server
-                var ref = new Firebase(window.lfg.config.getFirebaseUrl());
-                authData = ref.getAuth();
-                
-                if (authData !== null && authData !== undefined) {
+                var utils = this;
+                var loggedIn = utils.isLoggedIn();
+
+                if (loggedIn) {
                     //set auth token
                     window.lfg.utils.setAuthToken(authData);
-                    
                     var userRef = new Firebase(window.lfg.config.getFirebaseUrl() + 'users/' + authData.uid);
                     
                     //Get the user profile info. If none exists, redirect to Onboarding process...
                     userRef
 					    .once('value', function (snapshot) {
-                            var user = snapshot.val();
-                        
+                        var user = snapshot.val();          
                             //redirect to user setup page
                             if (user === null || user === undefined || user.setupcomplete === null || user.setupcomplete === undefined || user.setupcomplete === '' || user.setupcomplete === false) {
                                 document.querySelector('app-router').go('/setup');
@@ -173,6 +171,10 @@
                 }
                 
                 return false;
+            },
+            
+            blockContent: function (elemId, html){
+
             },
 			
 			checkEmail: function (email) {
@@ -306,24 +308,18 @@
 			
             isLoggedIn: function () {
                 //Check the client first - session storage
+                var utils = this;
                 var loggedIn = true;
-				var authJSON = sessionStorage.getItem(config.firebaseCacheKey);
-				var authData = JSON.parse(authJSON);
-                
-                //local storage check
-				if (authData == null || authData == undefined) {
-					var localJSON = localStorage.getItem(config.firebaseCacheKey);
-					authData = JSON.parse(localJSON);
-                }
-                
+
                 //db session check
-                if (authData == null || authData == undefined) {
-                    var ref = new Firebase(config.getFirebaseUrl());
-                    authData = ref.getAuth();
-                }
+                var ref = new Firebase(config.getFirebaseUrl());
+                authData = ref.getAuth();
                 
                 if (authData == null || authData == undefined) {
                     loggedIn = false;
+                }
+                else {
+                    utils.setAuthToken(JSON.stringify(authData));
                 }
 
 				//return (authData !== null && authData !== undefined);
@@ -365,10 +361,17 @@
             },
             
             setAuthToken: function (authData) {
-                var jsonAuthData = JSON.stringify(authData);
-
-                sessionStorage.setItem(config.firebaseCacheKey, jsonAuthData);
-                localStorage.setItem(config.firebaseCacheKey, jsonAuthData);
+                
+                var localJSON = localStorage.getItem(config.firebaseCacheKey);
+                var authJSON = sessionStorage.getItem(config.firebaseCacheKey);
+                
+                if (localJSON === null || localJSON === undefined) {
+                    localStorage.setItem(config.firebaseCacheKey, JSON.stringify(authData));
+                }
+                
+                if (authJSON === null || authJSON === undefined) {
+                    sessionStorage.setItem(config.firebaseCacheKey, JSON.stringify(authData));
+                }
             },
 			
 			tweetOnTwitter: function (options) {

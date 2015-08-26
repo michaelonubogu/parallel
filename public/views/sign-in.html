@@ -80,7 +80,7 @@
 
 	<template>
 		<div class="layout fit vertical center-center orange darken-1">
-			<div class="layout horizontal">
+			<div class="layout vertical center">
 				<h4 class="white-text thin">Sign in & Start Gaming with Gamers</h4>
 			</div>
 			<div class="layout horizontal">
@@ -94,28 +94,28 @@
 			</div>
 			<br /><br />
 			<div>
-				<a class="waves-effect waves-light btn light-blue darken-4 white-text sign-in-button regular-text" on-click="signInWithFacebook">
+				<a id="facebook_button" class="waves-effect waves-light btn light-blue darken-4 white-text sign-in-button regular-text" on-click="signInWithFacebook">
 					<i class="fa fa-facebook left"></i>
 					Sign in with Facebook
 				</a>
 			</div>
 			<br />
 			<div>
-				<a class="waves-effect waves-purple btn light-blue accent-3 white-text sign-in-button regular-text" on-click="signInWithTwitter">
+				<a id="twitter_button" class="waves-effect waves-purple btn light-blue accent-3 white-text sign-in-button regular-text" on-click="signInWithTwitter">
 					<i class="fa fa-twitter left"></i>
 					Sign in with Twitter
 				</a>
 			</div>
 			<br />
 			<div>
-				<a class="waves-effect waves-light btn red darken-2 white-text sign-in-button regular-text" on-click="signInWithGoogle">
+				<a id="google_button" class="waves-effect waves-light btn red darken-2 white-text sign-in-button regular-text" on-click="signInWithGoogle">
 					<i class="fa fa-google left"></i>
 					Sign in with Google
 				</a>
 			</div>
 			<br />
 			<div>
-				<a class="waves-effect waves-light btn light-green darken-3 white-text sign-in-button regular-text" on-click="signInWithSteam">
+				<a id="steam_button" class="waves-effect waves-light btn light-green darken-3 white-text sign-in-button regular-text" on-click="signInWithSteam">
 					<i class="fa fa-steam-square left"></i>
 					Sign in with Steam
 				</a>
@@ -269,6 +269,38 @@
             	}
             },
 
+            checkSignInAttempts: function(){
+                var signinAttempts = sessionStorage.getItem('signinAttempts');
+                var cusElem = this;
+
+                if (signinAttempts !== null && signinAttempts !== undefined) {
+                    signinAttempts = JSON.parse(signinAttempts);
+
+                    _.each(signinAttempts, function (attempt) {
+                        switch (attempt.name) {
+                            case 'facebook':
+                                $(cusElem.$.facebook_button).removeClass('light-blue').removeClass('darken-4').addClass('grey').addClass('lighten-1');
+                                break;
+
+                            case 'twitter':
+                                $(cusElem.$.twitter_button).removeClass('light-blue').removeClass('accent-3').addClass('grey').addClass('lighten-1');
+                                break;
+
+                            case 'google':
+                                $(cusElem.$.google_button).removeClass('red').removeClass('darken-2').addClass('grey').addClass('lighten-1');
+                                break;
+
+                            case 'steam':
+                                $(cusElem.$.steam_button).removeClass('light-green').removeClass('darken-3').addClass('grey').addClass('lighten-1');
+                                break;
+
+                            default:
+                                break;
+                        }
+                    });
+                }
+            },
+
             getSteamAuthUrl: function () {
             	var customElem = this;
             	var url = window.lfg.config.getSteamVerifyUrl();
@@ -307,7 +339,6 @@
             			//Check to see if it's user's first time. If it is, create user object in db for them and display 
             			//appropriate screen
             			currElem.startIntroProcess(authData);
-            			document.querySelector('app-router').go('/requests');
             		}
             	});
             },
@@ -322,9 +353,7 @@
             		else {
             			currElem.cacheLoginCredentials(authData);
             			console.log("Authenticated Successfully via twitter with payload:", authData);
-
             			currElem.startIntroProcess(authData);
-            			document.querySelector('app-router').go('/requests');
             		}
             	});
             },
@@ -455,6 +484,7 @@
             	this.registerPlugins();
             	this.registerEvents();
             	$(this.$.signin_overlay).fadeOut();
+            	this.checkSignInAttempts();
             }
         });
     })(window);

@@ -29,6 +29,7 @@
 <link rel="import" href="../imports/material_icons.html" />
 <link rel="import" href="../imports/font-awesome.html" />
 <link rel="import" href="../imports/flaticons.html" />
+<link rel="import" href="../imports/sign-in-button.html" />
 <link rel="import" href="../imports/side-nav-contents.html" />
 
 <dom-module id="games-page">
@@ -512,11 +513,12 @@
 			<paper-header-panel mode="seamed" main class="lfg-main-header-panel white">
 				<paper-toolbar class="medium-tall white lfg-main-toolbar">
 					<paper-icon-button icon="menu" class="grey-text" paper-drawer-toggle></paper-icon-button>
+                    <paper-icon-button class="grey-text" icon="arrow-back" on-click="goToList"></paper-icon-button>
 					<div class="flex"></div>
 					<!--<paper-icon-button id="search_button" icon="search" class="grey-text" on-click="showSearch"></paper-icon-button>-->
 					<div class="middle">
 					</div>
-					<div class="bottom black-text" style="width:100%;">
+					<div class="bottom black-text filter-row" style="width:100%; display:none;">
 						<div class="layout horizontal wrap">
 							<!--style="background-color:#01579B; border-color:#01579B; color:#ffffff !important;"-->
 							<span class="center center-align filter-tags tag-neutral" data-system="ps3">PS3</span>
@@ -529,7 +531,7 @@
 						</div>
 					</div>
 				</paper-toolbar>
-				<div class="fit content-area">
+				<div id="games_content_area" class="fit content-area">
 					<div class="row">
 						<template is="dom-repeat" items="{{userGames}}">
 							<div class="col s12 m6 l3">
@@ -913,6 +915,19 @@
                 }
             },
 
+            blockContent: function () {
+                var html = '<div class="layout fit vertical center white" style="padding:0 20px;">';
+                html += '<div class="layout vertical">'
+                html += '<h3 class="orange-text text-darken-3" >Oh Noez!!! Why you no sign in!</h3><br><br>'
+                html += '<i class="fa fa-close fa-5x orange-text text-darken-2"></i><br><br>';
+                html += '<h4 class="orange-text text-darken-3" style="font-size:1.5rem;">Sorry, but you need to be signed in to view the Games page</h4></div>'
+                html += '<h6 class="orange-text text-darken-3">Click the Sign In button located in the side navigation panel on the left, or click <a href="#/" class="blue-text" style="cursor:pointer;">here</a> to go to the requests page</h6>'
+                html += '</div>';
+
+                $(this.$.games_content_area).html(html);
+                $('.filter-row').remove();
+            },
+
             clearActiveTag: function (exceptionNode) {
             	$('.filter-tags').each(function () {
             		if ($(this).data('system') !== $(exceptionNode).data('system')) {
@@ -1222,8 +1237,32 @@
             	}
             },
 
+            goToList: function () {
+                document.querySelector('app-router').go('/');
+            },
+
             isLoggedIn: function () {
-            	return window.lfg.utils.isLoggedIn();
+                var cusElem = this;
+
+                if (window.lfg.utils.isLoggedIn()) {
+                    var userRef = new Firebase(window.lfg.config.getFirebaseUrl() + 'users/' + authData.uid);
+
+                    //Get the user profile info. If none exists, redirect to Onboarding process...
+                    userRef
+                        .once('value', function (snapshot) {
+                            var user = snapshot.val();
+                            if (user === null || user === undefined || user.setupcomplete === null || user.setupcomplete === undefined || user.setupcomplete === '' || user.setupcomplete === false) {
+                                cusElem.blockContent();
+                            }
+                            else {
+                                cusElem.loggedIn = true;
+                                $('.filter-row').show();
+                            }
+                        });
+                }
+                else {
+                    cusElem.blockContent();
+                }
             },
 
             resolveGbBrokenImage: function (imgElem) {
@@ -1353,6 +1392,9 @@
 
 			/* Init */
             initializeData: function () {
+                this.loggedIn = null;
+                this.isLoggedIn();
+
             	this.firebaseUrl = window.lfg.config.getFirebaseUrl() + '/requests';
 
             	this.systems = [
@@ -1369,8 +1411,6 @@
             	this.systemTagged = 'none';
             	this.firebaseRef = new Firebase(window.lfg.config.getFirebaseUrl());
             	this.firebaseRefs = [];
-
-            	this.loggedIn = this.isLoggedIn();
             },
 
             registerEvents: function () {
@@ -1389,21 +1429,13 @@
 
 			/* Events */
             ready: function () {
-                window.lfg.utils.automaticSignin();
-
-            	if (this.isLoggedIn()) {
-            		this.initializeData();
-            	}
-            	else {
-            		//redirect to sign-in
-            		document.querySelector('app-router').go('/login');
-            	}
+                this.initializeData();
             },
 
             attached: function () {
-            	this.getTaggedGames();
-            	this.registerPlugins();
-            	this.registerEvents();
+                this.getTaggedGames();
+                this.registerPlugins();
+                this.registerEvents();
             }
         });
     })(window);

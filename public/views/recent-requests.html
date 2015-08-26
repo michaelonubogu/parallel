@@ -362,7 +362,7 @@
                     <div class="middle">
                     </div>
                     <div class="bottom" style="width:100%;">
-                        <!--<div class="layout horizontal wrap">
+                        <!--<div class="layout horizontal wrap filter-row">
                             <span class="center center-align filter-tags tag-neutral" data-system="ps3">PS3</span>
                             <span class="center center-align filter-tags tag-neutral" data-system="ps4">PS4</span>
                             <span class="center center-align filter-tags tag-neutral" data-system="xbox360">X360</span>
@@ -386,7 +386,7 @@
                     </paper-toolbar>
                 </template>
 
-                <div class="white lighten-3" style="margin-bottom:10%;">
+                <div id="recent_requests_content" class="white lighten-3" style="margin-bottom:10%;">
                     <ul id="request_list" class="collection request-list-item-container" style="margin-top:0; border:none;">
                         <li class="collection-item request-list-item spinner-roo-item">
                             <div class="row">
@@ -720,6 +720,19 @@
                     cusElem.loggedIn = false;
                     cusElem.notifyPath('loggedIn', cusElem.loggedIn);
                 }
+            },
+
+            blockContent: function () {
+                var html = '<div class="layout fit vertical center white" style="padding:0 20px;">';
+                html += '<div class="layout vertical">'
+                html += '<h3 class="orange-text text-darken-3" >Oh Noez!!! Why you no sign in!</h3><br><br>'
+                html += '<i class="fa fa-close fa-5x orange-text text-darken-2"></i><br><br>';
+                html += '<h4 class="orange-text text-darken-3" style="font-size:1.5rem;">Sorry, but you need to be signed in to view the this page</h4></div>'
+                html += '<h6 class="orange-text text-darken-3">Click the Sign In button located in the side navigation panel on the left, or click <a href="#/" class="blue-text" style="cursor:pointer;">here</a> to go to the requests page</h6>'
+                html += '</div>';
+
+                $(this.$.recent_requests_content).html(html);
+                $('.filter-row').remove();
             },
 
             clearActiveTag: function (exceptionNode) {
@@ -1214,11 +1227,48 @@
             },
 
             isLoggedIn: function () {
-            	return window.lfg.utils.isLoggedIn();
+                var cusElem = this;
+
+                if (window.lfg.utils.isLoggedIn()) {
+                    var userRef = new Firebase(window.lfg.config.getFirebaseUrl() + 'users/' + authData.uid);
+
+                    //Get the user profile info. If none exists, redirect to Onboarding process...
+                    userRef
+                        .once('value', function (snapshot) {
+                            var user = snapshot.val();
+                            if (user === null || user === undefined || user.setupcomplete === null || user.setupcomplete === undefined || user.setupcomplete === '' || user.setupcomplete === false) {
+                                cusElem.blockContent();
+                            }
+                            else {
+                                cusElem.loggedIn = true;
+                                $('.filter-row').show();
+                            }
+                        });
+                }
+                else {
+                    cusElem.blockContent();
+                }
             },
 
             isLoggedOut: function () {
-            	return window.lfg.utils.isLoggedIn() === false;
+                var cusElem = this;
+
+                if (window.lfg.utils.isLoggedIn()) {
+                    var userRef = new Firebase(window.lfg.config.getFirebaseUrl() + 'users/' + authData.uid);
+
+                    //Get the user profile info. If none exists, redirect to Onboarding process...
+                    userRef
+                        .once('value', function (snapshot) {
+                            var user = snapshot.val();
+                            //redirect to user setup page
+                            if (user === null || user === undefined || user.setupcomplete === null || user.setupcomplete === undefined || user.setupcomplete === '' || user.setupcomplete === false) {
+                                cusElem.loggedOut = true;
+                            }
+                            else {
+                                cusElem.loggedOut = false;
+                            }
+                        });
+                }
             },
 
             loadRequest: function (e) {
@@ -1264,6 +1314,12 @@
 
 			/* Init */
             initializeData: function () {
+                this.loggedIn = null;
+                this.loggedOut = null;
+
+                this.isLoggedIn();
+                this.isLoggedOut();
+
             	this.firebaseUrl = window.lfg.config.getFirebaseUrl() + '/requests';
 
             	this.systems = [
@@ -1305,7 +1361,6 @@
 
             	this.requests = [];
             	this.recentRequests = [];
-            	this.loggedIn = this.isLoggedIn();
 
                 //hide elements
             	$(this.$.filter_modal).hide();
@@ -1341,15 +1396,14 @@
             },
 
             ready: function () {
-                window.lfg.utils.automaticSignin();
             	this.initializeData();
             },
 
             attached: function () {
-            	//this.getRequests(this.dataops.sort);
-            	this.getRequests(null, this.querytype.none, false);
-            	this.registerPlugins();
-            	this.registerEvents();
+                //this.getRequests(this.dataops.sort);
+                this.getRequests(null, this.querytype.none, false);
+                this.registerPlugins();
+                this.registerEvents();
             }
         });
     })(window);

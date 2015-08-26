@@ -409,7 +409,7 @@
                     </div>
                 </paper-toolbar>
 
-                <template is="dom-if" if="{{isLoggedOut()}}">
+                <template is="dom-if" if="{{loggedOut}}">
                     <paper-toolbar id="signin_message" class="orange lfg-main-toolbar">
                         <div><label class="white-text" style="font-size:1rem;">Sign in to create a Request</label></div>
                         <div class="flex"></div>
@@ -492,8 +492,8 @@
 
 
         <!-- Request Details Overlay-->
-        <div id="details_overlay" class="overlay-cover" style="width:100%; height:100% !important; z-index:10000 !important; position:absolute; display:none;">
-            <div id="details_overlay_content" class="white overlay-card" style="width:96%; height:92% !important; margin:2%;">
+        <div id="details_overlay" class="overlay-cover layout horizontal center-center" style="width:100%; height:100% !important; z-index:10000 !important; position:absolute; display:none;">
+            <div id="details_overlay_content" class="white overlay-card" style="width:100%; max-width:1000px; height:92% !important;">
                 <div class="layout vertical white">
                     <div class="layout horizontal">
                         <div class="flex"></div>
@@ -1585,11 +1585,45 @@
             },
 
             isLoggedIn: function () {
-                return window.lfg.utils.isLoggedIn();
+                var cusElem = this;
+
+                if (window.lfg.utils.isLoggedIn()) {
+                    var userRef = new Firebase(window.lfg.config.getFirebaseUrl() + 'users/' + authData.uid);
+
+                    //Get the user profile info. If none exists, redirect to Onboarding process...
+                    userRef
+                        .once('value', function (snapshot) {
+                            var user = snapshot.val();
+                            //redirect to user setup page
+                            if (user === null || user === undefined || user.setupcomplete === null || user.setupcomplete === undefined || user.setupcomplete === '' || user.setupcomplete === false) {
+                                cusElem.loggedIn = false;
+                            }
+                            else {
+                                cusElem.loggedIn = true;
+                            }
+                        });
+                }
             },
 
             isLoggedOut: function () {
-                return window.lfg.utils.isLoggedIn() === false;
+                var cusElem = this;
+
+                if (window.lfg.utils.isLoggedIn()) {
+                    var userRef = new Firebase(window.lfg.config.getFirebaseUrl() + 'users/' + authData.uid);
+
+                    //Get the user profile info. If none exists, redirect to Onboarding process...
+                    userRef
+                        .once('value', function (snapshot) {
+                            var user = snapshot.val();
+                            //redirect to user setup page
+                            if (user === null || user === undefined || user.setupcomplete === null || user.setupcomplete === undefined || user.setupcomplete === '' || user.setupcomplete === false) {
+                                cusElem.loggedOut = true;
+                            }
+                            else {
+                                cusElem.loggedOut = false;
+                            }
+                        });
+                }
             },
 
             loadRequest: function (e) {
@@ -1635,6 +1669,12 @@
 
             /* Init */
             initializeData: function () {
+                this.loggedIn = null;
+                this.loggedOut = null;
+
+                this.isLoggedIn();
+                this.isLoggedOut();
+
                 this.firebaseUrl = window.lfg.config.getFirebaseUrl() + '/requests';
 
                 this.systems = [
@@ -1677,9 +1717,6 @@
                 this.scrollBound = true;
 
                 this.requests = [];
-
-                this.loggedIn = this.isLoggedIn();
-                this.loggedOut = this.isLoggedOut();
 
                 //hide elements
                 $(this.$.filter_modal).hide();

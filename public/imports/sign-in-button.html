@@ -92,7 +92,24 @@
             },
 
             isLoggedOut: function () {
-            	return (window.lfg.utils.isLoggedIn() === false);
+                var cusElem = this;
+
+                if (window.lfg.utils.isLoggedIn()) {
+                    var userRef = new Firebase(window.lfg.config.getFirebaseUrl() + 'users/' + authData.uid);
+
+                    //Get the user profile info. If none exists, redirect to Onboarding process...
+                    userRef
+                        .once('value', function (snapshot) {
+                            var user = snapshot.val();
+                            //redirect to user setup page
+                            if (user === null || user === undefined || user.setupcomplete === null || user.setupcomplete === undefined || user.setupcomplete === '' || user.setupcomplete === false) {
+                                cusElem.loggedOut = true;
+                            }
+                            else {
+                                cusElem.loggedOut = false;
+                            }
+                        });
+                }
             },
 
             registerEvents: function () {
@@ -102,7 +119,8 @@
 
             /* Init */
             initializeData: function () {
-            	this.loggedOut = this.isLoggedOut();
+                this.loggedOut = null;
+                this.isLoggedOut();
             },
 
 			/* Events */

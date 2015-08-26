@@ -72,9 +72,8 @@
 
 		.content-area{
 			/*margin-top:3%;*/
-			padding:0 20px 0 20px;
-            width:100%;
-            max-width:600px;
+			padding:0 3% 0 3%;
+            background-color:#fb8c00;
         }
 
 		#done-button.btn:hover, #done-button.btn-large:hover {
@@ -94,65 +93,97 @@
 		.sign-in-button {
 			width: 300px;
 		}
-
-		.input-field {
-			margin-top:0 !important;
-			height:55px !important;
-		}
-
-        .lfg-input{
-			color: #ffff00 !important;
-			border:solid 2px #ffffff; 
-			border-radius:5px;
-            /*color: #ffeb3b !important;*/
+		.lfg-input{
+            color: #e65100 !important;
         }
 
-		
+		.lfg-input.input-field textarea {
+			border-bottom: 1px solid transparent;
+            box-shadow: 0 1px 0 0 transparent;
+		}
+
+		.lfg-input.input-field textarea:focus {
+			border-bottom: 1px solid transparent;
+            box-shadow: 0 1px 0 0 transparent;
+		}
+
         /* label color */
         .lfg-input.input-field label {
-            color: #ffffff;
+            color: #e65100;
         }
 
         .lfg-input.input-field input[type=text]{
-            border-bottom: none;
-            box-shadow: none;
-			margin:3px 10px 0 10px !important;
-            font-size: 1.25rem;
+            border-bottom: 1px solid transparent;
+            box-shadow: 0 1px 0 0 transparent;
+            font-size: 1.5rem;
+        }
+
+		.lfg-input.input-field input[type=email]{
+            border-bottom: 1px solid transparent;
+            box-shadow: 0 1px 0 0 transparent;
+            font-size: 1.5rem;
         }
 
         /* label focus color */
         .lfg-input.input-field input[type=text]:focus + label {
-            color: #ffff00;
+            color: #e65100;
+        }
+
+		.lfg-input.input-field input[type=email]:focus + label {
+            color: #e65100;
         }
 
         /* label underline focus color */
         .lfg-input.input-field input[type=text]:focus {
-            border-bottom: none;
-            box-shadow:none;
+            border-bottom: 1px solid transparent;
+            box-shadow: 0 1px 0 0 transparent;
         }
 
+		.lfg-input.input-field input[type=email]:focus {
+            border-bottom: 1px solid transparent;
+            box-shadow: 0 1px 0 0 transparent;
+        }
         /* valid color */
         .lfg-input.input-field input[type=text].valid {
-            border-bottom: none;
-            box-shadow:none;
+            border-bottom: 1px solid transparent;
+            box-shadow: 0 1px 0 0 transparent;
         }
 
+		.lfg-input.input-field input[type=email].valid {
+            border-bottom: 1px solid transparent;
+            box-shadow: 0 1px 0 0 transparent;
+        }
 
         /* invalid color */
         .lfg-input.input-field input[type=text].invalid {
-            border-bottom: 1px solid #f44336 !important;
-            box-shadow: 0 1px 0 0 #f44336 !important;
+            border-bottom: 1px solid transparent !important;
+            box-shadow: 0 1px 0 0 transparent !important;
         }
+
+		.lfg-input.input-field input[type=email].invalid {
+            border-bottom: 1px solid transparent !important;
+            box-shadow: 0 1px 0 0 transparent !important;
+        }
+
+		.lfg-input .select-wrapper input.select-dropdown .invalid {
+			border-bottom: 1px solid #f44336 !important;
+            box-shadow: 0 1px 0 0 #f44336 !important;
+		}
 
         /* Icon prefix */
         .lfg-input.input-field .prefix {
-            color: #ffffff;
+            color: #e65100;
         }
 
         /* icon prefix focus color */
         .lfg-input.input-field .prefix.active {
-            color: #ffff00;
+            color: #e65100;
         }
+
+		.lfg-input .select-wrapper input.select-dropdown{
+			border-bottom: 1px solid #ffffff;
+            box-shadow: 0 1px 0 0 #ffffff;
+		}
 
 		.requests-card-panel{
             width: 100%;
@@ -193,79 +224,181 @@
 	</style>
 
 	<template>
-        <div id="new_acct_form" class="fit orange darken-1" style="display:none;">
-            <div id="profile_background" class="layout vertical center orange darken-1" >
-                <div class="layout horizontal center-justified" style="margin-top:70px;">
-                    <div class="flex"></div>
-                    <div class="col s6 center self-center">
-                        <h5 class="white-text thin" style="font-size:1.5rem;">Sweet! You're almost there...</h5>
-                        <h6 class="white-text" style="font-size:0.85rem;">Enter your Username & Email, and upload a profile picture</h6>
-                    </div>
-                    <div class="flex"></div>
-                </div>
-            </div>
-            <div class="container content-area" style="margin-top:60px;">
-                <br />
-                <div class="row" style="margin-bottom:0;">
-                    <div class="col s12 center center-aligned">
-                        <img id="profile_pic" src="../assets/app/img/profile-photo-placeholder.jpg" alt="" class="circle responsive-img" style="border:solid 2px #ffffff; height:75px; width:75px;">
-                    </div>
-                    <div class="col s12 center" style="margin-top:-10px;">
-                        <h4 class="light white-text" style="font-size:1.35rem;">{{user.username}}</h4>
-                    </div>
+		<neon-animated-pages id="pages" class="flex" selected="[[selected]]" entry-animation="[[entryAnimation]]" exit-animation="[[exitAnimation]]">
+			<neon-animatable>
+				<div class="orange darken-1">
+                    <div id="profile_background" class="layout vertical center profile-background">
+                        <div class="profile-overlay">
+                            <!-- Navigational Butons -->
+                            <div class="layout horizontal center-justified" style="opacity:1.0 !important;">
+                                <!--<div layout no-wrap style="visibility:hidden;">
+                                    <a class="btn-flat white-text wizard-back" on-click="prevSetupSlide">
+                                        <i class="material-icons white-text left">arrow_back</i>
+                                        Back
+                                    </a>
+                                </div>-->
+                                <div class="flex"></div>
+                                <div class="col s6 center self-center">
+                                    <h6 class="white-text thin" style="font-size:1.5rem;">{{providerText}}</h6>
+                                    <h6 class="white-text" style="font-size:0.85rem;">Enter your Username & Email, and upload a profile picture</h6>
+                                </div>
+                                <div class="flex"></div>
+                                <!--<div layout no-wrap>
+                                    <a class="btn-flat white-text waves-effect waves-light thin wizard-next" on-click="nextSetupSlide">
+                                        <i class="material-icons white-text right thin">arrow_forward</i>
+                                        Next
+                                    </a>
+                                </div>-->
+                            </div>
+                            <div class="row" style="margin-top: 20px; opacity:1.0 !important; z-index:1000;">
+                                <div class="col s12 center center-aligned">
+                                    <img id="profile_pic" src="../assets/app/img/profile-photo-placeholder.jpg" alt="" class="circle responsive-img" style="border:solid 2px #ffffff; height:125px; width:125px;">
+                                </div>
+                                <div class="col s12 center" style="margin-top:-10px;">
+                                    <h4 class="light white-text" style="font-size:1.35rem;">{{user.username}}</h4>
+                                </div>
 
-                    <div class="row">
-                        <div class="col s12">
-                            <div class="layout horizontal center-center file-field">
-                                <a class="btn center center-aligned white-text light photo-upload">
-                                    <span><i class="material-icons left">backup</i> Change Photo</span>
-                                    <input id="profile_upload" type="file" accept="image/*" capture="camera" />
-                                </a>
+                                <div class="row">
+                                    <div class="col s12">
+                                        <div class="lfg-input input-field col s12 center layout center">
+                                            <div class="layout horizontal center-center file-field">
+                                                <a class="btn-flat center center-aligned white-text light photo-upload">
+                                                    <span><i class="material-icons left">backup</i> Upload Photo</span>
+                                                    <input id="profile_upload" type="file" accept="image/*" capture="camera" />
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Cover Photo Upload -->
+                                <!--<div class="row">
+                                    <div class="col s12">
+                                        <div class="lfg-input input-field col s12 center" layout center>
+                                            <div class="file-field" layout horizontal center-center>
+                                                <a class="btn center center-aligned blue darken-1" style="padding-left:42px; padding-right:42px;">
+                                                    <span><i class="material-icons left">panorama</i> Cover Photo</span>
+                                                    <input id="cover_upload" type="file" accept="image/*" capture="camera" />
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>-->
+                            </div>
+                        </div>
+                    </div>
+                    <div class="container content-area">
+                        <br />
+                        <div class="card-panel requests-card-panel">
+                            <ul class="collection collection-modified">
+                                <li class="collection-item avatar">
+                                    <div class="wizard-input row">
+                                        <div class="col s2"><i class="material-icons prefix">account_circle</i></div>
+                                        <div class="lfg-input input-field col s7">
+                                            <input id="username" placeholder="Username" autocomplete="off" type="text" class="validate" on-keypress="clearUsernameError" on-keyup="changeUsername" />
+                                        </div>
+                                        <div class="col s3" style="margin-top:30px;">
+                                            <span id="username_error" class="red-text"><strong></strong></span>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="collection-item avatar">
+                                    <div class="row">
+                                        <div class="col s2"><i class="material-icons prefix">email</i></div>
+                                        <div class="lfg-input input-field col s7">
+                                            <input id="email" placeholder="Email" autocomplete="off" type="text" class="validate" value="{{user.email}}" on-keypress="clearEmailError" />
+                                        </div>
+                                        <div class="col s3" style="margin-top:30px;">
+                                            <span id="email_error" class="red-text"><strong></strong></span>
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                        <br />
+                        <div class="row">
+                            <div class="col s12 center center-align">
+                                <a class="waves-effect waves-light orange darken-4 btn-large" on-click="finishSetUp"><i class="material-icons left">done</i>I'm Done. Get me in there!</a>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="row" style="margin-left:0; margin-right:0;">
-                    <div class="col s12" style="margin-bottom:10px;">
-                        <label class="white-text" style="font-size:1rem; margin-right:5px;">
-                            <i class="fa fa-user" style="margin-right:6px;"></i>
-                            Username
-                        </label>
-                        <span id="username_error" class="red-text"><strong></strong></span>
-                    </div>
-                    <div class="lfg-input input-field col s12">
-                        <input id="username" type="text" spellcheck="false" autocomplete="off" class="validate" on-keypress="clearUsernameError" on-keyup="changeUsername" />
+			</neon-animatable>
+			<!--<neon-animatable>
+				<div layout vertical fit class="green darken-3" style="height:100vh;">
+					<div layout horizontal center-justified style="opacity:1.0 !important; margin-top:50px;">
+						<div layout no-wrap>
+							<a class="btn-flat white-text thin wizard-back" on-click="prevSetupSlide">
+								<i class="material-icons white-text left">arrow_back</i>
+								Back
+							</a>
+						</div>
+						<div flex></div>
+						<div self-center class="col s6 center"><h6 class="white-text thin" style="font-size:1.2rem;">Link your gaming accounts to your GWG profile</h6></div>
+						<div flex></div>
+						<div layout no-wrap>
+							<a class="btn-flat white-text waves-effect waves-light thin wizard-next" on-click="nextSetupSlide">
+								<i class="material-icons white-text right thin">arrow_forward</i>
+								Next
+							</a>
+						</div>
+					</div>
+					<div layout vertical center-center style="margin-top:7%;">
+						<div class="container">
+							<div layout vertical>
+								<div layout horizontal>
+									<div><iron-icon class="" src="../assets/app/img/playstation.svg" style="width:128px; height:128px;"></iron-icon></div>
+									<div style="margin-top:30px; margin-left:5%"><h4 class="white-text light">Rammone-X</h4></div>
+								</div>
+								<div layout horizontal style="margin-top:5%;">
+									<div><iron-icon class="" src="../assets/app/img/xbox.svg" style="width:128px; height:128px;"></iron-icon></div>
+									<div style="margin-top:30px;  margin-left:5%;"><h4 class="white-text light">Oceunmoon</h4></div>
+								</div>
+								<div layout horizontal style="margin-top:5%;">
+									<div><iron-icon class="" src="../assets/app/img/steam.svg" style="width:128px; height:128px;" on-click="startSteamVerify"></iron-icon></div>
+									<div style="margin-top:30px;  margin-left:5%;"><h4 class="white-text light">rammone4</h4></div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</neon-animatable>
+			<neon-animatable><h1>3</h1></neon-animatable>-->
+		</neon-animated-pages>
+
+        <!--<div id="finish_modal" class="modal orange darken-4">
+            <div class="modal-content center center-align" style="padding:30px 0;">
+                <h5 class="white-text light">{{loadingMessage}}</h5>
+                <div class="preloader-wrapper big active">
+                    <div class="spinner-layer spinner-yellow-only" style="border-color:#ffffff;">
+                        <div class="circle-clipper left">
+                            <div class="circle"></div>
+                        </div><div class="gap-patch">
+                            <div class="circle"></div>
+                        </div><div class="circle-clipper right">
+                            <div class="circle"></div>
+                        </div>
                     </div>
                 </div>
-                <div class="row" style="margin-left:0; margin-right:0;">
-                    <div class="col s12" style="margin-bottom:10px;">
-                        <label class="white-text" style="font-size:1rem; margin-right:5px;">
-                            <i class="fa fa-envelope" style="margin-right:6px;"></i>
-                            Email
-                        </label>
-                        <span id="email_error" class="red-text"><strong></strong></span>
-                    </div>
-                    <div class="lfg-input input-field col s12">
-                        <input id="email" type="text" spellcheck="false" autocomplete="off" class="validate" value="{{user.email}}" on-keypress="clearEmailError" />
+            </div>
+        </div>-->
+
+        <!--<div id="loading_overlay" class="layout fit" style="background-color:#FB8C00; z-index:1000;">
+            <div layout vertical fit center-center>
+                <h4 class="yellow-text text-accent-2 light">Creating your account</h4>
+                <div class="preloader-wrapper big active">
+                    <div class="spinner-layer spinner-yellow-only" style="border-color:#ffff00;">
+                        <div class="circle-clipper left">
+                            <div class="circle"></div>
+                        </div><div class="gap-patch">
+                            <div class="circle"></div>
+                        </div><div class="circle-clipper right">
+                            <div class="circle"></div>
+                        </div>
                     </div>
                 </div>
-                <br />
-                <a class="waves-effect waves-light orange darken-4 btn-large" on-click="finishSetUp" style="width:100%;"><i class="material-icons left">done</i>I'm Done. Get me in there!</a>
             </div>
-        </div>
-
-        <div id="first_time_overlay" class="layout fit vertical center orange darken-1" style="position:absolute; width:100%; z-index:1000;">
-            <div class="layout vertical" style="max-width:1000px; margin-top:100px;">
-                <h5 class="white-text text-darken-2 thin" style="font-size:1.5rem;">{{providerText}}</h5>
-                <h6 class="white-text text-darken-2" style="font-size:1.5rem;">Is this your first time using Parallel?</h6>
-            </div>
-
-            <div class="layout vertical" style="max-width:1000px; margin-top:30px;">
-                <a class="waves-effect waves-light btn-large green darken-2" on-click="hideOverlay"><i class="material-icons right">arrow_forward</i>Yes, I need to create an account</a>
-                <br /><br />
-                <a class="waves-effect waves-light btn-large red" on-click="goBackToSignin"><i class="material-icons left">arrow_back</i>No, let me try signing in again</a>
-            </div>
-        </div>
+        </div>-->
 	</template>
 </dom-module>
 
@@ -394,40 +527,11 @@
                 }
 
                 if (this.provider == null || this.provider == undefined || this.provider == '') {
-                    this.providerText = 'Thanks for signing in. We just need a couple of things...';
+                    this.providerText = 'Thank you for signing in. Just one more step...';
                 }
                 else {
-                    this.providerText = 'Thanks for signing in through ' + this.provider + '. We just need a couple of things...';
+                    this.providerText = 'Thank you for signing in through ' + this.provider + '. Just one more step...';
                 }
-            },
-
-            goBackToSignin: function(){
-                var authData = window.lfg.utils.getAuthData();
-                var signinAttempts = sessionStorage.getItem('signinAttempts');
-
-                if (signinAttempts !== null && signinAttempts !== undefined) {
-                    signinAttempts = JSON.parse(signinAttempts);
-                }
-                else {
-                    signinAttempts = [];
-                }
-
-                var attemptExist = _.findWhere(signinAttempts, { name: authData.provider });
-
-                if (attemptExist == null || attemptExist == undefined) {
-                    signinAttempts.push({ name: authData.provider });
-                }
-
-                sessionStorage.setItem('signinAttempts', JSON.stringify(signinAttempts));
-
-                //go back to sign in
-                document.querySelector('app-router').go('/login');
-            },
-
-            hideOverlay: function () {
-                var cusElem = this;
-                $(cusElem.$.first_time_overlay).hide();
-                $(cusElem.$.new_acct_form).show();
             },
 
             saveUserData: function (authData, userdata) {
@@ -453,16 +557,16 @@
             	var email = $(this.$.email).val();
 
             	if (username === null || username === undefined || username === '' ) {
-            		$(this.$.username_error).find('strong').html("**This can't be blank!");
+            		$(this.$.username_error).find('strong').html("*This can't be blank!");
             		valid = false;
             	}
 
             	if (email === null || email === undefined || email === '') {
-            		$(this.$.email_error).find('strong').html("**This can't be blank!");
+            		$(this.$.email_error).find('strong').html("*This can't be blank!");
             		valid = false;
             	}
             	else if (!window.lfg.utils.checkEmail(email)) {
-            		$(this.$.email_error).find('strong').html("**This email isn't valid!");
+            		$(this.$.email_error).find('strong').html("*This email isn't valid!");
             		valid = false;
             	}
 
