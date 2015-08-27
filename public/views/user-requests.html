@@ -391,26 +391,7 @@
 
 				<div id="user_requests_content" class="white lighten-3" style="margin-bottom:10%;">
 					<ul id="request_list" class="collection request-list-item-container" style="margin-top:0; border:none;">
-						<li class="collection-item request-list-item spinner-roo-item">
-							<div class="row">
-								<div class="col s12 center center-align">
-									<div class="preloader-wrapper active">
-										<div class="spinner-layer spinner-yellow-only">
-											<div class="circle-clipper left">
-												<div class="circle"></div>
-											</div>
-											<div class="gap-patch">
-												<div class="circle"></div>
-											</div>
-											<div class="circle-clipper right">
-												<div class="circle"></div>
-											</div>
-										</div>
-									</div>
-								</div>
-							</div>
-						</li>
-
+						
                         <template is="dom-repeat" items="{{requests}}">
                             <li data-request-key$="[[item.key]]" class="collection-item request-list-item" on-click="loadRequest">
                                 <div style="width:100%" class="right right-align">
@@ -453,6 +434,37 @@
                                 </div>
                             </li>
                         </template>
+
+                        <li class="collection-item request-list-item spinner-roo-item">
+                            <div class="row">
+                                <div class="col s12 center center-align">
+                                    <div class="preloader-wrapper active">
+                                        <div class="spinner-layer spinner-yellow-only">
+                                            <div class="circle-clipper left">
+                                                <div class="circle"></div>
+                                            </div>
+                                            <div class="gap-patch">
+                                                <div class="circle"></div>
+                                            </div>
+                                            <div class="circle-clipper right">
+                                                <div class="circle"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+
+                        <li class="collection-item request-list-item no-more-records-item" style="display:none;">
+                            <div class="row">
+                                <div class="col s12 center center-align">
+                                    <h6 class="grey-text" style="font-size:1.25rem;">
+                                        <i class="fa fa-meh-o fa-lg"></i>&nbsp;
+                                        That's all there is it seems...
+                                    </h6>
+                                </div>
+                            </div>
+                        </li>
 					</ul>
 					<!--<paper-fab icon="add" class="lfg-paper-fab white-text text-darken-4" on-click="newRequest"></paper-fab>-->
 				</div>
@@ -1150,6 +1162,9 @@
                             //Detach all firebase callbacks
                             customElem.clearFirebaseCallbacks();
 
+                            customElem.removeNoRecordsMessage();
+                            customElem.addSpinnerRoo();
+
                             query = window.lfg.utils.clearWhiteSpace(query).toLowerCase();	//querying by game title, so prepare query    
 
                             //save the query & type (for pagination)
@@ -1192,6 +1207,19 @@
 								    customElem.removeSpinnerRoo();
 								});
 
+                            //This is realy a hack for the firebase child_added event. Because if there are no records to return,
+                            //the child_added nevr gets called, we need to set a timeout to remove tge spinner and display a message if there's nothing
+                            //to return back - otherwise, the spinner keeps spinning - making the user think the app is taking too long
+                            //There is a chance in fact that the app might be taking too long. In this case, the error callback on child added should
+                            //remove the spinneroo and put the appropriate message
+                            //5 second time out - hope it's not too small - but Firebase is really first though
+                            var timeout = setTimeout(function () {
+                                if (customElem.requests == null || customElem.requests == undefined || customElem.requests.length <= 0) {
+                                    customElem.removeSpinnerRoo();
+                                    customElem.showNoRecordsMessage();
+                                }
+                            }, 5000);
+
                             //Store the firebaseRef so we can access it later to detach any callbacks
                             customElem.firebaseRefs.push({
                                 name: 'requests' + '_' + customElem.querytype.bygame + '_nopaginate',
@@ -1204,6 +1232,9 @@
                         case customElem.querytype.byid:
                             //Detach all firebase callbacks
                             customElem.clearFirebaseCallbacks();
+
+                            customElem.removeNoRecordsMessage();
+                            customElem.addSpinnerRoo();
 
                             //save the query & type (for pagination)
                             customElem.dataops.query = query;
@@ -1244,6 +1275,19 @@
 								    customElem.removeSpinnerRoo();
 								});
 
+                            //This is realy a hack for the firebase child_added event. Because if there are no records to return,
+                            //the child_added nevr gets called, we need to set a timeout to remove tge spinner and display a message if there's nothing
+                            //to return back - otherwise, the spinner keeps spinning - making the user think the app is taking too long
+                            //There is a chance in fact that the app might be taking too long. In this case, the error callback on child added should
+                            //remove the spinneroo and put the appropriate message
+                            //5 second time out - hope it's not too small - but Firebase is really first though
+                            var timeout = setTimeout(function () {
+                                if (customElem.requests == null || customElem.requests == undefined || customElem.requests.length <= 0) {
+                                    customElem.removeSpinnerRoo();
+                                    customElem.showNoRecordsMessage();
+                                }
+                            }, 5000);
+
                             //Store the firebaseRef so we can access it later to detach any callbacks
                             customElem.firebaseRefs.push({
                                 name: 'requests' + '_' + customElem.querytype.byid + '_nopaginate',
@@ -1257,6 +1301,9 @@
                         case customElem.querytype.bysystem:
                             //Detach all firebase callbacks
                             customElem.clearFirebaseCallbacks();
+
+                            customElem.removeNoRecordsMessage();
+                            customElem.addSpinnerRoo();
 
                             if (query) {
                                 query = window.lfg.utils.clearWhiteSpace(query).toLowerCase();
@@ -1298,6 +1345,19 @@
 								    customElem.removeSpinnerRoo();
 								});
 
+                            //This is realy a hack for the firebase child_added event. Because if there are no records to return,
+                            //the child_added nevr gets called, we need to set a timeout to remove tge spinner and display a message if there's nothing
+                            //to return back - otherwise, the spinner keeps spinning - making the user think the app is taking too long
+                            //There is a chance in fact that the app might be taking too long. In this case, the error callback on child added should
+                            //remove the spinneroo and put the appropriate message
+                            //5 second time out - hope it's not too small - but Firebase is really first though
+                            var timeout = setTimeout(function () {
+                                if (customElem.requests == null || customElem.requests == undefined || customElem.requests.length <= 0) {
+                                    customElem.removeSpinnerRoo();
+                                    customElem.showNoRecordsMessage();
+                                }
+                            }, 5000);
+
                             //Store the firebaseRef so we can access it later to detach any callbacks
                             customElem.firebaseRefs.push({
                                 name: 'requests' + '_' + customElem.querytype.bysystem + '_nopaginate',
@@ -1311,6 +1371,9 @@
 
                             //Detach all firebase callbacks
                             customElem.clearFirebaseCallbacks();
+
+                            customElem.removeNoRecordsMessage();
+                            customElem.addSpinnerRoo();
 
                             //save the query & type (for pagination)
                             customElem.dataops.querytype = querytype;
@@ -1355,6 +1418,19 @@
 								}, function (errorObject) {
 								    console.log("The read failed: " + errorObject.code);
 								});
+
+                            //This is realy a hack for the firebase child_added event. Because if there are no records to return,
+                            //the child_added nevr gets called, we need to set a timeout to remove tge spinner and display a message if there's nothing
+                            //to return back - otherwise, the spinner keeps spinning - making the user think the app is taking too long
+                            //There is a chance in fact that the app might be taking too long. In this case, the error callback on child added should
+                            //remove the spinneroo and put the appropriate message
+                            //5 second time out - hope it's not too small - but Firebase is really first though
+                            var timeout = setTimeout(function () {
+                                if (customElem.requests == null || customElem.requests == undefined || customElem.requests.length <= 0) {
+                                    customElem.removeSpinnerRoo();
+                                    customElem.showNoRecordsMessage();
+                                }
+                            }, 5000);
 
                             //Store the firebaseRef so we can access it later to detach any callbacks
                             customElem.firebaseRefs.push({
@@ -1565,6 +1641,14 @@
 
             removeSpinnerRoo: function () {
             	$('.spinner-roo-item').hide();
+            },
+
+            removeNoRecordsMessage: function () {
+                $('.no-more-records-item').hide();
+            },
+
+            showNoRecordsMessage: function () {
+                $('.no-more-records-item').fadeIn();
             },
 
             showFilter: function () {

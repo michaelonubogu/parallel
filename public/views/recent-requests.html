@@ -388,26 +388,7 @@
 
                 <div id="recent_requests_content" class="white lighten-3" style="margin-bottom:10%;">
                     <ul id="request_list" class="collection request-list-item-container" style="margin-top:0; border:none;">
-                        <li class="collection-item request-list-item spinner-roo-item">
-                            <div class="row">
-                                <div class="col s12 center center-align">
-                                    <div class="preloader-wrapper active">
-                                        <div class="spinner-layer spinner-yellow-only">
-                                            <div class="circle-clipper left">
-                                                <div class="circle"></div>
-                                            </div>
-                                            <div class="gap-patch">
-                                                <div class="circle"></div>
-                                            </div>
-                                            <div class="circle-clipper right">
-                                                <div class="circle"></div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </li>
-
+                        
                         <template is="dom-repeat" items="{{recentRequests}}">
                             <li data-request-key$="[[item.request.key]]" class="collection-item request-list-item" on-click="loadRequest">
                                 <div style="width:100%" class="right right-align">
@@ -450,6 +431,37 @@
                                 </div>
                             </li>
                         </template>
+
+                        <li class="collection-item request-list-item spinner-roo-item">
+                            <div class="row">
+                                <div class="col s12 center center-align">
+                                    <div class="preloader-wrapper active">
+                                        <div class="spinner-layer spinner-yellow-only">
+                                            <div class="circle-clipper left">
+                                                <div class="circle"></div>
+                                            </div>
+                                            <div class="gap-patch">
+                                                <div class="circle"></div>
+                                            </div>
+                                            <div class="circle-clipper right">
+                                                <div class="circle"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+
+                        <li class="collection-item request-list-item no-more-records-item" style="display:none;">
+                            <div class="row">
+                                <div class="col s12 center center-align">
+                                    <h6 class="grey-text" style="font-size:1.25rem;">
+                                        <i class="fa fa-meh-o fa-lg"></i>&nbsp;
+                                        That's all there is it seems...
+                                    </h6>
+                                </div>
+                            </div>
+                        </li>
                     </ul>
                     <!--<paper-fab icon="add" class="lfg-paper-fab white-text text-darken-4" on-click="newRequest"></paper-fab>-->
                 </div>
@@ -962,10 +974,6 @@
             		    var lastRecentRequest = customElem.recentRequests[customElem.recentRequests.length - 1];
             		    var lastrequest = lastRecentRequest.request;
 
-            		    //Detach all firebase callbacks
-            		    //customElem.clearFirebaseCallbacks('recentrequests_nopaginate');
-            		    customElem.clearFirebaseCallbacks('recentrequests_paginate');
-
             		    //no query, so just go by priority
             		    //save the query & type (for pagination)
             		    customElem.dataops.querytype = querytype;
@@ -974,44 +982,51 @@
                                 .orderByChild('requestindex')
                                 .startAt(lastRecentRequest.requestindex)
                                 .limitToFirst(customElem.dataops.limit + 1)
-                                .on("child_added", function (snapshot) {
+                                .once("value", function (snapshot) {
+                                    snapshot.forEach(function (childSnapshot) {
+                                        var recentRequest = childSnapshot.val();
+                                        var requestRef = new Firebase(window.lfg.config.getFirebaseUrl() + 'requests/' + recentRequest.requestid);
 
-                                    var recentRequest = snapshot.val();
-                                    var requestRef = new Firebase(window.lfg.config.getFirebaseUrl() + 'requests/' + recentRequest.requestid);
+                                        requestRef
+                                            .once("value", function (reqSnapshot) {
+                                                var request = reqSnapshot.val() || {};
+                                                request.key = reqSnapshot.key();
+                                                request.priority = reqSnapshot.getPriority();
+                                                request.systemColor = customElem.getSystemColor(request.system);
+                                                request.description = customElem.truncateText(request.description, 65);
+                                                request.title = customElem.truncateText(request.title, 35);
+                                                request.profilepicid = customElem.getImageId(request.key);
+                                                customElem.getUserProfile(request);
+                                                customElem.getCommentCount(request.key);
 
-                                    requestRef
-                                        .once("value", function (snapshot) {
-                                            var request = snapshot.val() || {};
-                                            request.key = snapshot.key();
-                                            request.priority = snapshot.getPriority();
-                                            request.systemColor = customElem.getSystemColor(request.system);
-                                            request.description = customElem.truncateText(request.description, 65);
-                                            request.title = customElem.truncateText(request.title, 35);
-                                            request.profilepicid = customElem.getImageId(request.key);
-                                            customElem.getUserProfile(request);
-                                            customElem.getCommentCount(request.key);
+                                                recentRequest.request = request;
 
-                                            recentRequest.request = request;
+                                                if (request.priority !== lastrequest.priority) {
+                                                    if ((-1 * recentRequest.index) >= customElem.firebaseTimestamp) {
+                                                        customElem.firebaseTimestamp = (-1 * request.index);
+                                                        customElem.unshift('recentRequests', recentRequest);
+                                                    }
+                                                    else {
+                                                        customElem.push('recentRequests', recentRequest);
+                                                    }
+                                                    customElem.notifyPath('requests', customElem.requests);
+                                                };
 
-                                            if (request.priority !== lastrequest.priority) {
-                                                if ((-1 * recentRequest.index) >= customElem.firebaseTimestamp) {
-                                                    customElem.firebaseTimestamp = (-1 * request.index);
-                                                    customElem.unshift('recentRequests', recentRequest);
-                                                }
-                                                else {
-                                                    customElem.push('recentRequests', recentRequest);
-                                                }
-                                                customElem.notifyPath('requests', customElem.requests);
-                                            };
-
-                                            customElem.removeSpinnerRoo();
-                                        }, function (errorObject) {
-                                            console.log("The read failed: " + errorObject.code);
-                                        });
-
+                                                customElem.removeSpinnerRoo();
+                                            }, function (errorObject) {
+                                                console.log("The read failed: " + errorObject.code);
+                                            });
+                                    });
                                 }, function (errorObject) {
                                     console.log("The read failed: " + errorObject.code);
                                 });
+
+            		    var timeout = setTimeout(function () {
+            		        if (customElem.recentRequests == null || customElem.recentRequests == undefined || customElem.recentRequests.length <= 0) {
+            		            customElem.removeSpinnerRoo();
+            		            customElem.showNoRecordsMessage();
+            		        }
+            		    }, 5000);
 
             		    //Store the firebaseRef so we can access it later to detach any callbacks
             		    customElem.firebaseRefs.push({
@@ -1024,7 +1039,9 @@
             		else {
             		    customElem.requests = [];
             		    customElem.recentRequests = [];
-            		    //customElem.addSpinnerRoo();
+            		    
+            		    customElem.removeNoRecordsMessage();
+            		    customElem.addSpinnerRoo();
 
             		    //Detach all firebase callbacks
             			customElem.clearFirebaseCallbacks();
@@ -1083,7 +1100,14 @@
             			//        customElem.requests.splice(customElem.requests.indexOf(foundRequest), 1);
             			//        customElem.notifyPath('requests', customElem.requests);
             			//    }
-            			//});
+            		    //});
+
+            			var timeout = setTimeout(function () {
+            			    if (customElem.recentRequests == null || customElem.recentRequests == undefined || customElem.recentRequests.length <= 0) {
+            			        customElem.removeSpinnerRoo();
+            			        customElem.showNoRecordsMessage();
+            			    }
+            			}, 5000);
 
             		    //Store the firebaseRef so we can access it later to detach any callbacks
             			customElem.firebaseRefs.push({
@@ -1294,6 +1318,14 @@
 
             removeSpinnerRoo: function () {
             	$('.spinner-roo-item').hide();
+            },
+
+            removeNoRecordsMessage: function () {
+                $('.no-more-records-item').hide();
+            },
+
+            showNoRecordsMessage: function () {
+                $('.no-more-records-item').fadeIn();
             },
 
             showFilter: function () {
