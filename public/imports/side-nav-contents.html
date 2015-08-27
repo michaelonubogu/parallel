@@ -73,19 +73,45 @@
             cursor:pointer;
         }
 
+        .arrow-left {
+	        width: 0; 
+	        height: 0; 
+	        border-top: 15px solid transparent;
+	        border-bottom: 15px solid transparent; 	
+	        border-right:15px solid #ffffff; 
+            float:right; 
+            margin-right:-20px;
+        }
+
         .nav-links span{
             font-weight:300;
         }
 	</style>
 
 	<template>
-		<div style="padding-top:20px; height:45vh;">
-			<template is="dom-if" if="{{loggedIn}}">
-                <a href="#/" class="white-text nav-links"><iron-icon icon="view-day"></iron-icon><span class="thin">Requests</span></a>
-                <a href="#/userrequests" class="white-text nav-links"><iron-icon icon="bookmark-border"></iron-icon><span class="thin">My Requests</span></a>
-                <a href="#/recent" class="white-text nav-links"><iron-icon icon="history"></iron-icon><span class="thin">Recent Requests</span></a>
-                <a href="#/games" class="white-text nav-links"><iron-icon icon="hardware:gamepad"></iron-icon><span class="thin">Games</span></a>
-			</template>
+		<div id="nav_links" style="padding-top:20px; height:45vh; display:none;">
+            <a data-path="requests" href="#/" class="white-text nav-links">
+                <iron-icon icon="view-day"></iron-icon>
+                <span class="thin">Requests</span>
+                <span class="arrow-left" style="display:none;"></span>
+            </a>
+            <a data-path="userrequests" href="#/userrequests" class="white-text nav-links">
+                <iron-icon icon="bookmark-border"></iron-icon>
+                <span class="thin">My Requests</span>
+                <span class="arrow-left" style="display:none;"></span>
+            </a>
+            <a data-path="recent" href="#/recent" class="white-text nav-links">
+                <iron-icon icon="history"></iron-icon>
+                <span class="thin">Recent Requests</span>
+                <span class="arrow-left" style="display:none;"></span>
+            </a>
+            <a data-path="games" href="#/games" class="white-text nav-links">
+                <iron-icon icon="hardware:gamepad"></iron-icon>
+                <span class="thin">Games</span>
+                <span class="arrow-left" style="display:none;"></span>
+            </a>
+			<!--<template is="dom-if" if="{{loggedIn}}">
+			</template>-->
 		</div>
 		<div style="padding-top:20px;">
 			<template is="dom-if" if="{{loggedIn}}">
@@ -128,10 +154,47 @@
                     cusElem.loggedIn = false;
                     cusElem.loggedOut = true;
 
+                    //Hide links
+                    cusElem.hideNavLinks();
+
                     cusElem.notifyPath('loggedIn', cusElem.loggedIn);
                     cusElem.notifyPath('loggedOut', cusElem.loggedOut);
                     console.log("User is logged out");
                 }
+            },
+
+            getCurrentRoute: function(){
+                var activeRoute = document.querySelector('app-route[active]');
+                
+                switch (activeRoute.getAttribute('path')) {
+                    case '/':
+                        $("a[data-path='requests']").find('.arrow-left').show();
+                        break;
+
+                    case '/userrequests':
+                        $("a[data-path='userrequests']").find('.arrow-left').show();
+                        break;
+
+                    case '/recent':
+                        $("a[data-path='recent']").find('.arrow-left').show();
+                        break;
+
+                    case '/games':
+                        var arrow = $("a[data-path='games']").find('.arrow-left');
+                        arrow.show();
+                        break;
+
+                    case '/settings':
+                        $("a[data-path='settings']").find('.arrow-left').show();
+                        break;
+
+                    default:
+                        break;
+                }
+            },
+
+            hideNavLinks: function(){
+                $(this.$.nav_links).remove();
             },
 
             isLoggedIn: function () {
@@ -147,9 +210,11 @@
                             //redirect to user setup page
                             if (user === null || user === undefined || user.setupcomplete === null || user.setupcomplete === undefined || user.setupcomplete === '' || user.setupcomplete === false) {
                                 cusElem.loggedIn = false;
+                                cusElem.hideNavLinks();
                             }
                             else {
                                 cusElem.loggedIn = true;
+                                cusElem.showNavLinks();
                             }
                         });
                 }
@@ -179,6 +244,10 @@
             registerPlugins: function() {
             },
 
+            showNavLinks: function(){
+                $(this.$.nav_links).show();
+            },
+
 			/* Events */
             ready: function () {
             	this.initializeData();
@@ -187,6 +256,7 @@
             attached: function () {
             	this.registerPlugins();
             	this.registerEvents();
+            	this.getCurrentRoute();
             }
         });
     })(window);

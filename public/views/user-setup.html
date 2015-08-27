@@ -486,6 +486,9 @@
             	this.firebaseUrl = window.lfg.config.getFirebaseUrl();
             	this.firebaseRef = new Firebase(window.lfg.config.getFirebaseUrl());
 
+            	this.maxImageWidth = 160;
+            	this.maxImageHeight = 160;
+
             	this.loadingMessage = 'Creating your account';
             	this.getProvider();
             },
@@ -514,9 +517,15 @@
             	var reader = new FileReader();
             	reader.onload = (function (theFile) {
             		return function (e) {
-            			var filePayload = e.target.result;
+            		    var filePayload = e.target.result;
+                        
+            		    if (cusElem.isImageToBig(filePayload)) {
+            		        alert('The image you uploaded is too big. The max dimensions for your profile image are ' + cusElem.maxImageHeight + 'px x ' + cusElem.maxImageWidth + 'px');
+            		        return;
+            		    }
+
             			cusElem.user.profilepic = filePayload;
-            			document.getElementById("profile_pic").src = e.target.result;
+            			document.getElementById("profile_pic").src = filePayload;
             			//$(cusElem.$.file_upload).hide();
 
             			// Generate a location that can't be guessed using the file's contents and a random number
@@ -565,6 +574,14 @@
             	this.entryAnimation = 'slide-from-left-animation';
             	this.exitAnimation = 'slide-right-animation';
             	this.selected = this.selected === 0 ? 2 : (this.selected - 1);
+            },
+
+            isImageToBig: function (file) {
+                var cusElem = this;
+                var img = new Image();
+                img.src = file;
+
+                return img.height > this.maxImageHeight || img.width > cusElem.maxImageWidth;
             },
 
             ready: function () {

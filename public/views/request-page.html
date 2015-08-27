@@ -906,6 +906,40 @@
 
                 if (game !== null && system !== null) {
                     this.systemFilter = system;
+
+                    //Set the search box and current filter to appropriate system
+                    $('#search_input').val(game);
+
+                    switch (system) {
+                        case 'pc':
+                            $('a[data-system="pc"]').addClass('pc-filter-tag').addClass('filter-active');
+                            break;
+
+                        case 'ps3':
+                            $('a[data-system="ps3"]').addClass('psn-filter-tag').addClass('filter-active');
+                            break;
+
+                        case 'ps4':
+                            $('a[data-system="ps4"]').addClass('psn-filter-tag').addClass('filter-active');
+                            break;
+
+                        case 'xbox360':
+                            $('a[data-system="xbox360"]').addClass('xbox-filter-tag').addClass('filter-active');
+                            break;
+
+                        case 'xboxOne':
+                            $('a[data-system="xboxOne"]').addClass('xbox-filter-tag').addClass('filter-active');
+                            break;
+
+                        case 'wii':
+                            $('a[data-system="wii"]').addClass('wii-filter-tag').addClass('filter-active');
+                            break;
+
+                        case 'wiiu':
+                            $('a[data-system="wiiu"]').addClass('wii-filter-tag').addClass('filter-active');
+                            break;
+                    }
+
                     this.getRequests(game, this.querytype.bysystem, false);
                 }
                 else {
