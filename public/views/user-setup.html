@@ -504,8 +504,8 @@
             	this.firebaseUrl = window.lfg.config.getFirebaseUrl();
             	this.firebaseRef = new Firebase(window.lfg.config.getFirebaseUrl());
 
-            	this.maxImageWidth = 160;
-            	this.maxImageHeight = 160;
+            	this.maxImageWidth = 300;
+            	this.maxImageHeight = 300;
 
             	this.loadingMessage = 'Creating your account';
             	this.getProvider();
@@ -533,6 +533,11 @@
                 var cusElem = this;
                 var file = event.target.files[0];
                 cusElem.profileBlob = file;
+
+                if (file.size >= 1 * 1024 * 1024) {
+                    alert("The maximum image size allowed is 1 MB");
+                    return;
+                }
 
                 var fileReader = new FileReader();
 

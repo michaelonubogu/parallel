@@ -324,9 +324,19 @@
                 $(this.$.settings_content).html(html);
             },
 
-            clearValidatorErrors: function () {
-                this.clearUsernameError();
-                this.clearEmailError();
+            clearValidatorErrors: function (field) {
+                if (!field) {
+                    this.clearUsernameError();
+                    this.clearEmailError();
+                }
+                else {
+                    if (field == 'username') {
+                        this.clearUsernameError();
+                    }
+                    else {
+                        this.clearEmailError();
+                    }
+                }
             },
 
             clearUsernameError: function () {
@@ -357,6 +367,9 @@
                         cusElem.user.profilepic = filePayload;
                         document.getElementById("profile_pic").src = filePayload;
                         cusElem.profileBlob = null;
+
+                        //save the profile pic
+                        cusElem.saveUserProfilePic();
                     };
                 })(f);
                 reader.readAsDataURL(f);
@@ -450,17 +463,106 @@
                 }
             },
 
-            validateInput: function () {
-                var valid = true;
-                this.clearValidatorErrors();
+            saveEmail: function(){
+                var cusElem = this;
 
+                if (this.validateEmail()) {
+                    //check db for duplicate email
+                    var email = $(this.$.email).val().trim();
+                    var authData = window.lfg.utils.getAuthData();
+                    var userRef = new Firebase(window.lfg.config.getFirebaseUrl() + 'users');
+
+                    userRef
+                        .orderByChild('email')
+                        .equalTo(email)
+                        .once('value', function (snapshot) {
+                            var user = snapshot.val();
+
+                            if (user !== null && user !== undefined) {
+                                //username exists already - alert the user
+                                $(cusElem.$.email_error).find('strong').html("**That email is being used already");
+                            }
+                            else {
+                                usernameRef = new Firebase(window.lfg.config.getFirebaseUrl() + 'users/' + authData.uid + '/email');
+                                usernameRef.set(email);
+
+                                cusElem.user.email = email;
+                                cusElem.notifyPath('user.email', cusElem.user.email);
+
+                                $(cusElem.$.email_field).hide(0, function () {
+                                    $(cusElem.$.email_label).fadeIn();
+                                });
+
+                                Materialize.toast('Email saved', 4000);
+                            }
+                        });
+                }
+            },
+
+            saveUserProfilePic: function () {
+                var cusElem = this;
+                var authData = window.lfg.utils.getAuthData();
+                var profilepic = cusElem.user.profilepic;
+
+                usernameRef = new Firebase(window.lfg.config.getFirebaseUrl() + 'users/' + authData.uid + '/profilepic');
+                usernameRef.set(profilepic);
+
+                Materialize.toast('Profile Picture saved', 4000);
+            },
+
+            saveUsername: function () {
+                var cusElem = this;
+
+                if (this.validateUsername()) {
+                    //check db for duplicate username
+                    var username = $(this.$.username).val().trim();
+                    var authData = window.lfg.utils.getAuthData();
+                    var userRef = new Firebase(window.lfg.config.getFirebaseUrl() + 'users');
+
+                    userRef
+                        .orderByChild('username')
+                        .equalTo(username)
+                        .once('value', function (snapshot) {
+                            var user = snapshot.val();
+
+                            if (user !== null && user !== undefined) {
+                                //username exists already - alert the user
+                                $(cusElem.$.username_error).find('strong').html("**That username is being used already");
+                            }
+                            else {
+                                usernameRef = new Firebase(window.lfg.config.getFirebaseUrl() + 'users/' + authData.uid + '/username');
+                                usernameRef.set(username);
+
+                                cusElem.user.username = username;
+                                cusElem.notifyPath('user.username', cusElem.user.username);
+
+                                $(cusElem.$.username_field).hide(0, function () {
+                                    $(cusElem.$.username_label).fadeIn();
+                                });
+
+                                Materialize.toast('Username saved', 4000);
+                            }
+                        });
+                }
+            },
+
+            validateUsername: function () {
+                var valid = true;
+                this.clearValidatorErrors('username');
                 var username = $(this.$.username).val();
-                var email = $(this.$.email).val();
 
                 if (username === null || username === undefined || username === '') {
                     $(this.$.username_error).find('strong').html("**This can't be blank!");
                     valid = false;
                 }
+
+                return valid;
+            },
+
+            validateEmail: function(){
+                var valid = true;
+                this.clearValidatorErrors('email');
+                var email = $(this.$.email).val();
 
                 if (email === null || email === undefined || email === '') {
                     $(this.$.email_error).find('strong').html("**This can't be blank!");
@@ -496,8 +598,8 @@
             	this.emailExists = null;
             	this.provider = '';
 
-            	this.maxImageWidth = 160;
-            	this.maxImageHeight = 160;
+            	this.maxImageWidth = 300;
+            	this.maxImageHeight = 300;
 
             	this.profileBlob = null;
             },
@@ -507,6 +609,9 @@
                 document.getElementById("profile_upload").addEventListener('change', this.handleFileSelect.bind(this), false);
                 //document.getElementById("cover_upload").addEventListener('change', this.handleCoverFileSelect.bind(this), false);
                 $(this.$.username).focus();
+
+                $(document).on('keypress', '#username', this.keyInputUsername.bind(this));
+                $(document).on('keypress', '#email', this.keyInputEmail.bind(this));
 
             	var ref = new Firebase(window.lfg.config.getFirebaseUrl());
             	ref.onAuth(this.authDataCallback.bind(this));
@@ -528,6 +633,12 @@
                 //A whole lot of hackery from this point on :P
                 var cusElem = this;
                 var file = event.target.files[0];
+
+                if (file.size >= 1 * 1024 * 1024) {
+                    alert("The maximum image size allowed is 1 MB");
+                    return;
+                }
+
                 cusElem.profileBlob = file;
 
                 var fileReader = new FileReader();
@@ -551,6 +662,18 @@
                 //    };
                 //})(f);
                 //reader.readAsDataURL(f);
+            },
+
+            keyInputUsername: function (e) {
+                if ((e.keyCode || e.which) === 13) {
+                    this.saveUsername();
+                }
+            },
+
+            keyInputEmail: function (e) {
+                if ((e.keyCode || e.which) === 13) {
+                    this.saveEmail();
+                }
             },
 
             showUsernameField: function (e) {
