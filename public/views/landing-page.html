@@ -3,78 +3,115 @@
 <!-- Fonts -->
 <link rel='import' href='../components/bower_components/font-roboto/roboto.html'>
 
-<!-- Polymer & Polymer Core Components -->
-<link rel='import' href='../components/bower_components/polymer/polymer.html'>
-<link rel="import" href="../components/bower_components/polymer/layout.html">
-<link rel="import" href="../components/bower_components/iron-a11y-keys/iron-a11y-keys.html">
-<link rel="import" href="../components/bower_components/iron-pages/iron-pages.html">
-<link rel="import" href="../components/bower_components/iron-ajax/iron-ajax.html">
-<!--<link rel="import" href="../components/bower_components/iron-flex-layout/iron-flex-layout.html">-->
-
-<link rel="import" href="../components/bower_components/iron-icons/iron-icons.html">
-<link rel="import" href="../components/bower_components/iron-icons/av-icons.html">
-<link rel="import" href="../components/bower_components/iron-icons/communication-icons.html">
-<link rel="import" href="../components/bower_components/iron-icons/iron-icons.html">
-<link rel="import" href="../components/bower_components/iron-icons/editor-icons.html">
-<link rel="import" href="../components/bower_components/iron-icons/hardware-icons.html">
-<link rel="import" href="../components/bower_components/iron-icons/image-icons.html">
-<link rel="import" href="../components/bower_components/iron-icons/maps-icons.html">
-<link rel="import" href="../components/bower_components/iron-icons/notification-icons.html">
-<link rel="import" href="../components/bower_components/iron-icons/social-icons.html">
-
-<!-- Polymer Paper Components -->
-<link rel="import" href="../components/bower_components/paper-ripple/paper-ripple.html">
-<link rel="import" href="../components/bower_components/paper-item/paper-item.html">
-<link rel="import" href="../components/bower_components/paper-input/paper-input.html">
-<link rel="import" href="../components/bower_components/paper-button/paper-button.html">
-<link rel="import" href="../components/bower_components/paper-dialog/paper-dialog.html">
-<link rel="import" href="../components/bower_components/paper-icon-button/paper-icon-button.html">
-<link rel="import" href="../components/bower_components/paper-toolbar/paper-toolbar.html">
-
 
 <dom-module id="landing-page">
-    <!-- CSS -->
-    <link rel="import" type="css" href="../assets/materialize/css/materialize.css"  />
-    <link rel="import" type="css" href='../assets/app/css/kitchen.css'>
 
     <style>
-        :host{
-            height:100%;
-            width:100%;
+        .page-container{
+            width:100% !important; 
+            min-height:100vh;
+            background-color: #464A65;
         }
 
-       /* .landing-content{
-            @apply(--layout --layout-horizontal --layout-fit --layout-center-center)
+        .page-header-text{
+            font-weight:300;
         }
 
-        .landing-section{
-            @apply(--layout-vertical --layout-center --layout-fit --layout-center-center)
+        .btn-transparent{
+            background-color: transparent !important;
+            border: solid 2px #ffffff;
+            box-shadow:none;
+            line-height:50px;
         }
-
-        paper-item{
-            @apply(--layout-flex)
-        }*/
     </style>
 
     <template>
-        <paper-toolbar style="z-index:12; padding:0 3%;" class="purple darken-1 white-text">
-            <paper-item hash="{{link.hash}}" noink flex>
-                <i class="mdi-hardware-cast-connected white-text small"></i>
-                <a href="/">dweetster</a>
-            </paper-item>
-            <!--<template repeat="{{link in links}}">
-                <span><a href="#{{link.hash}}">{{link.name}}</a></span>
-            </template>-->
-        </paper-toolbar>
-        <div class="layout horizontal fit center-center landing-content orange darken-1 white-text">
-            <section hash="home" class="layout vertical center-center landing-section">
-                <i class="large mdi-hardware-cast-connected white-text small jumbotron-icon" style="align-self:center;"></i>
-                <h2>Your 'things' are dweeting!</h2>
-                <p style="font-size:20px;">Register, Find & Track them with dweetster</p>
-                <paper-input id="thing_name" value="{{thingName}}" label="Type your thing name here & hit 'Enter'" floatingLabel ></paper-input>
-            </section>
+        <div class="layout vertical center fit page-container">
+            <div class="section no-pad-bot" id="index-banner">
+                <div>
+                    <br><br>
+                    <h2 class="header center white-text page-header-text">Connecting Gamers With Gamers</h2>
+                    <div class="row center">
+                        <h5 class="header col s12 light white-text" style="font-size:1.2rem;"><strong>Parallel</strong> helps connect gamers with other gamers, for <strong>any game</strong>, on <strong>any major console</strong>,</h5>
+                        <h5 class="header col s12 light white-text" style="font-size:1.2rem; margin-top:-2px;">from <strong>anywhere in the world</strong></h5>
+                    </div>
+                    <br />
+                    <div class="row center">
+                        <a href="#/" id="download-button" class="btn-large waves-effect waves-light blue accent-2" style="border-radius:5px; margin-right:30px;">Learn more</a>
+                        <a href="#/" id="download-button" class="btn-large waves-effect waves-light btn-transparent" style="border-radius:5px;">
+                            <span style="margin-top:-2px;">Check it out</span>
+                        </a>
+                    </div>
+                    <br><br>
+                </div>
+            </div>
+
+            <div class="container">
+                <div class="section">
+                    <!--   Icon Section   -->
+                    <div class="row">
+                        <div class="col s12 m4">
+                            <div class="icon-block">
+                                <h2 class="center light-blue-text"><i class="material-icons">flash_on</i></h2>
+                                <h5 class="center">Speeds up development</h5>
+                                <p class="light">We did most of the heavy lifting for you to provide a default stylings that incorporate our custom components. Additionally, we refined animations and transitions to provide a smoother experience for developers.</p>
+                            </div>
+                        </div>
+                        <div class="col s12 m4">
+                            <div class="icon-block">
+                                <h2 class="center light-blue-text"><i class="material-icons">group</i></h2>
+                                <h5 class="center">User Experience Focused</h5>
+                                <p class="light">By utilizing elements and principles of Material Design, we were able to create a framework that incorporates components and animations that provide more feedback to users. Additionally, a single underlying responsive system across all platforms allow for a more unified user experience.</p>
+                            </div>
+                        </div>
+                        <div class="col s12 m4">
+                            <div class="icon-block">
+                                <h2 class="center light-blue-text"><i class="material-icons">settings</i></h2>
+                                <h5 class="center">Easy to work with</h5>
+                                <p class="light">We have provided detailed documentation as well as specific code examples to help new users get started. We are also always open to feedback and can answer any questions a user may have about Materialize.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <br><br>
+                <div class="section">
+                </div>
+            </div>
+            <footer class="page-footer orange">
+                <div class="container">
+                    <div class="row">
+                        <div class="col l6 s12">
+                            <h5 class="white-text">Company Bio</h5>
+                            <p class="grey-text text-lighten-4">We are a team of college students working on this project like it's our full time job. Any amount would help support and continue development on this project and is greatly appreciated.</p>
+
+                        </div>
+                        <div class="col l3 s12">
+                            <h5 class="white-text">Settings</h5>
+                            <ul>
+                                <li><a class="white-text" href="#!">Link 1</a></li>
+                                <li><a class="white-text" href="#!">Link 2</a></li>
+                                <li><a class="white-text" href="#!">Link 3</a></li>
+                                <li><a class="white-text" href="#!">Link 4</a></li>
+                            </ul>
+                        </div>
+                        <div class="col l3 s12">
+                            <h5 class="white-text">Connect</h5>
+                            <ul>
+                                <li><a class="white-text" href="#!">Link 1</a></li>
+                                <li><a class="white-text" href="#!">Link 2</a></li>
+                                <li><a class="white-text" href="#!">Link 3</a></li>
+                                <li><a class="white-text" href="#!">Link 4</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="footer-copyright">
+                    <div class="container">
+                        Made by <a class="orange-text text-lighten-3" href="http://materializecss.com">Materialize</a>
+                    </div>
+                </div>
+            </footer>
         </div>
-        <iron-a11y-keys target="{{parentElement}}" keys="enter up" on-keys-pressed="{{keyHandler}}"></iron-a11y-keys>
     </template>
 </dom-module>
 
@@ -92,46 +129,7 @@
              * @default
              */
             properties: {
-                name: 'sensor-tile-app',
-
-                /**
-                 * ...
-                 *
-                 * @attribute thingName
-                 * @type string
-                 * @default ''
-                 */
-                thingName: '',
-
-                links: [
-                    {name: 'dweet?', hash: 'about', url:'views/about.html'},
-                    {name: 'Discover', hash: 'discover', url:''},
-                    {name: 'Register', hash: 'register', url:''}
-                ],
-
-                keyHandler: function(e, detail, sender){
-                    var thing_name = this.thingName;
-                    if(thing_name !== null && thing_name !== undefined && thing_name !== ''){
-                        //make a call to get a dweet from the thing-name entered
-                        dweetio.get_latest_dweet_for(thing_name, function(err, dweet){
-                            if(dweet !== null && dweet !== undefined && dweet.length >= 1 ){
-                                //..check to see if a profile for this thing exists already, if not,
-                                //..take them to the profile creation page
-                                var exists = false; //mock thi as false for now. Will add DB support soon :P
-                                if(exists){
-                                }
-                                else{
-                                    //Take them to create a profile for thier thing
-                                    document.querySelector('app-router').go('/new/' + thing_name);
-                                }
-                            }
-                            else {
-                                //let them know their thing does not exist
-                                document.querySelector('app-router').go('/nothing');
-                            }
-                        });
-                    }
-                }
+                name: 'landing-page',
             },
 
             ready: function () {

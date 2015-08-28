@@ -1,53 +1,26 @@
 <link rel="import" href="../components/bower_components/polymer/polymer.html">
-<!--<link rel="import" href="../imports/layout.html">-->
 
 <link rel='import' href='../components/bower_components/font-roboto/roboto.html'>
 
-<link rel="import" href="../components/bower_components/iron-icons/iron-icons.html">
-<link rel="import" href="../components/bower_components/iron-icons/av-icons.html">
-<link rel="import" href="../components/bower_components/iron-icons/communication-icons.html">
-<link rel="import" href="../components/bower_components/iron-icons/iron-icons.html">
-<link rel="import" href="../components/bower_components/iron-icons/editor-icons.html">
-<link rel="import" href="../components/bower_components/iron-icons/hardware-icons.html">
-<link rel="import" href="../components/bower_components/iron-icons/image-icons.html">
-<link rel="import" href="../components/bower_components/iron-icons/maps-icons.html">
-<link rel="import" href="../components/bower_components/iron-icons/notification-icons.html">
-<link rel="import" href="../components/bower_components/iron-icons/social-icons.html">
-
-<link rel="import" href="../components/bower_components/iron-form/iron-form.html">
-
-<link rel="import" href="../components/bower_components/paper-drawer-panel/paper-drawer-panel.html">
-<link rel="import" href="../components/bower_components/paper-header-panel/paper-header-panel.html">
-<link rel="import" href="../components/bower_components/paper-scroll-header-panel/paper-scroll-header-panel.html">
-<link rel="import" href="../components/bower_components/paper-item/paper-item.html">
-<link rel="import" href="../components/bower_components/paper-button/paper-button.html">
-<link rel="import" href="../components/bower_components/paper-icon-button/paper-icon-button.html">
-<link rel="import" href="../components/bower_components/paper-fab/paper-fab.html">
-<link rel="import" href="../components/bower_components/paper-toolbar/paper-toolbar.html">
-<link rel="import" href="../components/bower_components/paper-toggle-button/paper-toggle-button.html">
-
-
-<link rel="import" href="../imports/font-awesome.html">
-<link rel="import" href="../imports/material_icons.html" />
-<link rel="import" href="../imports/materialize.html" />
+<!-- Custom Imports -->
 <link rel="import" href="../imports/side-nav-contents.html" />
-
+<link rel="import" href="../imports/sign-in-button.html" />
 
 <dom-module id="new-request">
     <style>
         :host{
         }
 
-		.row .col {
+		/*.row .col {
 			padding-left:0 !important;
-		}
+		}*/
 
 		.selected-game {
 			color: #FB8C00 !important;
 			font-weight:400;
 		}
 
-        .logo-link{
+        .new-request-logo-link{
             text-decoration: none;
             font-size:2rem;
 			/*margin-left:2%;*/
@@ -197,6 +170,7 @@
 			color: #757575 !important;
 			border:solid 2px #D5D5D5; 
 			border-radius:5px;
+            margin-left: 10px !important;
             /*color: #ffeb3b !important;*/
         }
 
@@ -208,6 +182,7 @@
 			padding-right:10px;
 			overflow-y:auto;
 			overflow-x:hidden;
+            margin-left: 10px !important;
 		}
 
 		.lfg-input-search {
@@ -370,8 +345,12 @@
 			border-radius: 5px !important;
 		}
 
+        #time_options{
+            margin-left:-4px;
+        }
+
         @media (max-width: 640px){
-            .logo-link{
+            .new-request-logo-link{
                 margin-left:0px;
             }
 
@@ -417,7 +396,7 @@
                     </div>
                     <div class="bottom">
                         <template is="dom-if" if="{{notSaved}}">
-							<label class="logo-link grey-text text-darken-2 light not-saved" style="margin-left: 12px;">New Gaming Request</label>
+							<label class="new-request-logo-link grey-text text-darken-2 light not-saved" style="margin-left: 12px;">New Gaming Request</label>
 						</template>
                     </div>
                 </paper-toolbar>
@@ -432,7 +411,7 @@
 						<div id="new_request_form">
 							<!--Game-->
 							<div class="row select-game-row" >
-								<div class="col s12" style="margin-bottom:10px;">
+								<div class="col s12">
 									<label class="grey-text text-darken-2" style="font-size:1rem; margin-right:5px;">Game</label>
 									<label class="red-text error-message" style="font-size:1rem; display:none;">**This is required</label>
 								</div>
@@ -452,11 +431,11 @@
 
 							<!--Console-->
 							<div id="system_row" class="row">
-								<div class="col s12" style="margin-bottom:10px;">
+								<div class="col s12">
 									<label class="grey-text text-darken-2" style="font-size:1rem; margin-right:5px;">Console</label>
 									<label class="red-text error-message" style="font-size:1rem; display:none;">**This is required</label>
 								</div>
-								<div class="layout horizontal col s12">
+								<div class="layout horizontal col s12" style="margin-left:-4px;">
 									<span class="center center-align filter-tags tag-neutral" data-system="ps3">PS3</span>
 									<span class="center center-align filter-tags tag-neutral" data-system="ps4">PS4</span>
 									<span class="center center-align filter-tags tag-neutral" data-system="xbox360">X360</span>
@@ -497,7 +476,7 @@
 
 							<!--Title-->
 							<div class="row">
-								<div class="col s12" style="margin-bottom:10px;">
+								<div class="col s12">
 									<label class="grey-text text-darken-2" style="font-size:1rem; margin-right:5px;">Title</label>
 									<label class="red-text error-message" style="font-size:1rem; display:none;">**This is required</label>
 								</div>
@@ -511,7 +490,7 @@
 
 							<!--Description-->
 							<div class="row">
-								<div class="col s12" style="margin-bottom:10px;">
+								<div class="col s12">
 									<label class="grey-text text-darken-2" style="font-size:1rem; margin-right:5px;">Details</label>
 									<label class="red-text error-message" style="font-size:1rem; display:none;">**This is required</label>
 								</div>
@@ -525,14 +504,12 @@
 
 							<!--Players & Mics-->
 							<div class="row">
-								<div class="layout horizontal col s12" style="margin-bottom:10px;">
+								<div class="layout horizontal col s12">
 									<div style="margin-right:50px;">
 										<div><label class="grey-text text-darken-2" style="font-size:1rem;">Players</label></div>
-										<div>
-											<div class="lfg-input input-field" style="width:60px;">
-												<input id="request_gamer_count" type="text" min="1" class="validate" value="{{request.gamercount::input}}" />
-											</div>
-										</div>
+                                        <div class="lfg-input input-field" style="width:60px; margin-left:-2px !important;">
+                                            <input id="request_gamer_count" type="text" min="1" class="validate" value="{{request.gamercount::input}}" />
+                                        </div>
 									</div>
 									<div class="layout vertical left">
 										<div>
@@ -546,14 +523,10 @@
 								</div>
 							</div>
 
-							<div class="row">
-								<div class="col s12">
-									<paper-button id="request_create_button" raised on-click="saveRequest">
-										<!--<iron-icon icon="social:mood"></iron-icon>-->
-										Submit Request
-									</paper-button>
-								</div>
-							</div>
+                            <paper-button id="request_create_button" raised on-click="saveRequest">
+                                <!--<iron-icon icon="social:mood"></iron-icon>-->
+                                Submit Request
+                            </paper-button>
 							<br /><br />
 						</div>
 
