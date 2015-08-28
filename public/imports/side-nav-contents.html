@@ -81,6 +81,7 @@
 	        border-right:15px solid #ffffff; 
             float:right; 
             margin-right:-20px;
+            margin-top:-2px;
         }
 
         .nav-links span{
@@ -110,8 +111,11 @@
                 <span class="thin">Games</span>
                 <span class="arrow-left" style="display:none;"></span>
             </a>
-			<!--<template is="dom-if" if="{{loggedIn}}">
-			</template>-->
+            <a data-path="settings" href="#/settings" class="white-text nav-links">
+                <iron-icon icon="build"></iron-icon>
+                <span class="thin">Settings</span>
+                <span class="arrow-left" style="display:none;"></span>
+            </a>
 		</div>
 		<div style="padding-top:20px;">
 			<template is="dom-if" if="{{loggedIn}}">
@@ -168,6 +172,10 @@
                 
                 switch (activeRoute.getAttribute('path')) {
                     case '/':
+                        $("a[data-path='requests']").find('.arrow-left').show();
+                        break;
+
+                    case '/requests':
                         $("a[data-path='requests']").find('.arrow-left').show();
                         break;
 

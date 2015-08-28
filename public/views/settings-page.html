@@ -1,0 +1,595 @@
+﻿<link rel="import" href="../components/bower_components/polymer/polymer.html">
+
+<!-- Fonts -->
+<link rel='import' href='../components/bower_components/font-roboto/roboto.html'>
+
+<link rel="import" href="../components/bower_components/iron-icons/iron-icons.html">
+<link rel="import" href="../components/bower_components/iron-icons/av-icons.html">
+<link rel="import" href="../components/bower_components/iron-icons/communication-icons.html">
+<link rel="import" href="../components/bower_components/iron-icons/iron-icons.html">
+<link rel="import" href="../components/bower_components/iron-icons/editor-icons.html">
+<link rel="import" href="../components/bower_components/iron-icons/hardware-icons.html">
+<link rel="import" href="../components/bower_components/iron-icons/image-icons.html">
+<link rel="import" href="../components/bower_components/iron-icons/maps-icons.html">
+<link rel="import" href="../components/bower_components/iron-icons/notification-icons.html">
+<link rel="import" href="../components/bower_components/iron-icons/social-icons.html">
+
+<link rel="import" href="../components/bower_components/paper-drawer-panel/paper-drawer-panel.html">
+<link rel="import" href="../components/bower_components/paper-header-panel/paper-header-panel.html">
+<link rel="import" href="../components/bower_components/paper-scroll-header-panel/paper-scroll-header-panel.html">
+<link rel="import" href="../components/bower_components/paper-item/paper-item.html">
+<link rel="import" href="../components/bower_components/paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../components/bower_components/paper-toolbar/paper-toolbar.html">
+<link rel="import" href="../components/bower_components/paper-item/paper-item.html">
+
+<!-- Custom Imports -->
+<link rel="import" href="../imports/materialize.html" />
+<link rel="import" href="../imports/material_icons.html" />
+<link rel="import" href="../imports/font-awesome.html" />
+<link rel="import" href="../imports/side-nav-contents.html" />
+<link rel="import" href="../imports/sign-in-button.html" />
+
+<dom-module id="settings-page">
+    <!-- CSS -->
+    <link rel="import" type="css" href='../assets/app/css/lfg.css'>
+
+    <style>
+        :host {
+        }
+
+        [class^="flaticon-"]:before, [class*=" flaticon-"]:before {
+            margin-left: 0px !important;
+            font-size: 35px !important;
+        }
+
+        .logo-link {
+            text-decoration: none;
+            font-size: 2rem;
+            color: #ffffff;
+            margin-left: -15px !important;
+        }
+
+        .input-field {
+			margin-top:0 !important;
+			height:45px !important;
+		}
+
+        .lfg-input{
+			color: #757575 !important;
+			border:solid 2px #D5D5D5; 
+			border-radius:5px;
+            max-width:600px;
+            /*color: #ffeb3b !important;*/
+        }
+
+        /* label color */
+        .lfg-input.input-field label {
+            color: #ffffff;
+        }
+
+        .lfg-input.input-field input[type=text]{
+            border-bottom: none;
+            box-shadow: none;
+			margin:-2px 10px 0 10px !important;
+            /*font-size: 1.75rem;*/
+        }
+
+        /* label focus color */
+        .lfg-input.input-field input[type=text]:focus + label {
+            color: #ffeb3b;
+        }
+
+        /* label underline focus color */
+        .lfg-input.input-field input[type=text]:focus {
+            border-bottom: none;
+            box-shadow:none;
+        }
+
+        /* valid color */
+        .lfg-input.input-field input[type=text].valid {
+            border-bottom: none;
+            box-shadow:none;
+        }
+
+        /* invalid color */
+        .lfg-input.input-field input[type=text].invalid {
+            border-bottom: 1px solid #f44336 !important;
+            box-shadow: 0 1px 0 0 #f44336 !important;
+        }
+
+        /* Icon prefix */
+        .lfg-input.input-field .prefix {
+            color: #ffffff;
+        }
+
+        /* icon prefix focus color */
+        .lfg-input.input-field .prefix.active {
+            color: #ffeb3b;
+        }
+
+        .lfg-main-toolbar {
+            --paper-toolbar-background:{
+                background-color: transparent !important;
+            };
+        }
+
+        .lfg-drawer-toolbar {
+            --paper-toolbar:{
+                background-color: #EF6C00;
+            };
+        }
+
+        #paper-header-panel {
+            border-bottom: solid 1px #ffffff;
+        }
+
+        .lfg-main-header-panel {
+            --paper-header-panel-cover-container:{
+                border: solid 1px #ffffff;
+            };
+        }
+
+        .lfg-paper-fab {
+            --paper-fab:{
+                margin-top: -5px;
+            }; 
+            --paper-fab-background: #e65100;
+        }
+
+        .bottom-bar {
+            margin-left: 0px !important;
+        }
+
+        .content-area {
+            padding: 0 15% 15% 15%;
+            background-color: #FAFAFA;
+        }
+
+        .requests-card-panel {
+            width: 100%;
+            box-shadow: 0 2px 5px 0 #e65100;
+            border-radius: 0px;
+            height: 200px !important;
+        }
+
+        .request-card-item {
+            min-height: 150px !important;
+            border-bottom: 1px solid #f9a825;
+        }
+
+        .request-card-item .card-item .row {
+            margin-bottom: 5px;
+        }
+
+        .overlay-cover {
+            background-color: rgba(0,0,0,0.75);
+        }
+
+        .overlay-card {
+            opacity: 1 !important;
+            box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14),0 1px 5px 0 rgba(0, 0, 0, 0.12),0 3px 1px -2px rgba(0, 0, 0, 0.2);
+            border-radius: 4px;
+        }
+
+
+        @media (max-width: 640px) {
+            .logo-link {
+                margin-left: 0px;
+            }
+
+            .content-area {
+                padding: 0;
+            }
+        }
+    </style>
+
+    <template>
+
+        <paper-drawer-panel>
+            <paper-header-panel mode="seamed" drawer>
+                <paper-toolbar class="medium-tall lfg-drawer-toolbar">
+                </paper-toolbar>
+                <div class="fit orange darken-3">
+                    <sign-in-button></sign-in-button>
+                    <side-nav-contents></side-nav-contents>
+                </div>
+            </paper-header-panel>
+            <paper-header-panel mode="seamed" main class="lfg-main-header-panel white">
+                <paper-toolbar class="medium-tall white lfg-main-toolbar">
+                    <paper-icon-button icon="menu" class="grey-text" paper-drawer-toggle></paper-icon-button>
+                    <div class="flex"></div>
+                    <ul id='dropdown1' class='dropdown-content'>
+                        <template is="dom-repeat" items="[[sortoptions]]">
+                            <li><a on-click="changeSort" data-sort$="[[item.column]]">[[item.name]]</a></li>
+                        </template>
+                    </ul>
+                    <div class="middle">
+                    </div>
+                    <div class="bottom layout horizontal" style="width:100%;">
+                        <label class="logo-link grey-text text-darken-2 light left" style="margin-left: 12px !important;">Settings</label>
+                        <div class="flex"></div>
+                        <!--<a class="btn green white-text waves-effect waves-light" style="margin-top: 6px; margin-right: 30px;" on-click="saveButtonEvent">-->
+                        <i class="material-icons left">save</i>
+                        Save</a>
+                    </div>
+                </paper-toolbar>
+
+                <div id="settings_content" class="white lighten-3" style="margin-bottom:10%; padding:20px 30px 0 29px;">
+                    <div class="row" style="margin-left:0; margin-right:0;">
+                        <div class="col s12" style="margin-bottom:10px;">
+                            <label class="grey-text" style="font-size:1rem; margin-right:5px;">
+                                Username
+                            </label>
+                            <span id="username_error" class="red-text"><strong></strong></span>
+                        </div>
+                        <div id="username_field" class="lfg-input input-field col s12" style="display:none;">
+                            <input id="username" type="text" spellcheck="false" autocomplete="off" class="validate" value="{{user.username}}" />
+                        </div>
+                        <div id="username_label" class="layout horizontal col s12">
+                            <h5 class="grey-text text-darken-1" style="margin-right:15px;">{{user.username}}</h5>
+                            <a id="edit_username" class="material-icons" style="margin-top:13px; cursor:pointer;" on-click="showUsernameField">create</a>
+                        </div>
+                    </div>
+
+                    <br />
+
+                    <div class="row" style="margin-left:0; margin-right:0;">
+                        <div class="col s12" style="margin-bottom:10px;">
+                            <label class="grey-text" style="font-size:1rem; margin-right:5px;">
+                                Email
+                            </label>
+                            <span id="email_error" class="red-text"><strong></strong></span>
+                        </div>
+                        <div id="email_field" class="lfg-input input-field col s12" style="display:none;">
+                            <input id="email" type="text" spellcheck="false" autocomplete="off" class="validate" value="{{user.email}}" on-keypress="clearEmailError" />
+                        </div>
+                        <div id="email_label" class="layout horizontal col s12">
+                            <h5 class="grey-text text-darken-1" style="margin-right:15px;">{{user.email}}</h5>
+                            <a id="edit_email" class="material-icons" style="margin-top:13px; cursor:pointer;" on-click="showEmailField">create</a>
+                        </div>
+                    </div>
+
+                    <br /><br />
+
+                    <div class="row" style="margin-left:0; margin-right:0;">
+                        <div class="layout horizontal">
+                            <img id="profile_pic" src="../assets/app/img/profile-photo-placeholder.jpg" alt="" class="circle responsive-img" style="border:solid 2px #ffffff; height:120px; width:120px; margin-right:30px;">
+                            <div class="layout horizontal center-center file-field">
+                                <a class="btn white-text center center-aligned blue-text light photo-upload">
+                                    <span><i class="material-icons left">backup</i> Change Photo</span>
+                                    <input id="profile_upload" type="file" accept="image/*" capture="camera" />
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </paper-header-panel>
+        </paper-drawer-panel>
+    </template>
+</dom-module>
+
+<script>
+    (function(window) {
+        var constructor = Polymer({
+
+        	is: 'settings-page',
+
+            /**
+             * ...
+             *
+             * @attribute properties
+             * @type object
+             * @default
+             */
+            properties: {
+                firebase: {
+                    requests: null,
+                    games: null,
+                    users: null
+                },
+                name: 'Requests Page',
+
+                /**
+                 * ...
+                 *
+                 * @attribute thingName
+                 * @type string
+                 * @default ''
+                 */
+				notify: true
+            },
+
+        	/* Functions */
+            authDataCallback: function (authData) {
+                var cusElem = this;
+
+                if (authData) {
+                    //console.log("User " + authData.uid + " is logged in with " + authData.provider);
+                } else {
+                    //Check to make sure the user is logged out...
+                    cusElem.loggedIn = false;
+                    cusElem.notifyPath('loggedIn', cusElem.loggedIn);
+                }
+            },
+
+            blockContent: function () {
+                var html = '<div class="layout fit vertical center white" style="padding:0 20px;">';
+                html += '<div class="layout vertical">'
+                html += '<h3 class="orange-text text-darken-3" >Oh Noez!!! Why you no sign in!</h3><br><br>'
+                html += '<i class="fa fa-close fa-5x orange-text text-darken-2"></i><br><br>';
+                html += '<h4 class="orange-text text-darken-3" style="font-size:1.5rem;">Sorry, but you need to be signed in to view the Settings page</h4></div>'
+                html += '<h6 class="orange-text text-darken-3">Click the Sign In button located in the side navigation panel on the left, or click <a href="#/" class="blue-text" style="cursor:pointer;">here</a> to go to the requests page</h6>'
+                html += '</div>';
+
+                $(this.$.settings_content).html(html);
+            },
+
+            clearValidatorErrors: function () {
+                this.clearUsernameError();
+                this.clearEmailError();
+            },
+
+            clearUsernameError: function () {
+                $(this.$.username_error).find('strong').html('');
+            },
+
+            clearEmailError: function () {
+                $(this.$.email_error).find('strong').html('');
+            },
+
+            formatDate: function (utc) {
+            	return window.lfg.utils.convertUtcToLocal(utc);
+            },
+
+            getFileAsDataUrl: function (f) {
+                cusElem = this;
+                var reader = new FileReader();
+                
+                reader.onload = (function (theFile) {
+                    return function (e) {
+                        var filePayload = e.target.result;
+
+                        if (cusElem.isImageToBig(filePayload)) {
+                            alert('The image you uploaded is too big. The max dimensions for your profile image are ' + cusElem.maxImageHeight + 'px x ' + cusElem.maxImageWidth + 'px');
+                            return;
+                        }
+
+                        cusElem.user.profilepic = filePayload;
+                        document.getElementById("profile_pic").src = filePayload;
+                        cusElem.profileBlob = null;
+                    };
+                })(f);
+                reader.readAsDataURL(f);
+            },
+
+            getUserProfile: function (request) {
+                var cusElem = this;
+                var authData = window.lfg.utils.getAuthData();
+
+                var userRef = new Firebase(window.lfg.config.getFirebaseUrl() + 'users/' + authData.uid);
+            	userRef.once("value", function (snapshot) {
+            		var user = snapshot.val() || {};
+            		if (user) {
+            		    var profileImage = document.getElementById('profile_pic');
+
+            			if (profileImage !== null && profileImage !== undefined) {
+            			    profileImage.src = user.profilepic;
+            			}
+
+            		    //set username & email
+            			cusElem.user = user;
+            		}
+            	});
+            },
+
+            isImageToBig: function (file) {
+                var cusElem = this;
+                var img = new Image();
+                img.src = file;
+
+                return img.height > this.maxImageHeight || img.width > cusElem.maxImageWidth;
+            },
+
+            isLoggedIn: function () {
+                var cusElem = this;
+
+                if (window.lfg.utils.isLoggedIn()) {
+                    var userRef = new Firebase(window.lfg.config.getFirebaseUrl() + 'users/' + authData.uid);
+
+                    //Get the user profile info. If none exists, redirect to Onboarding process...
+                    userRef
+                        .once('value', function (snapshot) {
+                            var user = snapshot.val();
+                            if (user === null || user === undefined || user.setupcomplete === null || user.setupcomplete === undefined || user.setupcomplete === '' || user.setupcomplete === false) {
+                                cusElem.blockContent();
+                            }
+                            else {
+                                cusElem.loggedIn = true;
+                                $('.filter-row').show();
+                            }
+                        });
+                }
+                else {
+                    cusElem.blockContent();
+                }
+            },
+
+            isLoggedOut: function () {
+                var cusElem = this;
+
+                if (window.lfg.utils.isLoggedIn()) {
+                    var userRef = new Firebase(window.lfg.config.getFirebaseUrl() + 'users/' + authData.uid);
+
+                    //Get the user profile info. If none exists, redirect to Onboarding process...
+                    userRef
+                        .once('value', function (snapshot) {
+                            var user = snapshot.val();
+                            //redirect to user setup page
+                            if (user === null || user === undefined || user.setupcomplete === null || user.setupcomplete === undefined || user.setupcomplete === '' || user.setupcomplete === false) {
+                                cusElem.loggedOut = true;
+                            }
+                            else {
+                                cusElem.loggedOut = false;
+                            }
+                        });
+                }
+            },
+
+            saveUserData: function (authData, userdata) {
+                var userRef = new Firebase(window.lfg.config.getFirebaseUrl() + 'users/' + authData.uid);
+                userdata.setupcomplete = true;
+                userRef.set(userdata);
+
+                var userid = userRef.key();
+
+                if (userid !== null && userid !== undefined) {
+                    Materialize.toast('Settings Saved', 4000);
+                }
+                else {
+                    //Show error message
+                }
+            },
+
+            validateInput: function () {
+                var valid = true;
+                this.clearValidatorErrors();
+
+                var username = $(this.$.username).val();
+                var email = $(this.$.email).val();
+
+                if (username === null || username === undefined || username === '') {
+                    $(this.$.username_error).find('strong').html("**This can't be blank!");
+                    valid = false;
+                }
+
+                if (email === null || email === undefined || email === '') {
+                    $(this.$.email_error).find('strong').html("**This can't be blank!");
+                    valid = false;
+                }
+                else if (!window.lfg.utils.checkEmail(email)) {
+                    $(this.$.email_error).find('strong').html("**This email isn't valid!");
+                    valid = false;
+                }
+
+                return valid;
+            },
+
+
+			/* Init */
+            initializeData: function () {
+                this.loggedIn = null;
+                this.loggedOut = null;
+
+                this.isLoggedIn();
+                this.isLoggedOut();
+
+            	this.firebaseUrl = window.lfg.config.getFirebaseUrl() + '/requests';
+            	this.firebaseRef = new Firebase(window.lfg.config.getFirebaseUrl());
+
+            	this.selected = 0;
+
+            	this.user = {
+            	    username: '',
+            	    email: ''
+            	};
+            	this.usernameExists = null;
+            	this.emailExists = null;
+            	this.provider = '';
+
+            	this.maxImageWidth = 160;
+            	this.maxImageHeight = 160;
+
+            	this.profileBlob = null;
+            },
+
+           
+            registerEvents: function () {
+                document.getElementById("profile_upload").addEventListener('change', this.handleFileSelect.bind(this), false);
+                //document.getElementById("cover_upload").addEventListener('change', this.handleCoverFileSelect.bind(this), false);
+                $(this.$.username).focus();
+
+            	var ref = new Firebase(window.lfg.config.getFirebaseUrl());
+            	ref.onAuth(this.authDataCallback.bind(this));
+            },
+
+            registerPlugins: function() {
+            	//$(this.$.sort_menu).dropdown({
+            	//	inDuration: 300,
+            	//	outDuration: 225,
+            	//	constrain_width: false, // Does not change width of dropdown to that of the activator
+            	//	hover: false, // Activate on hover
+            	//	gutter: 0, // Spacing from edge
+            	//	belowOrigin: false // Displays dropdown below the button
+            	//});
+            },
+
+            /* Events */
+            handleFileSelect: function (evt) {
+                //A whole lot of hackery from this point on :P
+                var cusElem = this;
+                var file = event.target.files[0];
+                cusElem.profileBlob = file;
+
+                var fileReader = new FileReader();
+
+                fileReader.onload = cusElem.verifyImageFromFileReader.bind(this);
+                fileReader.readAsArrayBuffer(file);
+            },
+
+            handleCoverFileSelect: function (evt) {
+                //var cusElem = this;
+                //var f = evt.target.files[0];
+
+                //var reader = new FileReader();
+                //reader.onloadend = (function (theFile) {
+                //    return function (e) {
+                //        var filePayload = e.target.result;
+
+                //        //set the contents to our property
+                //        cusElem.user.coverphoto = filePayload;
+                //        document.getElementById("profile_background").style.backgroundImage = "url('" + reader.result + "')";
+                //    };
+                //})(f);
+                //reader.readAsDataURL(f);
+            },
+
+            showUsernameField: function (e) {
+                var cusElem = this;
+                $(cusElem.$.username_label).hide(0, function () {
+                    $(cusElem.$.username_field).fadeIn();
+                    $(cusElem.$.username).focus();
+                });
+            },
+
+            showEmailField: function(e){
+                var cusElem = this;
+                $(cusElem.$.email_label).hide(0, function () {
+                    $(cusElem.$.email_field).fadeIn();
+                    $(cusElem.$.email).focus();
+                });
+            },
+
+            verifyImageFromFileReader: function (e) {
+
+                var isimage = window.lfg.utils.isFileAnImage(e.target.result);
+
+                if (isimage) {
+                    this.getFileAsDataUrl(this.profileBlob);
+                }
+                else {
+                    alert('The file you uploaded is NOT a valid image. Please upload a valid image. Ok buh-bye...');
+                }
+            },
+
+            ready: function () {
+            	this.initializeData();
+            },
+
+            attached: function () {
+                this.registerPlugins();
+                this.registerEvents();
+                this.getUserProfile();
+            }
+        });
+    })(window);
+</script>

@@ -367,6 +367,27 @@
             	}
             },
 
+            getFileAsDataUrl: function (f) {
+                cusElem = this;
+                var reader = new FileReader();
+
+                reader.onload = (function (theFile) {
+                    return function (e) {
+                        var filePayload = e.target.result;
+
+                        if (cusElem.isImageToBig(filePayload)) {
+                            alert('The image you uploaded is too big. The max dimensions for your profile image are ' + cusElem.maxImageHeight + 'px x ' + cusElem.maxImageWidth + 'px');
+                            return;
+                        }
+
+                        cusElem.user.profilepic = filePayload;
+                        document.getElementById("profile_pic").src = filePayload;
+                        cusElem.profileBlob = null;
+                    };
+                })(f);
+                reader.readAsDataURL(f);
+            },
+
             getProvider: function () {
                 var authData = window.lfg.utils.getAuthData();
 
@@ -466,9 +487,6 @@
             		valid = false;
             	}
 
-            	//if (userdata.profilepic === null || userdata.profilepic === undefined) {
-            	//	valid = false;
-            	//}
             	return valid;
             },
 
@@ -511,57 +529,44 @@
             },
 
             handleFileSelect: function (evt) {
-            	//Thank you firepano over @ https://github.com/firebase/firepano
-            	var cusElem = this;
-            	var f = evt.target.files[0];
-            	var reader = new FileReader();
-            	reader.onload = (function (theFile) {
-            		return function (e) {
-            		    var filePayload = e.target.result;
-                        
-            		    if (cusElem.isImageToBig(filePayload)) {
-            		        alert('The image you uploaded is too big. The max dimensions for your profile image are ' + cusElem.maxImageHeight + 'px x ' + cusElem.maxImageWidth + 'px');
-            		        return;
-            		    }
+                //A whole lot of hackery from this point on :P
+                var cusElem = this;
+                var file = event.target.files[0];
+                cusElem.profileBlob = file;
 
-            			cusElem.user.profilepic = filePayload;
-            			document.getElementById("profile_pic").src = filePayload;
-            			//$(cusElem.$.file_upload).hide();
+                var fileReader = new FileReader();
 
-            			// Generate a location that can't be guessed using the file's contents and a random number
-            			//var hash = CryptoJS.SHA256(Math.random() + CryptoJS.SHA256(filePayload));
-
-            			//var f = new Firebase(firebaseRef + 'pano/' + hash + '/filePayload');
-            			//spinner.spin(document.getElementById('spin'));
-
-            			// Set the file payload to Firebase and register an onComplete handler to stop the spinner and show the preview
-            			//f.set(filePayload, function () {
-            			//	spinner.stop();
-            			//	document.getElementById("pano").src = e.target.result;
-            			//	$('#file-upload').hide();
-            			//	// Update the location bar so the URL can be shared with others
-            			//	window.location.hash = hash;
-            			//});
-            		};
-            	})(f);
-            	reader.readAsDataURL(f);
+                fileReader.onload = cusElem.verifyImageFromFileReader.bind(this);
+                fileReader.readAsArrayBuffer(file);
             },
 
             handleCoverFileSelect: function (evt) {
-            	var cusElem = this;
-            	var f = evt.target.files[0];
-            	
-            	var reader = new FileReader();
-            	reader.onloadend = (function (theFile) {
-            		return function (e) {
-            			var filePayload = e.target.result;
+                //var cusElem = this;
+                //var f = evt.target.files[0];
 
-						//set the contents to our property
-            			cusElem.user.coverphoto = filePayload;
-            			document.getElementById("profile_background").style.backgroundImage = "url('" + reader.result + "')";
-            		};
-            	})(f);
-            	reader.readAsDataURL(f);
+                //var reader = new FileReader();
+                //reader.onloadend = (function (theFile) {
+                //    return function (e) {
+                //        var filePayload = e.target.result;
+
+                //        //set the contents to our property
+                //        cusElem.user.coverphoto = filePayload;
+                //        document.getElementById("profile_background").style.backgroundImage = "url('" + reader.result + "')";
+                //    };
+                //})(f);
+                //reader.readAsDataURL(f);
+            },
+
+            verifyImageFromFileReader: function (e) {
+
+                var isimage = window.lfg.utils.isFileAnImage(e.target.result);
+
+                if (isimage) {
+                    this.getFileAsDataUrl(this.profileBlob);
+                }
+                else {
+                    alert('The file you uploaded is NOT a valid image. Please upload a valid image. Ok buh-bye...');
+                }
             },
 
             nextSetupSlide: function () {

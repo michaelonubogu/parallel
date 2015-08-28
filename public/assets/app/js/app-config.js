@@ -301,6 +301,36 @@
                 }
                 return results[1] || null;
             },
+            
+            isFileAnImage: function (blob) {
+                var int32View = new Uint8Array(blob);
+                var isValid = false;
+                
+                //verify the magic number
+                // for JPG is 0xFF 0xD8 0xFF 0xE0 (see https://en.wikipedia.org/wiki/List_of_file_signatures)
+                
+                //JPEG
+                if (int32View.length > 4 && int32View[0] == 0xFF && int32View[1] == 0xD8 && int32View[2] == 0xFF && int32View[3] == 0xE0) {
+                    isValid = true;
+                }
+                
+                //GIF 87a
+                if (int32View.length > 4 && int32View[0] == 0x47 && int32View[1] == 0x49 && int32View[2] == 0x46 && int32View[3] == 0x38 && int32View[4] == 0x37 && int32View[5] == 0x61) {
+                    isValid = true;
+                }
+                
+                //GIF 89a
+                if (int32View.length > 4 && int32View[0] == 0x47 && int32View[1] == 0x49 && int32View[2] == 0x46 && int32View[3] == 0x38 && int32View[4] == 0x39 && int32View[5] == 0x61) {
+                    isValid = true;
+                }
+                
+                //PNG
+                if (int32View.length > 4 && int32View[0] == 0x89 && int32View[1] == 0x50 && int32View[2] == 0x4E && int32View[3] == 0x47 && int32View[4] == 0x0D && int32View[5] == 0x0A && int32View[6] == 0x1A && int32View[7] == 0x0A) {
+                    isValid = true;
+                }
+                
+                return isValid;
+            },
 			
             isLoggedIn: function () {
                 //Check the client first - session storage
