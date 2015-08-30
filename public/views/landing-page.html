@@ -3,6 +3,9 @@
 <!-- Fonts -->
 <link rel='import' href='../components/bower_components/font-roboto/roboto.html'>
 
+<!-- Custom Imports-->
+<link rel='import' href="../imports/coucou.html">
+
 
 <dom-module id="landing-page">
 
@@ -10,11 +13,25 @@
         .page-container{
             width:100% !important; 
             min-height:100vh;
-            background-color: #464A65;
         }
 
         .page-header-text{
             font-weight:300;
+        }
+
+        .page-banner{
+            background-color: #464A65;
+            width:100%;
+        }
+
+        .page-banner-white{
+            background-color: #ffffff;
+            width:100%;
+        }
+
+        .page-banner-orange{
+            background-color: #FB8C00;
+            width:100%;
         }
 
         .btn-transparent{
@@ -23,11 +40,23 @@
             box-shadow:none;
             line-height:50px;
         }
+
+        [class^="flaticon-"]:before, [class*=" flaticon-"]:before, [class^="flaticon-"]:after, [class*=" flaticon-"]:after {
+            font-size:60px !important;
+            color: #757575;
+            margin-right:20px;
+        }
+
+        .feature-label{
+            margin-top: -25px !important;
+            vertical-align: super;
+            font-size:1.25rem;
+        }
     </style>
 
     <template>
         <div class="layout vertical center fit page-container">
-            <div class="section no-pad-bot" id="index-banner">
+            <div class="section no-pad-bot page-banner" id="index-banner">
                 <div>
                     <br><br>
                     <h2 class="header center white-text page-header-text">Connecting Gamers With Gamers</h2>
@@ -37,53 +66,167 @@
                     </div>
                     <br />
                     <div class="row center">
-                        <a href="#/" id="download-button" class="btn-large waves-effect waves-light blue accent-2" style="border-radius:5px; margin-right:30px;">Learn more</a>
+                        <a class="btn-large waves-effect waves-light blue accent-2" style="border-radius:5px; margin-right:30px;" on-click="scrollToDetails">Learn more</a>
                         <a href="#/" id="download-button" class="btn-large waves-effect waves-light btn-transparent" style="border-radius:5px;">
                             <span style="margin-top:-2px;">Check it out</span>
                         </a>
                     </div>
                     <br><br>
+                    <div>
+                        <img src="../assets/app/img/App.png" style="margin-bottom:9px;"/>
+                    </div>
                 </div>
             </div>
 
             <div class="container">
                 <div class="section">
                     <!--   Icon Section   -->
-                    <div class="row">
+                    <div class="row" style="margin-top:60px; margin-bottom:60px;">
                         <div class="col s12 m4">
                             <div class="icon-block">
-                                <h2 class="center light-blue-text"><i class="material-icons">flash_on</i></h2>
-                                <h5 class="center">Speeds up development</h5>
-                                <p class="light">We did most of the heavy lifting for you to provide a default stylings that incorporate our custom components. Additionally, we refined animations and transitions to provide a smoother experience for developers.</p>
+                                <img src="../assets/app/img/game-icon.png" />
+                                <h5 class="center">Any Game</h5>
+                                <p>Browse game requests for any major game releases</p>
                             </div>
                         </div>
                         <div class="col s12 m4">
                             <div class="icon-block">
-                                <h2 class="center light-blue-text"><i class="material-icons">group</i></h2>
-                                <h5 class="center">User Experience Focused</h5>
-                                <p class="light">By utilizing elements and principles of Material Design, we were able to create a framework that incorporates components and animations that provide more feedback to users. Additionally, a single underlying responsive system across all platforms allow for a more unified user experience.</p>
+                                <img src="../assets/app/img/Joystick Icon.png" />
+                                <h5 class="center">Any Console</h5>
+                                <p>View requests for games on any major & modern connected consoles</p>
                             </div>
                         </div>
                         <div class="col s12 m4">
                             <div class="icon-block">
-                                <h2 class="center light-blue-text"><i class="material-icons">settings</i></h2>
-                                <h5 class="center">Easy to work with</h5>
-                                <p class="light">We have provided detailed documentation as well as specific code examples to help new users get started. We are also always open to feedback and can answer any questions a user may have about Materialize.</p>
+                                <img src="../assets/app/img/World.png" />
+                                <h5 class="center">Anywhere</h5>
+                                <p>Find and play with gamers from anywhere in the world</p>
                             </div>
                         </div>
                     </div>
                 </div>
-                <br><br>
-                <div class="section">
+            </div>
+
+            <div class="section no-pad-bot page-banner" id="index_banner">
+                <div class="container">
+                    <div class="row" style="padding-top:60px;">
+                        <div class="col m6 s12 left left-align">
+                            <h2 class="thin white-text">Find</h2>
+                            <h5 class="white-text" style="font-size:1.2rem;">Find gamers and play the games <strong>you love</strong></h5>
+                            <h5 class="white-text" style="font-size:1rem;">Can't find the games you want? Create your own request!</h5>
+                        </div>
+                        <div class="col m6 s12 right right-align">
+                            <img src="../assets/app/img/find-aboutpage.png" style="margin-bottom:-11px;"/>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <footer class="page-footer orange">
+
+            <div class="section no-pad-bot page-banner-white">
+                <div class="container">
+                    <div class="row" style="padding-top:60px;">
+                        <div class="col m6 s12 left left-align">
+                            <img src="../assets/app/img/connect-aboutpage.png" width="400" />
+                        </div>
+                        <div class="col m6 s12 right right-align">
+                            <h2 class="thin grey-text text-darken-3">Connect</h2>
+                            <h5 class="grey-text text-darken-3" style="font-size:1.2rem;">Chat with gamers on game requests</h5>
+                            <h5 class="grey-text text-darken-3" style="font-size:1.2rem;">that look interesting</h5>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section no-pad-bot page-banner-orange">
+                <div class="row" style="padding-top:60px;">
+                    <div class="col s12 center center-align">
+                        <h2 class="thin white-text">Play</h2>
+                        <h5 class="white-text text-darken-3" style="font-size:1.2rem;">You've got your team, and they've got your back, now get in the game and start #pwning</h5>
+                        <br />
+                        <div style="margin-bottom:60px;">
+                            <a href="#/" class="btn-large waves-effect waves-light btn-transparent" style="border-radius:5px;">
+                                <span style="margin-top:-2px; text-transform:none;">Go to site</span>
+                            </a>
+                        </div>
+                        <img src="../assets/app/img/Group.png" style="overflow-x:hidden; margin-bottom:-11px;" />
+                    </div>
+                </div>
+            </div>
+
+            <div class="section no-pad-bot page-banner-white">
+                <div class="container">
+                    <div class="row" style="padding-top:60px;">
+                        <div class="col s12 center center-align">
+                            <h2 class="thin grey-text">Need more reasons?</h2>
+                        </div>
+                    </div>
+                    <br />
+
+                    <div class="row">
+                        <div class="col m6 s12">
+                            <i class="flaticon-alarm25 feature-icon"></i>
+                            <label class="grey-text text-darken-1 feature-label">Save time - Don't waste time</label>
+                        </div>
+                        <div class="col m6 s12">
+                            <i class="flaticon-game35 feature-icon"></i>
+                            <label class="grey-text text-darken-1 feature-label">Play what you want, when you want</label>
+                        </div>
+                    </div>
+
+                    <br />
+
+                    <div class="row">
+                        <div class="col m6 s12">
+                            <i class="flaticon-skull21 feature-icon"></i>
+                            <label class="grey-text text-darken-1 feature-label">Find good people to play with</label>
+                            <div class="grey-text text-darken-2" style="margin-left:96px; margin-top:-23px; font-weight:600;">(not random trolls & turd-minions!)</div>
+                        </div>
+                        <div class="col m6 s12">
+                            <i class="flaticon-sneaker feature-icon"></i>
+                            <label class="grey-text text-darken-1 feature-label">Bring back & revive forgotten games</label>
+                        </div>
+                    </div>
+
+                    <br />
+
+                    <div class="row">
+                        <div class="col m6 s12">
+                            <i class="flaticon-facebook38 feature-icon"></i>
+                            <label class="grey-text text-darken-1 feature-label">Gamers with similar interests</label>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="section no-pad-bot page-banner-white">
+                <div class="container">
+                    <div class="row" style="padding-top:60px;">
+                        <div class="col s12 center center-align">
+                            <h2 class="thin grey-text">Who we are</h2>
+                            <h5>2 Guys - 1 App</h5>
+                        </div>
+                    </div>
+
+                    <br />
+
+                    <div class="row">
+                        <div class="col m6 s12">
+                            
+                        </div>
+                        <div class="col m6 s12">
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <footer class="page-footer orange" style="width:100%;">
                 <div class="container">
                     <div class="row">
                         <div class="col l6 s12">
                             <h5 class="white-text">Company Bio</h5>
                             <p class="grey-text text-lighten-4">We are a team of college students working on this project like it's our full time job. Any amount would help support and continue development on this project and is greatly appreciated.</p>
-
                         </div>
                         <div class="col l3 s12">
                             <h5 class="white-text">Settings</h5>
@@ -130,6 +273,10 @@
              */
             properties: {
                 name: 'landing-page',
+            },
+
+            scrollToDetails: function(){
+                $("html, body").animate({ scrollTop: $(this.$.index_banner).offset().top }, 1000);
             },
 
             ready: function () {
