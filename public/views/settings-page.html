@@ -294,15 +294,15 @@
             },
 
             blockContent: function () {
-                var html = '<div class="layout fit vertical center white" style="padding:0 20px;">';
-                html += '<div class="layout vertical">'
-                html += '<h3 class="orange-text text-darken-3" >Oh Noez!!! Why you no sign in!</h3><br><br>'
-                html += '<i class="fa fa-close fa-5x orange-text text-darken-2"></i><br><br>';
-                html += '<h4 class="orange-text text-darken-3" style="font-size:1.5rem;">Sorry, but you need to be signed in to view the Settings page</h4></div>'
-                html += '<h6 class="orange-text text-darken-3">Click the Sign In button located in the side navigation panel on the left, or click <a href="#/" class="blue-text" style="cursor:pointer;">here</a> to go to the requests page</h6>'
-                html += '</div>';
+                //var html = '<div class="layout fit vertical center white" style="padding:0 20px;">';
+                //html += '<div class="layout vertical">'
+                //html += '<h3 class="orange-text text-darken-3" >Oh Noez!!! Why you no sign in!</h3><br><br>'
+                //html += '<img src="../assets/app/img/why_no_guy.png" /><br><br>';
+                //html += '<h4 class="orange-text text-darken-3" style="font-size:1.5rem;">Sorry, but you need to be signed in to view the Settings page</h4></div>'
+                //html += '<h6 class="orange-text text-darken-3">Click the Sign In button located in the side navigation panel on the left, or click <a href="#/" class="blue-text" style="cursor:pointer;">here</a> to go to the requests page</h6>'
+                //html += '</div>';
 
-                $(this.$.settings_content).html(html);
+                //$(this.$.settings_content).html(html);
             },
 
             clearValidatorErrors: function (field) {
@@ -360,20 +360,22 @@
                 var cusElem = this;
                 var authData = window.lfg.utils.getAuthData();
 
-                var userRef = new Firebase(window.lfg.config.getFirebaseUrl() + 'users/' + authData.uid);
-            	userRef.once("value", function (snapshot) {
-            		var user = snapshot.val() || {};
-            		if (user) {
-            		    var profileImage = document.getElementById('profile_pic');
+                if (authData !== null && authData !== undefined) {
+                    var userRef = new Firebase(window.lfg.config.getFirebaseUrl() + 'users/' + authData.uid);
+                    userRef.once("value", function (snapshot) {
+                        var user = snapshot.val() || {};
+                        if (user) {
+                            var profileImage = document.getElementById('profile_pic');
 
-            			if (profileImage !== null && profileImage !== undefined) {
-            			    profileImage.src = user.profilepic;
-            			}
+                            if (profileImage !== null && profileImage !== undefined) {
+                                profileImage.src = user.profilepic;
+                            }
 
-            		    //set username & email
-            			cusElem.user = user;
-            		}
-            	});
+                            //set username & email
+                            cusElem.user = user;
+                        }
+                    });
+                }
             },
 
             isImageToBig: function (file) {
@@ -601,7 +603,10 @@
 
            
             registerEvents: function () {
-                document.getElementById("profile_upload").addEventListener('change', this.handleFileSelect.bind(this), false);
+                var ref = new Firebase(window.lfg.config.getFirebaseUrl());
+                ref.onAuth(this.authDataCallback.bind(this));
+
+                this.$.profile_upload.addEventListener('change', this.handleFileSelect.bind(this), false);
                 //document.getElementById("cover_upload").addEventListener('change', this.handleCoverFileSelect.bind(this), false);
                 $(this.$.username).focus();
 
@@ -610,9 +615,6 @@
 
                 $(document).on('focusout', '#username', this.saveUsername.bind(this));
                 $(document).on('focusout', '#email', this.saveEmail.bind(this));
-
-            	var ref = new Firebase(window.lfg.config.getFirebaseUrl());
-            	ref.onAuth(this.authDataCallback.bind(this));
             },
 
             registerPlugins: function() {

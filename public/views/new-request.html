@@ -1045,6 +1045,7 @@
                     customElem.requestTitleCountMessage = customElem.requestTitleCounter.toString() + '/' + customElem.requestTitleLength.toString();
                 });
 
+                var ref = new Firebase(window.lfg.config.getFirebaseUrl());
                 ref.onAuth(this.authDataCallback.bind(this));
             },
 
@@ -1386,15 +1387,7 @@
             },
 
             ready: function () {
-                window.lfg.utils.automaticSignin();
-
-            	if (this.isLoggedIn()) {
-            		this.initializeData();
-            	}
-            	else {
-            		//redirect to sign-in
-            		document.querySelector('app-router').go('/login');
-            	}
+                this.initializeData();
             },
 
             attached: function () {
