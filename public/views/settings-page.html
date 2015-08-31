@@ -455,7 +455,7 @@
                     var authData = window.lfg.utils.getAuthData();
                     var userRef = new Firebase(window.lfg.config.getFirebaseUrl() + 'users');
 
-                    if (this.user.email.trim.toLowerCase() !== email.trim().toLowerCase()) {
+                    if (this.user.email.trim().toLowerCase() !== email.trim().toLowerCase()) {
                         userRef
                         .orderByChild('email')
                         .equalTo(email)
