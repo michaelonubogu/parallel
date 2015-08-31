@@ -356,10 +356,15 @@
 				<br /><div class="divider"></div><br />
 
 				<div class="row add-comment-row">
-					<div class="col s12  add-comment-message">
+					<div class="col s12  add-comment-message" style="display:none;">
 						<i class="reply-circle" style="margin-right:30px; cursor:pointer;"></i>
 						<label class="grey-text text-lighten-1" style="font-size:1.25rem; cursor:pointer;">Reply to request</label>
 					</div>
+
+                    <div class="col s12  sign-in-comment-message">
+                        <i class="reply-circle" style="margin-right:30px; cursor:pointer;"></i>
+                        <label class="grey-text text-lighten-1" style="font-size:1.25rem; cursor:pointer;">Sign in to reply to this Request</label>
+                    </div>
 
 					<div class="lfg-input input-field col s12 add-comment-control add-comment-text" style="display:none;">
 						<textarea id="comment_text" type="text" placeholder="Say something nice" spellcheck="false" class="materialize-textarea" length="250"></textarea>
@@ -730,6 +735,32 @@
 				$.get(config.appUrl)
 			},
 
+			isLoggedIn: function () {
+			    var cusElem = this;
+
+			    if (window.lfg.utils.isLoggedIn()) {
+			        var userRef = new Firebase(window.lfg.config.getFirebaseUrl() + 'users/' + authData.uid);
+
+			        //Get the user profile info. If none exists, redirect to Onboarding process...
+			        userRef
+                        .once('value', function (snapshot) {
+                            var user = snapshot.val();
+                            if (user === null || user === undefined || user.setupcomplete === null || user.setupcomplete === undefined || user.setupcomplete === '' || user.setupcomplete === false) {
+                                cusElem.loggedIn = false;
+                                $('.add-comment-message').remove();
+                            }
+                            else {
+                                cusElem.loggedIn = true;
+                                $('.sign-in-comment-message').hide();
+                                $('.add-comment-message').show();
+                            }
+                        });
+			    }
+			    else {
+			        $('.add-comment-message').remove();
+			    }
+			},
+
 			markAsRecent: function (requestid) {
 			    var customElem = this;
 			    var userid = window.lfg.utils.getUser();
@@ -855,6 +886,8 @@
 			},
 
 			initializeData: function () {
+			    this.loggedIn = null;
+			    this.isLoggedIn();
 
 				this.getRequestKey();
 				this.request = {
@@ -873,6 +906,7 @@
 				})
 
 				$(document).on('click', '.add-comment-message', this.showCommentField.bind(this));
+				$(document).on('click', '.sign-in-comment-message', function () { document.querySelector('app-router').go('/login'); });
 				$(document).on('input', '#comment_text', function () {
 					$(this).removeClass('invalid');
 				});
