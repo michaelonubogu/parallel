@@ -447,7 +447,8 @@
                     var authData = window.lfg.utils.getAuthData();
                     var userRef = new Firebase(window.lfg.config.getFirebaseUrl() + 'users');
 
-                    userRef
+                    if (this.user.email.trim.toLowerCase() !== email.trim().toLowerCase()) {
+                        userRef
                         .orderByChild('email')
                         .equalTo(email)
                         .once('value', function (snapshot) {
@@ -471,6 +472,12 @@
                                 Materialize.toast('Email saved', 4000);
                             }
                         });
+                    }
+                    else {
+                        $(cusElem.$.email_field).hide(0, function () {
+                            $(cusElem.$.email_label).fadeIn();
+                        });
+                    }
                 }
             },
 
@@ -494,7 +501,8 @@
                     var authData = window.lfg.utils.getAuthData();
                     var userRef = new Firebase(window.lfg.config.getFirebaseUrl() + 'users');
 
-                    userRef
+                    if (this.user.username.trim().toLowerCase() !== username.trim().toLowerCase()) {
+                        userRef
                         .orderByChild('username')
                         .equalTo(username)
                         .once('value', function (snapshot) {
@@ -518,6 +526,12 @@
                                 Materialize.toast('Username saved', 4000);
                             }
                         });
+                    }
+                    else {
+                        $(cusElem.$.username_field).hide(0, function () {
+                            $(cusElem.$.username_label).fadeIn();
+                        });
+                    }
                 }
             },
 
@@ -587,6 +601,9 @@
 
                 $(document).on('keypress', '#username', this.keyInputUsername.bind(this));
                 $(document).on('keypress', '#email', this.keyInputEmail.bind(this));
+
+                $(document).on('focusout', '#username', this.saveUsername.bind(this));
+                $(document).on('focusout', '#email', this.saveEmail.bind(this));
 
             	var ref = new Firebase(window.lfg.config.getFirebaseUrl());
             	ref.onAuth(this.authDataCallback.bind(this));

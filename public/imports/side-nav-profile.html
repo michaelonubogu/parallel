@@ -1,5 +1,7 @@
-﻿
-
+﻿<link rel="import" href="../components/bower_components/polymer/polymer.html">
+<!--<link rel="import" href="../imports/layout.html">-->
+<!-- Fonts -->
+<link rel='import' href='../components/bower_components/font-roboto/roboto.html'>
 
 <dom-module id="side-nav-profile">
 	<!-- CSS -->
@@ -18,18 +20,12 @@
 			color: #ffffff;
 			cursor: pointer;
 		}
-
-		.lfg-drawer-toolbar{
-			--paper-toolbar:{
-				background: url('../assets/app/img/profile_background6.png');
-				background-size: 256px 192px;
-			};
-        }
 	</style>
 
 	<template>
-		<paper-toolbar class="tall lfg-drawer-toolbar">
-		</paper-toolbar>
+		<div class="layout vertical fit center-center" style="top:-55px;">
+            <img src="../assets/app/img/logo-orange-60-60.png" />
+        </div>
 	</template>
 </dom-module>
 
@@ -47,12 +43,6 @@
              * @default
              */
             properties: {
-                firebase: {
-                    requests: null,
-                    games: null,
-                    users: null
-                },
-                name: 'Side Nav Profile Icon'
             },
 
         	/* Functions */
@@ -60,8 +50,6 @@
 
             /* Init */
             initializeData: function () {
-            	this.firebaseUrl = window.lfg.config.getFirebaseUrl();
-            	this.firebaseRef = new Firebase(window.lfg.config.getFirebaseUrl());
             },
 
             registerEvents: function () {
@@ -72,13 +60,7 @@
 
 			/* Events */
             ready: function () {
-            	this.initializeData();
             },
-
-            attached: function () {
-            	this.registerPlugins();
-            	this.registerEvents();
-            }
         });
     })(window);
 </script>
