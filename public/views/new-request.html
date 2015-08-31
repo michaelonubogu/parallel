@@ -380,7 +380,9 @@
         <paper-drawer-panel>
             <paper-header-panel mode="seamed" drawer>
                 <paper-toolbar class="medium-tall lfg-drawer-toolbar">
-
+                    <div class="middle">
+                        <side-nav-profile class="center-center"></side-nav-profile>
+                    </div>
                 </paper-toolbar>
                 <div class="fit orange darken-3">
                     <sign-in-button></sign-in-button>
@@ -606,6 +608,21 @@
                  * @type string
                  * @default ''
                  */
+            },
+
+            authDataCallback: function (authData) {
+                var cusElem = this;
+
+                if (authData) {
+                    //console.log("User " + authData.uid + " is logged in with " + authData.provider);
+                } else {
+                    //Check to make sure the user is logged out
+                    cusElem.loggedIn = false;
+                    cusElem.notifyPath('loggedIn', cusElem.loggedIn);
+
+                    //navigate them to the sign-in page
+                    document.querySelector('app-router').go('/login');
+                }
             },
 
             addNeutralTag: function (node) {
@@ -1027,6 +1044,8 @@
                     customElem.requestTitleCounter = $(this).val().length;
                     customElem.requestTitleCountMessage = customElem.requestTitleCounter.toString() + '/' + customElem.requestTitleLength.toString();
                 });
+
+                ref.onAuth(this.authDataCallback.bind(this));
             },
 
             registerDropListPlugin: function () {

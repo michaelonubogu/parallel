@@ -314,6 +314,9 @@
         <paper-drawer-panel>
             <paper-header-panel mode="seamed" drawer>
                 <paper-toolbar class="medium-tall lfg-drawer-toolbar">
+                    <div class="middle">
+                        <side-nav-profile class="center-center"></side-nav-profile>
+                    </div>
                 </paper-toolbar>
                 <div class="fit orange darken-3">
                     <template is="dom-if" if="{{loggedIn}}">
@@ -705,6 +708,9 @@
                     //Check to make sure the user is logged out...
                     cusElem.loggedIn = false;
                     cusElem.notifyPath('loggedIn', cusElem.loggedIn);
+
+                    //navigate them to the sign-in page
+                    document.querySelector('app-router').go('/login');
                 }
             },
 

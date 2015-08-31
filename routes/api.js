@@ -9,6 +9,7 @@ var openid = require('openid');
 //var faye = require('faye');
 var FirebaseTokenGenerator = require("firebase-token-generator");
 var giantbomb = require('../giantbomb');
+var steam = require('../steam');
 var config = require('../config');
 
 //Express stuff (routing, server info, etc)
@@ -96,23 +97,38 @@ router.get('/steam/authenticate/verify', function (req, res) {
 		var pathArray = urlObj.pathname.split('/');
 		
 		if (pathArray !== null && pathArray !== undefined && pathArray.length > 0) {
-			var steamid = pathArray[(pathArray.length - 1)];
-			
-			//Generate a firebase token for our steam auth user info
-			var tokenGenerator = new FirebaseTokenGenerator(config.firebase.secret);
-			var token = tokenGenerator.createToken({ uid: "steam:" + steamid  });
+            var steamid = pathArray[(pathArray.length - 1)];
             
-            var faye_server = GLOBAL.faye_server;
-            
-            if (faye_server !== null && faye_server !== undefined) {
-                //Send token to the client
-                faye_server.getClient().publish('/steamSuccess', 
-			    {
-                    pageName: 'sign-in.html',
-                    steamid: steamid,
-                    token: token
-                });
-            }
+            //Get the user profile from steam
+            steam.getSteamUser(steamid)
+            .then(function (data) {
+                var steamData = JSON.parse(data);              
+                if (
+                    steamData !== null && steamData !== undefined && steamData.response !== null && steamData.response !== undefined && steamData.response.players !== null &&
+                    steamData.response.players !== undefined && steamData.response.players.length > 0
+                    ) {
+                    var steamUser = steamData.response.players[0];
+
+                    //Generate a firebase token for our steam auth user info
+                    var tokenGenerator = new FirebaseTokenGenerator(config.firebase.secret);
+                    var token = tokenGenerator.createToken({ uid: "steam:" + steamid });
+                    
+                    var faye_server = GLOBAL.faye_server;
+                    
+                    if (faye_server !== null && faye_server !== undefined) {
+                        //Send token to the client
+                        faye_server.getClient().publish('/steamSuccess', 
+			            {
+                            pageName: 'sign-in.html',
+                            steamid: steamid,
+                            steam: steamUser,
+                            token: token
+                        });
+                    }
+                }
+            }, function (err) {
+
+            });
 		}
 	});
 });

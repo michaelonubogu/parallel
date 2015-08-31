@@ -168,7 +168,7 @@
                 <div class="layout horizontal center-justified" style="margin-top:70px;">
                     <div class="flex"></div>
                     <div class="col s6 center self-center">
-                        <h5 class="white-text thin" style="font-size:1.5rem;">Sweet! You're almost there...</h5>
+                        <h5 class="white-text" style="font-size:1.5rem;">Sweet! You're almost there...</h5>
                         <h6 class="white-text" style="font-size:0.85rem;">Enter your Username & Email, and upload a profile picture</h6>
                     </div>
                     <div class="flex"></div>
@@ -181,13 +181,13 @@
                         <img id="profile_pic" src="../assets/app/img/profile-photo-placeholder.jpg" alt="" class="circle responsive-img" style="border:solid 2px #ffffff; height:75px; width:75px;">
                     </div>
                     <div class="col s12 center" style="margin-top:-10px;">
-                        <h4 class="light white-text" style="font-size:1.35rem;">{{user.username}}</h4>
+                        <h4 id="username_label" class="light white-text" style="font-size:1.35rem;">{{user.username}}</h4>
                     </div>
 
                     <div class="row">
                         <div class="col s12">
                             <div class="layout horizontal center-center file-field">
-                                <a class="btn center center-aligned white-text light photo-upload">
+                                <a class="btn-flat center center-aligned yellow-text text-accent-2 light photo-upload">
                                     <span><i class="material-icons left">backup</i> Change Photo</span>
                                     <input id="profile_upload" type="file" accept="image/*" capture="camera" />
                                 </a>
@@ -201,7 +201,7 @@
                             <i class="fa fa-user" style="margin-right:6px;"></i>
                             Username
                         </label>
-                        <span id="username_error" class="red-text"><strong></strong></span>
+                        <span id="username_error" class="yellow-text text-accent-2"><strong></strong></span>
                     </div>
                     <div class="lfg-input input-field col s12">
                         <input id="username" type="text" spellcheck="false" autocomplete="off" class="validate" on-keypress="clearUsernameError" on-keyup="changeUsername" />
@@ -213,20 +213,20 @@
                             <i class="fa fa-envelope" style="margin-right:6px;"></i>
                             Email
                         </label>
-                        <span id="email_error" class="red-text"><strong></strong></span>
+                        <span id="email_error" class="yellow-text text-accent-2"><strong></strong></span>
                     </div>
                     <div class="lfg-input input-field col s12">
                         <input id="email" type="text" spellcheck="false" autocomplete="off" class="validate" value="{{user.email}}" on-keypress="clearEmailError" />
                     </div>
                 </div>
                 <br />
-                <a class="waves-effect waves-light orange darken-4 btn-large" on-click="finishSetUp" style="width:100%;"><i class="material-icons left">done</i>I'm Done. Get me in there!</a>
+                <a class="waves-effect waves-green orange darken-4 btn-large white-text" on-click="finishSetUp" style="width:100%;"><i class="material-icons left">done</i>I'm Done. Get me in there!</a>
             </div>
         </div>
 
         <div id="first_time_overlay" class="layout fit vertical center orange darken-1" style="position:absolute; width:100%; z-index:1000;">
             <div class="layout vertical" style="max-width:1000px; margin-top:100px;">
-                <h5 class="white-text text-darken-2 thin" style="font-size:1.5rem;">{{providerText}}</h5>
+                <h5 class="white-text text-darken-2 light" style="font-size:1.5rem;">{{providerText}}</h5>
                 <h6 class="white-text text-darken-2" style="font-size:1.5rem;">Is this your first time using Parallel?</h6>
             </div>
 
@@ -421,6 +421,66 @@
                 $(cusElem.$.new_acct_form).show();
             },
 
+            prepopulateData: function () {
+                var cusElem = this;
+                var authData = window.lfg.utils.getAuthData();
+
+                if (authData !== null && authData !== undefined) {
+                    switch (authData.provider) {
+                        case 'facebook':
+                            var facebook = authData.facebook;
+                            cusElem.user.username = facebook.displayName;
+                            cusElem.user.profilepic = facebook.profileImageURL;
+                            cusElem.notifyPath('user', cusElem.user);
+
+                            //Update DOM
+                            $(cusElem.$.username).val(facebook.displayName);
+                            $(cusElem.$.profile_pic).attr('src', facebook.profileImageURL);
+                            $(cusElem.$.username_label).html(facebook.displayName);
+                            break;
+
+                        case 'twitter':
+                            var twitter = authData.twitter;
+                            cusElem.user.username = twitter.username;
+                            cusElem.user.profilepic = twitter.profileImageURL;
+                            cusElem.notifyPath('user', cusElem.user);
+
+                            //Update DOM
+                            $(cusElem.$.username).val(twitter.username);
+                            $(cusElem.$.profile_pic).attr('src', twitter.profileImageURL);
+                            $(cusElem.$.username_label).html(twitter.username);
+                            break;
+
+                        case 'google':
+                            var google = authData.google;
+                            cusElem.user.username = google.displayName;
+                            cusElem.user.profilepic = google.profileImageURL;
+                            cusElem.notifyPath('user', cusElem.user);
+
+                            //Update DOM
+                            $(cusElem.$.username).val(google.displayName);
+                            $(cusElem.$.profile_pic).attr('src', google.profileImageURL);
+                            $(cusElem.$.username_label).html(google.displayName);
+                            break;
+
+                        case 'steam':
+                            var steam = authData.steam;
+                            cusElem.user.username = steam.personaname;
+                            cusElem.user.profilepic = steam.avatarfull;
+                            cusElem.notifyPath('user', cusElem.user);
+
+                            //Update DOM
+                            $(cusElem.$.username).val(steam.personaname);
+                            $(cusElem.$.profile_pic).attr('src', steam.avatarfull);
+                            $(cusElem.$.username_label).html(steam.personaname);
+                            break;
+
+                        default:
+                            break;
+                    }
+                }
+            },
+
             saveUserData: function (authData, userdata) {
                 var userRef = new Firebase(window.lfg.config.getFirebaseUrl() + 'users/' + authData.uid);
                 userdata.setupcomplete = true;
@@ -479,6 +539,8 @@
 
             	this.loadingMessage = 'Creating your account';
             	this.getProvider();
+
+            	this.prepopulateData();
             },
 
             registerEvents: function () {

@@ -29,7 +29,7 @@ var steam_formats = {
 };
 
 var steam = {
-	getSteamUser : function (username) {
+	getSteamUser : function (userid) {
 		
 		var steam_method = _.findWhere(steam_methods, { name: "getPlayerSummaries" });
 
@@ -39,7 +39,7 @@ var steam = {
 							.replace('<version>', steam_method.method.version)
 							.replace('<api_key>', config.steam.api_key)
 							.replace('<format>', steam_formats.json);
-		return rp(steam_api_url);
+		return rp(steam_api_url + '&steamids=' + userid);
 	},
 
 	getSteamUserStats : function () {

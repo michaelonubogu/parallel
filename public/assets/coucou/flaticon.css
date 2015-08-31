@@ -1,3 +1,4 @@
+/* cou-cou*/
 @font-face {
 	font-family: "Flaticon";
 	src: url("flaticon.eot");
@@ -11,13 +12,33 @@
 [class^="flaticon-"]:before, [class*=" flaticon-"]:before,
 [class^="flaticon-"]:after, [class*=" flaticon-"]:after {   
 	font-family: Flaticon;
-        font-size: 20px;
 font-style: normal;
 margin-left: 20px;
 }.flaticon-alarm25:before {
 	content: "\e000";
 }
-.flaticon-bling:before {
+
+ .flaticon-game35:before {
+	content: "\e010";
+}
+
+ .flaticon-skull21:before {
+	content: "\e031";
+}
+
+ .flaticon-sneaker:before {
+	content: "\e032";
+}
+
+ .flaticon-facebook38:before {
+	content: "\e00c";
+}
+.flaticon-facebook39:before {
+	content: "\e00d";
+}
+
+
+/*.flaticon-bling:before {
 	content: "\e001";
 }
 .flaticon-cellular6:before {
@@ -50,21 +71,14 @@ margin-left: 20px;
 .flaticon-eject17:before {
 	content: "\e00b";
 }
-.flaticon-facebook38:before {
-	content: "\e00c";
-}
-.flaticon-facebook39:before {
-	content: "\e00d";
-}
+
 .flaticon-fast25:before {
 	content: "\e00e";
 }
 .flaticon-fork30:before {
 	content: "\e00f";
 }
-.flaticon-game35:before {
-	content: "\e010";
-}
+
 .flaticon-hammer39:before {
 	content: "\e011";
 }
@@ -161,12 +175,8 @@ margin-left: 20px;
 .flaticon-shopping138:before {
 	content: "\e030";
 }
-.flaticon-skull21:before {
-	content: "\e031";
-}
-.flaticon-sneaker:before {
-	content: "\e032";
-}
+
+
 .flaticon-speech77:before {
 	content: "\e033";
 }
@@ -205,4 +215,4 @@ margin-left: 20px;
 }
 .flaticon-zoom31:before {
 	content: "\e03f";
-}
+}*/

@@ -476,6 +476,9 @@
 		<paper-drawer-panel>
 			<paper-header-panel mode="seamed" drawer>
 				<paper-toolbar class="medium-tall lfg-drawer-toolbar">
+                    <div class="middle">
+                        <side-nav-profile class="center-center"></side-nav-profile>
+                    </div>
 				</paper-toolbar>
 				<div  class="fit orange darken-3">
                     <template is="dom-if" if="{{loggedIn}}">
@@ -516,7 +519,7 @@
 									</div>
 									<div class="card-content">
 										<span class$="{{getSystemLabelClass(item.system)}}" data-system="[[item.system]]" style="margin-right:5px;">{{getSystemType(item.system)}}</span>
-										<label class="grey-text text-darken-2 activator" style="font-size:1rem; cursor:pointer;">{{truncateText(item.gametitle, 20)}}
+										<label class="grey-text text-darken-2 activator" style="font-size:1rem; cursor:pointer;">{{truncateText(item.gametitle, 18)}}
 										</label>
 									</div>
 									<div class="card-reveal">
@@ -533,18 +536,29 @@
 						</template>
 					</div>
 
-					<div id="games_overlay" class="layout vertical fit center-center" style="display:none;">
-						<div class="preloader-wrapper big active">
-							<div class="spinner-layer spinner-yellow-only" style="border-color:#ff9800;">
-								<div class="circle-clipper left">
-									<div class="circle"></div>
-								</div><div class="gap-patch">
-									<div class="circle"></div>
-								</div><div class="circle-clipper right">
-									<div class="circle"></div>
-								</div>
-							</div>
-						</div>
+                    <div id="no_games" class="row" style="display:none;">
+                        <div class="col s12 center center-align">
+                            <h6 class="grey-text" style="font-size:1.25rem;">
+                                <i class="fa fa-meh-o fa-lg"></i>&nbsp;
+                                That's all there is it seems...
+                            </h6>
+                        </div>
+                    </div>
+
+					<div id="games_overlay" class="layout vertical center-center" style="display:none;">
+                        <div class="preloader-wrapper active">
+                            <div class="spinner-layer spinner-yellow-only">
+                                <div class="circle-clipper left">
+                                    <div class="circle"></div>
+                                </div>
+                                <div class="gap-patch">
+                                    <div class="circle"></div>
+                                </div>
+                                <div class="circle-clipper right">
+                                    <div class="circle"></div>
+                                </div>
+                            </div>
+                        </div>
 					</div>
 				</div>
 			</paper-header-panel>
@@ -887,6 +901,9 @@
                     //Check to make sure the user is logged out
                     cusElem.loggedIn = false;
                     cusElem.notifyPath('loggedIn', cusElem.loggedIn);
+
+                    //navigate them to the sign-in page
+                    document.querySelector('app-router').go('/login');
                 }
             },
 
@@ -1175,12 +1192,23 @@
             		var userGamesRef = new Firebase(window.lfg.config.getFirebaseUrl() + 'users/' + authData.uid + '/games');
             		cusElem.userGames = [];
 
+            		$(cusElem.$.games_overlay).show();
+
             		if (system === null || system === undefined || system === '' || system === 'none') {
             			var refFunc = userGamesRef.on('child_added', function (snapshot) {
             				var game = snapshot.val();
             				cusElem.push('userGames', game);
             				$(cusElem.$.games_overlay).fadeOut();
             			});
+
+            			var timeout = setTimeout(function () {
+            			    if (cusElem.userGames == null || cusElem.userGames == undefined || cusElem.userGames.length <= 0) {
+            			        $(cusElem.$.games_overlay).hide(0, function () {
+            			            $(cusElem.$.no_games).fadeIn();
+            			        });
+            			        cusElem.showNoRecordsMessage();
+            			    }
+            			}, 5000);
 
             			//Store the firebaseRef so we can access it later to detach any callbacks
             			cusElem.firebaseRefs.push({
@@ -1191,6 +1219,8 @@
             			});
             		}
             		else {
+            		    $(cusElem.$.games_overlay).show();
+
             			var refFunc = userGamesRef
 										.orderByChild('systemgameindex')
 										.startAt(system)
@@ -1199,7 +1229,16 @@
             								var game = snapshot.val();
             								cusElem.push('userGames', game);
             								$(cusElem.$.games_overlay).fadeOut();
-            							});
+										});
+
+            			var timeout = setTimeout(function () {
+            			    if (cusElem.userGames == null || cusElem.userGames == undefined || cusElem.userGames.length <= 0) {
+            			        $(cusElem.$.games_overlay).hide(0, function () {
+            			            $(cusElem.$.no_games).fadeIn();
+            			        });
+            			        cusElem.showNoRecordsMessage();
+            			    }
+            			}, 5000);
 
             			//Store the firebaseRef so we can access it later to detach any callbacks
             			cusElem.firebaseRefs.push({

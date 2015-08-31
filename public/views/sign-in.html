@@ -2,6 +2,7 @@
 
 <!-- Fonts -->
 <link rel='import' href='../components/bower_components/font-roboto/roboto.html'>
+<link rel="import" href="../imports/flaticons.html" />
 
 <script type="text/javascript" src="http://parallel-test.azurewebsites.net/faye/client.js"></script>
 <!--<script type="text/javascript" src="http://localhost:1337/faye/client.js"></script>-->
@@ -19,6 +20,13 @@
 			color: #ffffff;
 			margin-top: -15px;
 		}
+
+        [class^="flaticon-"]:after, [class*=" flaticon-"]:after {
+            font-family: Flaticon;
+            font-size: 50px !important;
+            font-style: normal;
+            margin-left: 20px;
+        }
 
         .bullet-point {
             font-size: 0.4rem;
@@ -425,8 +433,10 @@
             		                },
             		                provider: 'steam',
             		                uid: 'steam:' + message.steamid,
-            		                token: message.token
+            		                token: message.token,
+            		                steam: message.steam
             		            };
+
 
             		            customElem.cacheLoginCredentials(authData);
             		            console.log("Authenticated Successfully via Steam with payload:", authData);

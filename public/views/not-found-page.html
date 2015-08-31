@@ -1,0 +1,105 @@
+﻿<link rel="import" href="../components/bower_components/polymer/polymer.html">
+
+<!-- Fonts -->
+<link rel='import' href='../components/bower_components/font-roboto/roboto.html'>
+
+
+<dom-module id="not-found-page">
+
+    <style>
+        .page-container {
+            width: 100% !important;
+            min-height: 100vh;
+        }
+
+        .page-header-text {
+            font-weight: 300;
+        }
+
+        .page-banner {
+            background-color: #464A65;
+            width: 100%;
+        }
+
+        .page-banner-white {
+            background-color: #ffffff;
+            width: 100%;
+        }
+
+        .page-banner-orange {
+            background-color: #FB8C00;
+            width: 100%;
+        }
+
+        .page-footer-custom {
+            margin-top: 60px;
+            padding-top: 60px;
+            padding-bottom: 60px;
+        }
+
+        .btn-transparent {
+            background-color: transparent !important;
+            border: solid 2px #ffffff;
+            box-shadow: none;
+            line-height: 50px;
+        }
+
+        [class^="flaticon-"]:before, [class*=" flaticon-"]:before, [class^="flaticon-"]:after, [class*=" flaticon-"]:after {
+            font-size: 60px !important;
+            color: #757575;
+            margin-right: 20px;
+        }
+
+        .feature-label {
+            margin-top: -25px !important;
+            vertical-align: super;
+            font-size: 1.25rem;
+        }
+    </style>
+
+    <template>
+        
+        <div class="container" style="padding-top:40px;">
+            <div class="layout vertical center-center" style="width:100%;">
+                <img src="../assets/app/img/Logo-white.png" />
+                <h6 class="orange-text text-darken-1" style="font-size:14px; margin-top:3px; font-weight:600;">parallel</h6>
+            </div>
+            
+            <br /><br />
+            <h4 class="grey-text text-darken-1">What da'...? You just 404'd up the site!</h4>
+            <h2 class="grey-text text-darken-3">Why u no click good link???!!!</h2>
+            <img src="../assets/app/img/why_no_guy.png" />
+            <br />
+            <h6 class="grey-text text-darken-1" style="font-size:1.25rem;">Ok ok just kidding, but we can't seem to find the page for that URL!</h6>
+            <h6 class="grey-text text-darken-1" style="font-size:1.25rem;">Let's try something else...how about you maybe check out our requests page by clicking the button below?</h6>
+            <br />
+            <a href="#/requests" class="btn btn-large waves-effect waves-light orange darken-3">
+                <i class="material-icons left">arrow_back</i>
+                Go to our requests page
+            </a>
+        </div>
+    </template>
+</dom-module>
+
+<script>
+    (function(window) {
+        var constructor = Polymer({
+
+            is: 'not-found-page',
+
+            /**
+             * ...
+             *
+             * @attribute properties
+             * @type object
+             * @default
+             */
+            properties: {
+                name: 'landing-page',
+            },
+
+            ready: function () {
+            }
+        });
+    })();
+</script>
