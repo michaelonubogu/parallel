@@ -35,9 +35,25 @@
 				games: 'games',
 				users: 'users'
 			},
-			firebaseCacheKey: 'firebase:session::lfgbase',
+            firebaseCacheKey: 'firebase:session::lfgbase',
+            firebaseAuthCallbacks:[],
 			tunneling: false,
-            tempSecureTunnel: 'http://fb40516a.ngrok.io',           
+            tempSecureTunnel: 'http://fb40516a.ngrok.io',   
+            
+            detachAllAuthCallbacks: function (){
+                var ref = new Firebase(this.getFirebaseUrl());
+                var config = this;
+                var arrClone = config.firebaseAuthCallbacks.slice(0);
+                
+                for (i = 0; i <= arrClone.length - 1; i++) {
+                    var funcCallback = arrClone[i];
+                    if (funcCallback !== null && funcCallback !== undefined) {
+                        ref.offAuth(funcCallback);
+                        config.firebaseAuthCallbacks.splice(config.firebaseAuthCallbacks.indexOf(funcCallback), 1);
+                    }
+                }
+            },
+                    
             getAppUrl: function (){
                 switch (this.env) {
                     case 'dev':

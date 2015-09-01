@@ -603,8 +603,13 @@
 
            
             registerEvents: function () {
+                //clear all auth callbacks
+                window.lfg.config.detachAllAuthCallbacks();
+
                 var ref = new Firebase(window.lfg.config.getFirebaseUrl());
-                ref.onAuth(this.authDataCallback.bind(this));
+                var authCallbackFunc = this.authDataCallback.bind(this);
+                window.lfg.config.firebaseAuthCallbacks.push(authCallbackFunc);
+                ref.onAuth(authCallbackFunc);
 
                 this.$.profile_upload.addEventListener('change', this.handleFileSelect.bind(this), false);
                 //document.getElementById("cover_upload").addEventListener('change', this.handleCoverFileSelect.bind(this), false);

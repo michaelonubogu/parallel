@@ -1045,8 +1045,13 @@
                     customElem.requestTitleCountMessage = customElem.requestTitleCounter.toString() + '/' + customElem.requestTitleLength.toString();
                 });
 
+                //clear all auth callbacks
+                window.lfg.config.detachAllAuthCallbacks();
+
                 var ref = new Firebase(window.lfg.config.getFirebaseUrl());
-                ref.onAuth(this.authDataCallback.bind(this));
+                var authCallbackFunc = this.authDataCallback.bind(this);
+                window.lfg.config.firebaseAuthCallbacks.push(authCallbackFunc);
+                ref.onAuth(authCallbackFunc);
             },
 
             registerDropListPlugin: function () {
