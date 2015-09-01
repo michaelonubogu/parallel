@@ -1703,7 +1703,7 @@
 
             registerEvents: function () {
             	$('#search_input').on('focusout', function () { $('#search_dropdown').fadeOut(100); })
-            	$('#search_input').on('input', _.debounce(this.doSearch.bind(this), 250));
+            	$('#search_input').on('input', _.debounce(this.doSearch.bind(this), 1000));
             	$('#search_input').on('keypress', this.doSearchWithEnter.bind(this));
             	$('#mainContainer').scroll(this.containerScroll.bind(this));
             	$(document).on('click', '.search-result-item', this.doResultSearchWithClick.bind(this));
