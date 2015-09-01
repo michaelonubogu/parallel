@@ -17,11 +17,11 @@
 		var config = {
             appDevUrl: 'http://localhost:1337',
             appTestUrl: 'http://parallel-test.azurewebsites.net/',
-            appProdUrl: '',
+            appProdUrl: 'http://www.parallel.team/',
             fayeDevUrl: 'http://localhost:1337/faye',
             fayeTestUrl: 'http://parallel-test.azurewebsites.net/faye',
-            fayeProdUrl: '',
-            env: 'test',
+            fayeProdUrl: 'http://www.parallel.team/faye',
+            env: 'prod',
 			apiEndPoints: {
 				games: 'api/giantbomb/games',
 				game: 'api/giantbomb/game',

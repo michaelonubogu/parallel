@@ -9,9 +9,9 @@ var env = {
 
 module.exports = {
 	"appsettings" : {
-        "env" : env.test,
+        "env" : env.prod,
         "testDomain" : 'http://parallel-test.azurewebsites.net',
-        "prodDomain" : ''
+        "prodDomain" : 'http://www.parallel.team'
 	},
 	"giant_bomb": {
 		"url" : "http://www.giantbomb.com/api/",
