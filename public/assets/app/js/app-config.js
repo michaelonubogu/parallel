@@ -1,5 +1,5 @@
 /**
- * Created by Namdascious on 6/3/2015.
+ * Created by Namdascious on 6/3/2015...
  */
 (function(){
   //  document.onreadystatechange = function(){
