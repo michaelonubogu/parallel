@@ -38,7 +38,7 @@
             firebaseCacheKey: 'firebase:session::lfgbase',
             firebaseAuthCallbacks:[],
 			tunneling: false,
-            tempSecureTunnel: 'http://fb40516a.ngrok.io',   
+            tempSecureTunnel: 'http://671c29a4.ngrok.io',   
             
             detachAllAuthCallbacks: function (){
                 var ref = new Firebase(this.getFirebaseUrl());
