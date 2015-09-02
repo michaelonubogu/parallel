@@ -58,6 +58,16 @@
             vertical-align: super;
             font-size:1.25rem;
         }
+
+        @media (max-width: 640px) {
+            .feature-label{
+                font-size:0.85rem;
+            }
+
+            .creator-section{
+                margin-bottom: 50px;
+            }
+        }
     </style>
 
     <template>
@@ -66,7 +76,7 @@
                 <div>
                     <br><br>
                     <a href="#/requests" style="cursor:pointer;">
-                        <img src="../assets/app/img/Logo-purple-80-80.png" />
+                        <img class="responsive-img" src="../assets/app/img/Logo-purple-80-80.png" />
                         <h6 class="white-text" style="font-size:14px; margin-top:-1px;">parallel</h6>
                     </a>
 
@@ -84,7 +94,7 @@
                     </div>
                     <br><br>
                     <div>
-                        <img src="../assets/app/img/App.png" style="margin-bottom:-6px;"/>
+                        <img class="responsive-img" src="../assets/app/img/App.png" style="margin-bottom:-7px;"/>
                     </div>
                 </div>
             </div>
@@ -95,21 +105,21 @@
                     <div class="row" style="margin-top:60px; margin-bottom:60px;">
                         <div class="col s12 m4">
                             <div class="icon-block">
-                                <img src="../assets/app/img/game-icon.png" />
+                                <img class="responsive-img" src="../assets/app/img/game-icon.png" />
                                 <h5 class="center">Any Game</h5>
                                 <p>Browse game requests for any major game releases</p>
                             </div>
                         </div>
                         <div class="col s12 m4">
                             <div class="icon-block">
-                                <img src="../assets/app/img/Joystick Icon.png" />
+                                <img class="responsive-img" src="../assets/app/img/Joystick Icon.png" />
                                 <h5 class="center">Any Console</h5>
                                 <p>View requests for games on any major & modern connected consoles</p>
                             </div>
                         </div>
                         <div class="col s12 m4">
                             <div class="icon-block">
-                                <img src="../assets/app/img/World.png" />
+                                <img class="responsive-img" src="../assets/app/img/World.png" />
                                 <h5 class="center">Anywhere</h5>
                                 <p>Find and play with gamers from anywhere in the world</p>
                             </div>
@@ -127,7 +137,7 @@
                             <h5 class="white-text" style="font-size:1rem;">Can't find the games you want? Create your own request!</h5>
                         </div>
                         <div class="col m6 s12 right right-align">
-                            <img src="../assets/app/img/find-aboutpage.png" style="margin-bottom:-26px;"/>
+                            <img class="responsive-img" src="../assets/app/img/find-aboutpage.png" style="margin-bottom:-26px;"/>
                         </div>
                     </div>
                 </div>
@@ -137,7 +147,7 @@
                 <div class="container">
                     <div class="row" style="padding-top:60px;">
                         <div class="col m6 s12 left left-align">
-                            <img src="../assets/app/img/connect-aboutpage.png" width="400" />
+                            <img class="responsive-img" src="../assets/app/img/connect-aboutpage.png" width="400" />
                         </div>
                         <div class="col m6 s12 right right-align">
                             <h2 class="thin grey-text text-darken-3">Connect</h2>
@@ -159,55 +169,48 @@
                                 <span style="margin-top:-2px; text-transform:none;">Go to site</span>
                             </a>
                         </div>
-                        <img src="../assets/app/img/Group.png" style="overflow-x:hidden; margin-bottom:-26px;" />
+                        <img class="responsive-img" src="../assets/app/img/Group.png" style="overflow-x:hidden; margin-bottom:-26px;" />
                     </div>
                 </div>
             </div>
 
-            <div class="section no-pad-bot page-banner-white">
-                <div class="container">
-                    <div class="row" style="padding-top:60px;">
-                        <div class="col s12 center center-align">
-                            <h2 class="thin grey-text">Need more reasons?</h2>
-                        </div>
+            <div class="container left left-align">
+                <div class="row" style="padding-top:60px;">
+                    <div class="col s12 center center-align">
+                        <h2 class="thin grey-text">Need more reasons?</h2>
                     </div>
-                    <br />
-
-                    <div class="row">
-                        <div class="col m6 s12">
-                            <i class="flaticon-alarm25 feature-icon"></i>
-                            <label class="grey-text text-darken-1 feature-label">Save time - Don't waste time</label>
-                        </div>
-                        <div class="col m6 s12">
-                            <i class="flaticon-game35 feature-icon"></i>
-                            <label class="grey-text text-darken-1 feature-label">Play what you want, when you want</label>
-                        </div>
-                    </div>
-
-                    <br />
-
-                    <div class="row">
-                        <div class="col m6 s12">
-                            <i class="flaticon-skull21 feature-icon"></i>
-                            <label class="grey-text text-darken-1 feature-label">Find good people to play with</label>
-                            <div class="grey-text text-darken-2" style="margin-left:96px; margin-top:-23px; font-weight:600;">(not random trolls & turd-minions!)</div>
-                        </div>
-                        <div class="col m6 s12">
-                            <i class="flaticon-sneaker feature-icon"></i>
-                            <label class="grey-text text-darken-1 feature-label">Bring back & revive forgotten games</label>
-                        </div>
-                    </div>
-
-                    <br />
-
-                    <div class="row">
-                        <div class="col m6 s12">
-                            <i class="flaticon-facebook38 feature-icon"></i>
-                            <label class="grey-text text-darken-1 feature-label">Gamers with similar interests</label>
-                        </div>
-                    </div>
-
                 </div>
+                <br />
+
+                <div class="row">
+                    <div class="col m6 s12">
+                        <i class="flaticon-alarm25 feature-icon"></i>
+                        <label class="grey-text text-darken-1 feature-label wrap">Save time - Don't waste time</label>
+                    </div>
+                    <div class="col m6 s12">
+                        <i class="flaticon-game35 feature-icon"></i>
+                        <label class="grey-text text-darken-1 feature-label wrap">Play what you want, when you want</label>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col m6 s12">
+                        <i class="flaticon-skull21 feature-icon"></i>
+                        <label class="grey-text text-darken-1 feature-label">Find good people to play with</label>
+                        <div class="grey-text text-darken-2" style="margin-left:96px; margin-top:-23px; font-weight:600;">(not random trolls & turd-minions!)</div>
+                    </div>
+                    <div class="col m6 s12">
+                        <i class="flaticon-sneaker feature-icon"></i>
+                        <label class="grey-text text-darken-1 feature-label">Bring back & revive forgotten games</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col m6 s12">
+                        <i class="flaticon-facebook38 feature-icon"></i>
+                        <label class="grey-text text-darken-1 feature-label">Gamers with similar interests</label>
+                    </div>
+                </div>
+
             </div>
 
             <div class="section no-pad-bot page-banner-white">
@@ -222,7 +225,7 @@
                     <br />
 
                     <div class="row">
-                        <div class="col m6 s12">
+                        <div class="col m6 s12 creator-section">
                            <div>
                                <img src="../assets/app/img/DSCF0074.jpg" alt="" class="circle responsive-img" style="border:solid 2px #ffffff; height:120px; width:120px;">
                            </div>
@@ -235,7 +238,7 @@
                                 <a href="https://twitter.com/Namdascious">@Namdascious</a>
                             </div>
                         </div>
-                        <div class="col m6 s12">
+                        <div class="col m6 s12 creator-section">
                             <div>
                                 <img src="../assets/app/img/jamie.jpg" alt="" class="circle responsive-img" style="border:solid 2px #ffffff; height:120px; width:120px;">
                             </div>
