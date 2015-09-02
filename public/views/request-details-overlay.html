@@ -261,6 +261,7 @@
 			display: inline-block;
 			vertical-align: middle;
 			border-radius: 50%;
+            margin-right:30px;
 		}
 
 		.request-info-area {
@@ -275,10 +276,65 @@
 			cursor: pointer;
 		}
 
+        .username-text{
+            font-size:1.25rem; margin-right:20px;
+        }
+
+        .comment-created-text{
+            font-size:0.85rem !important;
+        }
+
 		@media (max-width: 640px) {
 			.logo-link {
 				margin-left: 0px;
 			}
+
+            .reply-circle {
+			    font-size: 18px;
+			    line-height: 55px;
+			    color: #fff;
+			    background-color: #bdbdbd;
+			    text-align: center;
+			    width: 26px;
+			    height: 26px;
+			    overflow: hidden;
+			    left: 15px;
+			    display: inline-block;
+			    vertical-align: middle;
+			    border-radius: 50%;
+                margin-right:15px;
+		    }
+
+            .console-gamer-tag{
+                margin-top:5px;
+            }
+
+            .push-top{
+                margin-top:4px;
+            }
+
+            .title-text{
+                font-size:1.25rem !important;
+            }
+
+            .details-text{
+                font-size:0.85rem;
+                color: #9e9e9e !important;
+            }
+
+            .reply-text{
+                font-size:0.8rem !important;
+                margin-left:-20px !important;
+            }
+
+            .username-text{
+                font-size:0.8rem !important;
+                margin-left:-20px !important;
+            }
+
+            .comment-created-text{
+                font-size:0.6rem !important;
+            }
 		}
 	</style>
 
@@ -288,12 +344,14 @@
 			<div id="request_header" class="profile-background"></div>
 			<div class="profile-background-overlay"></div>
 			<div class="flex"></div>
-			<a id="to_facebook" class="center center-align filter-tags tag-facebook" on-click="postToFacebook">
-				<i class="fa fa-facebook"></i>
-			</a>
-			<a id="to_twitter" class="center center-align filter-tags tag-twitter" on-click="postToTwitter">
-				<i class="fa fa-twitter"></i>
-			</a>
+			<div class="layout vertical wrap" style="margin-top:20px !important;">
+                <a id="to_facebook" class="center center-align filter-tags tag-facebook" on-click="postToFacebook">
+                    <i class="fa fa-facebook"></i>
+                </a>
+                <a id="to_twitter" class="center center-align filter-tags tag-twitter" on-click="postToTwitter" style="margin-top:7px;">
+                    <i class="fa fa-twitter"></i>
+                </a>
+            </div>
 			<div style="display:table-cell; text-align:center;" class="middle title">
 				<template is="dom-if" if="{{request.images.list_url}}">
 					<img class="request-list-image" src="[[request.images.list_url]]" width="160" />
@@ -310,26 +368,29 @@
 		</paper-toolbar>
 
 		<div class="white details-area request-details-party request-content" style="display:none;">
-			<div class="row" style="margin-top:30px !important;">
-				<div class="col s3 left left-align">
-					<!--<div class="switch">
-						<label class="white-text" style="font-size:1rem;">
-							<span class="negative">No</span>
-							<input type="checkbox">
-							<span class="lever"></span>
-							<span class="positive">Yes</span>
-						</label>
-					</div>-->
-				</div>
-				<div class="col s6 offset-s3 center center-align">
-					<span class$="[[getSystemClass(request.system)]]">[[getSystemType(request.system)]]</span>
-					<span class="center center-align tag-neutral">[[getGamerCount(request.gamercount)]]</span>
+			<div style="margin-top:30px !important;">
+				<!--<div class="col s3 left left-align">
+                    <div class="switch">
+                        <label class="white-text" style="font-size:1rem;">
+                            <span class="negative">No</span>
+                            <input type="checkbox">
+                            <span class="lever"></span>
+                            <span class="positive">Yes</span>
+                        </label>
+                    </div>
+				</div>-->
+				<div class="layout horizontal center center-center">
+                    <div><h6 class="grey-text" style="font-size:0.85rem; visibility:hidden;">[[getTimeLapse(request.datetime)]]</h6></div>
+                    <span class="flex"></span>
+					<span class="layout horizontal wrap center-center console-gamer-tag">
+                        <span class$="[[getSystemClass(request.system)]]">[[getSystemType(request.system)]]</span>
+                        <span class="center center-align tag-neutral push-top">[[getGamerCount(request.gamercount)]]</span>
+                    </span>
                     <template is="dom-if" if="{{request.mic}}">
                         <span style="margin-left:7px;" class="grey-text"><i style="font-size:1.2rem;" class="material-icons">headset_mic</i></span>
                     </template>
-				</div>
-				<div class="col s3 right right-align">
-					<h6 class="grey-text" style="font-size:0.85rem;">[[getTimeLapse(request.datetime)]]</h6>
+                    <span class="flex"></span>
+                    <div><h6 class="grey-text" style="font-size:0.85rem;">[[getTimeLapse(request.datetime)]]</h6></div>
 				</div>
 			</div>
 			<br />
@@ -346,10 +407,10 @@
 
 				<div class="row">
 					<div class="col s12 center center-align">
-						<h4 class="grey-text text-darken-2 light force-wrap">[[request.title]]</h4>
+						<h5 class="grey-text text-darken-2 light force-wrap title-text">[[request.title]]</h5>
 					</div>
 					<div class="col s12 center center-align">
-						<h6 class="grey-text text-darken-2 force-wrap">[[request.description]]</h6>
+						<h6 class="grey-text text-darken-2 force-wrap details-text">[[request.description]]</h6>
 					</div>
 				</div>
 
@@ -358,12 +419,12 @@
 				<div class="row add-comment-row">
 					<div class="col s12  add-comment-message" style="display:none;">
 						<i class="reply-circle" style="margin-right:30px; cursor:pointer;"></i>
-						<label class="grey-text text-lighten-1" style="font-size:1.25rem; cursor:pointer;">Reply to request</label>
+						<label class="grey-text text-lighten-1 reply-text" style="font-size:1.25rem; cursor:pointer;">Reply to request</label>
 					</div>
 
                     <div class="col s12  sign-in-comment-message">
                         <i class="reply-circle" style="margin-right:30px; cursor:pointer;"></i>
-                        <label class="grey-text text-lighten-1" style="font-size:1.25rem; cursor:pointer;">Sign in to reply to this Request</label>
+                        <label class="grey-text text-lighten-1 reply-text" style="font-size:1.25rem; cursor:pointer;">Sign in to reply to this Request</label>
                     </div>
 
 					<div class="lfg-input input-field col s12 add-comment-control add-comment-text" style="display:none;">
@@ -663,12 +724,13 @@
 
 					customElem.request.comments.push(requestcomment);
 
+                    //Comment styles located in lfg.css
 					commentHtml += '<div class="col s12" style="margin-bottom:30px;">';
-					commentHtml += '<img id="' + requestcomment.userimgid + '" src="../assets/app/img/profile-photo-placeholder.jpg" class="reply-circle" style="margin-right:30px;" />';
-					commentHtml += '<span><label id="' + requestcomment.userlabelid + '" class="grey-text text-darken-3" style="font-size:1.25rem; margin-right:20px;"></label>';
-					commentHtml += '<label class="grey-text" style="font-size:0.85rem;">' + requestcomment.created + '</label>';
+					commentHtml += '<img id="' + requestcomment.userimgid + '" src="../assets/app/img/profile-photo-placeholder.jpg" class="reply-circle" />';
+					commentHtml += '<span><label id="' + requestcomment.userlabelid + '" class="grey-text text-darken-3 username-text"></label>';
+					commentHtml += '<label class="grey-text comment-created-text">' + requestcomment.created + '</label>';
 					commentHtml += '</span>';
-					commentHtml += '<p class="force-wrap" style="padding:0 0 0 85px; font-size:0.85rem; margin-top:-6px;">' + requestcomment.comment + '</p>';
+					commentHtml += '<p class="force-wrap comment-details-text">' + requestcomment.comment + '</p>';
 					commentHtml += '</div>';
 
 					$(customElem.$.request_comments_list).prepend(commentHtml);

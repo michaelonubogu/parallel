@@ -150,20 +150,20 @@ ul.ui-autocomplete .ui-menu-item:hover {
 }
 
 .reply-circle {
-
-			font-size: 18px;
-			line-height: 55px;
-			color: #fff;
-			background-color: #bdbdbd;
-			text-align: center;
-			width: 55px;
-			height: 55px;
-			overflow: hidden;
-			left: 15px;
-			display: inline-block;
-			vertical-align: middle;
-			border-radius:50%;
-		}
+	font-size: 18px;
+	line-height: 55px;
+	color: #fff;
+	background-color: #bdbdbd;
+	text-align: center;
+	width: 55px;
+	height: 55px;
+	overflow: hidden;
+	left: 15px;
+	display: inline-block;
+	vertical-align: middle;
+	border-radius: 50%;
+    margin-right:30px;
+}
 
 #mainContainer{
     height:1000px !important;
@@ -182,4 +182,39 @@ ul.ui-autocomplete .ui-menu-item:hover {
 }
 .icon-block .material-icons {
 	font-size: inherit;
+}
+
+.username-text{
+    font-size:1.25rem; margin-right:20px;
+}
+
+.comment-created-text{
+    font-size:0.85rem !important;
+}
+
+.comment-details-text{
+    padding:0 0 0 85px; font-size:0.85rem; margin-top:-6px;
+}
+
+@media (max-width: 640px) {
+    .username-text{
+        font-size:0.8rem !important;
+        margin-left:-20px !important;
+    }
+
+    .comment-created-text{
+        font-size:0.6rem !important;
+    }
+
+    .comment-details-text{
+        padding:0 0 0 37px; font-size:0.75rem; margin-top:0px;
+    }
+
+    .reply-circle {
+		font-size: 18px;
+		line-height: 26px;
+		width: 26px;
+		height: 26px;
+        margin-right:30px;
+	}
 }
