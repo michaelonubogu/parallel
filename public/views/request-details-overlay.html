@@ -344,7 +344,7 @@
 			<div id="request_header" class="profile-background"></div>
 			<div class="profile-background-overlay"></div>
 			<div class="flex"></div>
-			<div class="layout vertical wrap" style="margin-top:20px !important;">
+			<div class="layout vertical wrap right right-align" style="margin-top:20px !important;">
                 <a id="to_facebook" class="center center-align filter-tags tag-facebook" on-click="postToFacebook">
                     <i class="fa fa-facebook"></i>
                 </a>
@@ -352,16 +352,9 @@
                     <i class="fa fa-twitter"></i>
                 </a>
             </div>
-			<div style="display:table-cell; text-align:center;" class="middle title">
-				<template is="dom-if" if="{{request.images.list_url}}">
-					<img class="request-list-image" src="[[request.images.list_url]]" width="160" />
-				</template>
-				<template is="dom-if" if="{{isImageBlank(request.images.list_url)}}">
-					<div class="layout vertical center-center white-text" style="background-color:#FB8C00; width:160px; height:90px; border-radius: 5px; padding:0 7px;">
-						<label class="white-text">{{request.gametitle}}</label>
-					</div>
-				</template>
-			</div>
+			<div class="middle title layout horizontal center-center">
+                <img class="request-list-image self-center" src="[[request.images.list_url]]" width="160" />
+            </div>
 			<div class="bottom title bottom-bar">
 				<h5 class="white-text text-shadow">{{request.gametitle}}</h5>
 			</div>

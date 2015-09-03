@@ -73,7 +73,7 @@
 	</style>
 
 	<template>
-		<div id="nav_links" style="padding-top:20px; height:45vh; display:none;">
+		<div id="nav_links" style="padding-top:20px; display:none;">
             <a data-path="requests" href="#/" class="white-text nav-links">
                 <iron-icon icon="view-day"></iron-icon>
                 <span class="thin">Requests</span>
@@ -96,7 +96,7 @@
                 <span class="arrow-left" style="display:none;"></span>
             </a>
             <br />
-            <a data-path="settings" href="#/landing" class="white-text nav-links">
+            <a data-path="about" href="#/landing" class="white-text nav-links">
                 <iron-icon icon="info-outline"></iron-icon>
                 <span class="thin">About</span>
                 <span class="arrow-left" style="display:none;"></span>
@@ -113,9 +113,10 @@
 			</template>
 		</div>
 
+        <br /><br />
 
         <!-- Giantbomb & Steam-->
-        <div class="layout vertical" style="width:100%; position:absolute; bottom:0; margin-bottom:20px;">
+        <div class="layout vertical" style="width:100%; bottom:0; margin-bottom:20px;">
             <div class="layout horizontal center-center" style="margin-bottom:6px;"><h6 class="white-text thin" style="margin-left:-6px; font-size:0.8rem;">Powered By</h6></div>
 
             <div class="layout horizontal" style="width:100%; padding:0 37px;">
@@ -197,6 +198,10 @@
                     case '/games':
                         var arrow = $("a[data-path='games']").find('.arrow-left');
                         arrow.show();
+                        break;
+
+                    case '/about':
+                        $("a[data-path='about']").find('.arrow-left').show();
                         break;
 
                     case '/settings':

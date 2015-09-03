@@ -20,8 +20,8 @@
 
         .system-tag {
             font-size: 0.7rem;
-            padding: 3px 10px;
-            border-radius: 4px;
+            padding: 4px 10px;
+            border-radius: 3px;
         }
 
         .flaticon-update {
@@ -434,7 +434,7 @@
         </ul>
         <!-- ------------------------ Search Box --------------------------------- -->
         <paper-drawer-panel>
-            <paper-header-panel mode="seamed" drawer>
+            <paper-header-panel mode="seamed" drawer class="orange darken-3">
                 <paper-toolbar class="medium-tall lfg-drawer-toolbar">
                     <div class="middle">
                         <side-nav-profile class="center-center"></side-nav-profile>
@@ -525,7 +525,11 @@
                                             <div><span class="grey-text" style="font-size:0.9rem;">[[item.description]]</span></div>
                                             <div>
                                                 <span class="white-text center center-align system-tag" style$="[[item.systemColor]]">[[getSystemType(item.system)]]</span>
-                                                <span class="grey-text text-lighten-1 center center-align" style="background-color:#ffffff; font-size:0.7rem; padding:3px 10px; border:solid 1px #BDBDBD; border-radius:5px;">[[getGamerCount(item.gamercount)]]</span>
+                                                <span class="grey-text center center-align" style="background-color:#ffffff; font-size:0.7rem; padding:3px 10px; border:solid 1px #BDBDBD; border-radius:3px;">
+                                                    <span class="grey-text text-darken-1">[[getGamerCount(item.gamercount)]]</span>
+                                                    &nbsp;
+                                                    <i class="fa fa-user grey-text text-lighten-1"></i>
+                                                </span>
                                                 <template is="dom-if" if="{{item.mic}}">
                                                     <span style="margin-left:7px; vertical-align:text-top;" class="grey-text"><i style="font-size:1.0rem;" class="material-icons">headset_mic</i></span>
                                                 </template>
@@ -1335,7 +1339,7 @@
 								        request.key = childSnapshot.key();
 								        request.systemColor = customElem.getSystemColor(request.system);
 								        request.description = customElem.truncateText(request.description, 65);
-								        request.title = customElem.truncateText(request.title, 35);
+								        request.title = customElem.truncateText(request.title, 65);
 								        customElem.getUserProfile(request);
 								        customElem.getCommentCount(request.key);
 								        if (request.gameindex !== lastreq.gameindex) {
@@ -1381,7 +1385,7 @@
 
 								        request.key = childSnapshot.key();
 								        request.systemColor = customElem.getSystemColor(request.system);
-								        request.title = customElem.truncateText(request.title, 35);
+								        request.title = customElem.truncateText(request.title, 65);
 								        request.description = customElem.truncateText(request.description, 65);
 								        customElem.getUserProfile(request);
 								        customElem.getCommentCount(request.key);
@@ -1428,7 +1432,7 @@
 
 								        request.key = childSnapshot.key();
 								        request.systemColor = customElem.getSystemColor(request.system);
-								        request.title = customElem.truncateText(request.title, 35);
+								        request.title = customElem.truncateText(request.title, 65);
 								        request.description = customElem.truncateText(request.description, 65);
 								        customElem.getUserProfile(request);
 								        customElem.getCommentCount(request.key);
@@ -1475,7 +1479,7 @@
 
 								        request.priority = childSnapshot.getPriority();
 								        request.systemColor = customElem.getSystemColor(request.system);
-								        request.title = customElem.truncateText(request.title, 35);
+								        request.title = customElem.truncateText(request.title, 65);
 								        request.description = customElem.truncateText(request.description, 65);
 								        customElem.getUserProfile(request);
 								        customElem.getCommentCount(request.key);
@@ -1529,7 +1533,7 @@
 								    var request = snapshot.val() || {};
 								    request.key = snapshot.key();
 								    request.systemColor = customElem.getSystemColor(request.system);
-								    request.title = customElem.truncateText(request.title, 35);
+								    request.title = customElem.truncateText(request.title, 65);
 								    request.description = customElem.truncateText(request.description, 65);
 								    customElem.getUserProfile(request);
 								    customElem.getCommentCount(request.key);
@@ -1594,7 +1598,7 @@
 								    var request = snapshot.val() || {};
 								    request.key = snapshot.key();
 								    request.systemColor = customElem.getSystemColor(request.system);
-								    request.title = customElem.truncateText(request.title, 35);
+								    request.title = customElem.truncateText(request.title, 65);
 								    request.description = customElem.truncateText(request.description, 65);
 								    customElem.getUserProfile(request);
 								    customElem.getCommentCount(request.key);
@@ -1662,7 +1666,7 @@
 								    var request = snapshot.val() || {};
 								    request.key = snapshot.key();
 								    request.systemColor = customElem.getSystemColor(request.system);
-								    request.title = customElem.truncateText(request.title, 35);
+								    request.title = customElem.truncateText(request.title, 65);
 								    request.description = customElem.truncateText(request.description, 65);
 								    customElem.getUserProfile(request);
 								    customElem.getCommentCount(request.key);
@@ -1724,7 +1728,7 @@
 								    request.key = snapshot.key();
 								    request.priority = snapshot.getPriority();
 								    request.systemColor = customElem.getSystemColor(request.system);
-								    request.title = customElem.truncateText(request.title, 35);
+								    request.title = customElem.truncateText(request.title, 65);
 								    request.description = customElem.truncateText(request.description, 65);
 								    customElem.getUserProfile(request);
 								    customElem.getCommentCount(request.key);
@@ -1827,10 +1831,10 @@
 
             getGamerCount: function (count) {
                 if (count <= 1) {
-                    return '1 Gamer';
+                    return '1';
                 }
                 else {
-                    return count + ' Gamers';
+                    return count;
                 }
             },
 
@@ -2048,7 +2052,7 @@
                 var width = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
 
                 if (width <= 640) {
-                    return text.length <= 45 ? text : text.substring(0, 45) + '...';
+                    return text.length <= 30 ? text : text.substring(0, 30) + '...';
                 }
                 else {
                     return text.length <= limit ? text : text.substring(0, limit) + '...';
