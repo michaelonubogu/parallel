@@ -3,6 +3,7 @@
 <link rel='import' href='../components/bower_components/font-roboto/roboto.html'>
 
 <!-- Custom Imports -->
+<link rel="import" href="../imports/side-nav-profile.html" />
 <link rel="import" href="../imports/side-nav-contents.html" />
 <link rel="import" href="../imports/sign-in-button.html" />
 
@@ -458,10 +459,13 @@
 								</div>
 								<div id="time_options" class="layout horizontal col s12">
 									<span id="time_right_now" class="center center-align time-tag active">Right Now</span>
-									<span class="grey-text text-lighten-1" style="margin:3px 10px 0 10px;">or</span>
-									<span id="time_future_date" class="center center-align time-tag">Future Date</span>
+
+                                    <!-- Scheduled Request - Commented for now: We'll come back to this later -->
+									<!--<span class="grey-text text-lighten-1" style="margin:3px 10px 0 10px;">or</span>
+									<span id="time_future_date" class="center center-align time-tag">Future Date</span>-->
 								</div>
-								<div id="time_fields" style="display:none;">
+                                <!-- Scheduled Request - Commented for now: We'll come back to this later -->
+								<!--<div id="time_fields" style="display:none;">
 									<div class="lfg-input input-field col s4" style="margin-right:10px;">
 										<input id="request_date" type="date" class="datepicker" placeholder="Date" />
 									</div>
@@ -471,7 +475,7 @@
 									<div class="col s2" style="margin-top:3px;">
 										<a on-click="hideDateSelection" style="cursor:pointer;"><i class="material-icons orange-text text-darken-3" style=" font-size:2.5rem !important;">undo</i></a>
 									</div>
-								</div>
+								</div>-->
 							</div>
 
 							<br />

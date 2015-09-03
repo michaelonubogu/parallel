@@ -762,6 +762,8 @@
 					$(customElem.$.details_loading_overlay).hide(0, function () {
 						$('.request-content').fadeIn();
 					});
+
+					customElem.setRequestUrl(request.id);
 				});
 			},
 
@@ -938,6 +940,11 @@
 				}
 			},
 
+			setRequestUrl: function(requestid){
+			    window.history.pushState('object or string', 'Request Details', window.lfg.utils.getSharableRequestUrl(requestid));
+			},
+
+
 			showCommentField: function () {
 			    var cusElem = this;
 			    $(cusElem.$.comment_text).val('');
@@ -948,6 +955,7 @@
 			},
 
 			initializeData: function () {
+			   
 			    this.loggedIn = null;
 			    this.isLoggedIn();
 

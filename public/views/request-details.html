@@ -6,245 +6,158 @@
 
 
 <!--Custom Imports-->
+<!-- Custom Imports -->
 <link rel="import" href="../imports/side-nav-contents.html" />
+<link rel="import" href="../imports/side-nav-profile.html" />
+<link rel="import" href="../imports/sign-in-button.html" />
 
 <dom-module id="request-details">
 
-	<style>
-		:host {
+    <style>
+        :host {
+        }
 
-		}
+        .logo-link {
+            text-decoration: none;
+            font-size: 2rem;
+            color: #ffffff;
+            margin-left: -15px !important;
+        }
 
-		.logo-link {
-			text-decoration: none;
-			font-size: 2rem;
-			color: #ffffff;
-			margin-left: -15px !important;
-		}
 
-		
-		.tag-facebook {
-			background-color:#3B5998; 
-			color: #ffffff;
-			font-size:1rem; 
-			padding:3px 13px; 
-			border:solid 2px #3B5998; 
-			border-radius:5px;
-			cursor:pointer;
-			margin:0 5px;
-			max-height:30px !important;
-			z-index:1000;
-			width:40px;
-		}
+        .tag-facebook {
+            background-color: #3B5998;
+            color: #ffffff;
+            font-size: 1rem;
+            padding: 3px 13px;
+            border: solid 2px #3B5998;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 0 5px;
+            max-height: 30px !important;
+            z-index: 1000;
+            width: 40px;
+        }
 
-		.tag-twitter {
-			background-color:#55ACEE; 
-			color: #ffffff;
-			font-size:1rem; 
-			padding:3px 13px; 
-			border:solid 2px #55ACEE; 
-			border-radius:5px;
-			cursor:pointer;
-			margin:0 5px;
-			max-height:30px !important;
-			z-index:1000;
-			width:40px;
-		}
+        .tag-twitter {
+            background-color: #55ACEE;
+            color: #ffffff;
+            font-size: 1rem;
+            padding: 3px 13px;
+            border: solid 2px #55ACEE;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 0 5px;
+            max-height: 30px !important;
+            z-index: 1000;
+            width: 40px;
+        }
 
-		.tag-neutral {
-			background-color:#ffffff; 
-			color: #bdbdbd;
-			font-size:1rem; 
-			padding:3px 13px; 
-			border:solid 2px #BDBDBD; 
-			border-radius:5px;
-			margin:0 5px;
-			max-height:30px !important;
-		}
+        .tag-neutral {
+            background-color: #ffffff;
+            color: #bdbdbd;
+            font-size: 1rem;
+            padding: 3px 13px;
+            border: solid 2px #BDBDBD;
+            border-radius: 5px;
+            margin: 0 5px;
+            max-height: 30px !important;
+        }
 
-		.psn-filter-tag {
-			background-color:#01579B; 
-			color:#ffffff !important;
-			font-size:1rem; 
-			padding:3px 13px; 
-			border:solid 2px #01579B; 
-			border-radius:5px;
-			margin:0 5px;
-			max-height:30px !important;
-		}
+        .psn-filter-tag {
+            background-color: #01579B;
+            color: #ffffff !important;
+            font-size: 1rem;
+            padding: 3px 13px;
+            border: solid 2px #01579B;
+            border-radius: 5px;
+            margin: 0 5px;
+            max-height: 30px !important;
+        }
 
-		.xbox-filter-tag {
-			background-color:#5DCB17; 
-			color:#ffffff !important;
-			font-size:1rem; 
-			padding:3px 13px; 
-			border:solid 2px #5DCB17; 
-			border-radius:5px;
-			margin:0 5px;
-			max-height:30px !important;
-		}
+        .xbox-filter-tag {
+            background-color: #5DCB17;
+            color: #ffffff !important;
+            font-size: 1rem;
+            padding: 3px 13px;
+            border: solid 2px #5DCB17;
+            border-radius: 5px;
+            margin: 0 5px;
+            max-height: 30px !important;
+        }
 
-		.wii-filter-tag {
-			background-color:#03A9F4; 
-			color:#ffffff !important;
-			font-size:1rem; 
-			padding:3px 13px; 
-			border:solid 2px #03A9F4; 
-			border-radius:5px;
-			margin:0 5px;
-			max-height:30px !important;
-		}
+        .wii-filter-tag {
+            background-color: #03A9F4;
+            color: #ffffff !important;
+            font-size: 1rem;
+            padding: 3px 13px;
+            border: solid 2px #03A9F4;
+            border-radius: 5px;
+            margin: 0 5px;
+            max-height: 30px !important;
+        }
 
-		.pc-filter-tag {
-			background-color:#F44336; 
-			color:#ffffff !important;
-			font-size:1rem; 
-			padding:3px 13px; 
-			border:solid 2px #F44336; 
-			border-radius:5px;
-			margin:0 5px;
-			max-height:30px !important;
-		}
+        .pc-filter-tag {
+            background-color: #F44336;
+            color: #ffffff !important;
+            font-size: 1rem;
+            padding: 3px 13px;
+            border: solid 2px #F44336;
+            border-radius: 5px;
+            margin: 0 5px;
+            max-height: 30px !important;
+        }
 
-		.profile-background {
-			/*background-color: transparent;
-			background:url('../assets/app/img/1662530.jpg');*/
-			top:0;
-			left:0;
-			position: absolute !important;
-			height: 200px ;
-			background-size:cover;
-			border-bottom:solid 1px #ffee58;
-			width:100%;
+        .profile-background {
+            /*background-color: transparent;
+            background:url('../assets/app/img/1662530.jpg');*/
+            top: 0;
+            left: 0;
+            position: absolute !important;
+            height: 200px;
+            background-size: cover;
+            border-bottom: solid 1px #ffee58;
+            width: 100%;
+            filter: blur(4px);
+            -webkit-filter: blur(4px);
+            -moz-filter: blur(4px);
+            -o-filter: blur(4px);
+            -ms-filter: blur(4px);
+        }
 
-			filter: blur(8px);
-			-webkit-filter: blur(8px);
-			-moz-filter: blur(8px);
-			-o-filter: blur(8px);
-			-ms-filter: blur(8px);
-		}
+        .profile-background-dopple {
+            /*background-color: transparent;
+            background:url('../assets/app/img/1662530.jpg');*/
+            top: 0;
+            left: 0;
+            position: absolute !important;
+            height: 200px;
+            background-size: cover;
+            border-bottom: solid 1px #ffee58;
+            width: 100%;
+        }
 
-		.profile-background-dopple {
-			/*background-color: transparent;
-			background:url('../assets/app/img/1662530.jpg');*/
-			top:0;
-			left:0;
-			position: absolute !important;
-			height: 200px ;
-			background-size:cover;
-			border-bottom:solid 1px #ffee58;
-			width:100%;
-		}
-
-		.profile-background-overlay {
-			background:rgba(0,0,0,.75);
-            opacity:0.25;
+        .profile-background-overlay {
+            background: rgba(0,0,0,.75);
+            opacity: 0.25;
             -webkit-transition: opacity .25s ease;
-			-moz-transition: opacity .25s ease;
-
-			top:0;
-			left:0;
-			position: absolute !important;
-			height: 200px;
-			width:100%;
-		}
-
-		.switch label.request-details input[type=checkbox].request-details:checked + .lever.request-details{
-            background-color: #7ED321;
+            -moz-transition: opacity .25s ease;
+            top: 0;
+            left: 0;
+            position: absolute !important;
+            height: 200px;
+            width: 100%;
         }
 
-        .switch.request-details label.request-details input[type=checkbox].request-details:checked + .lever.request-details:after{
-            background-color:#ccff90;
+        .lfg-drawer-toolbar {
+            --paper-toolbar:{
+                background-color: #EF6C00;
+                /*background: url('../assets/app/img/profile_background5.jpg');
+                    background-size: 256px 192px;*/
+            };
         }
 
-        .switch.request-details label.request-details input[type=checkbox].request-details:checked + .positive.request-details{
-            background-color:#ffff00 !important;
-        }
-
-        .switch.request-details label.request-details input[type=checkbox].request-details:checked + .negative.request-details:after{
-            background-color:#ffff00 !important;
-        }
-
-		.request-list-image {
-			border-radius: 5px;
-			border:2px solid #ffffff;
-		}
-
-		.text-shadow {
-			text-shadow: 0px 1px 1px #000;
-			/*mix-blend-mode: difference;*/
-		}
-
-		.title {
-			margin-left: 0 !important;
-		}
-
-		.details-area {
-			padding:0px 20px 20px 20px;
-			
-		}
-
-		.row {
-			margin-bottom: 0 !important;
-			margin-top: 0 !important;
-			line-height: 1;
-		}
-
-		.comment-button-row {
-		    margin-top: 20px !important;
-		}
-
-		.lfg-input.input-field textarea {
-			color: #e65100;
-			border-bottom: 1px solid #bdbdbd;
-		}
-
-		.lfg-input.input-field textarea:focus {
-			border-bottom: 1px solid #f57c00;
-            box-shadow: 0 1px 0 0 #f57c00;
-		}
-
-		.lfg-input.input-field textarea.invalid {
-			border-bottom: 1px solid #f44336;
-            box-shadow: 0 1px 0 0 #f44336;
-		}
-
-		.request-list-item {
-			cursor: pointer;
-		}
-
-		.lfg-main-toolbar {
-			--paper-toolbar-background:{
-				background-color: #ffffff !important;
-			};
-		}
-
-		.lfg-drawer-toolbar {
-			--paper-toolbar-background: #ef6c00;
-		}
-
-		#paper-header-panel {
-			border-bottom: solid 1px #ffffff;
-		}
-
-		.lfg-main-header-panel {
-			--paper-header-panel-cover-container:{
-				border: solid 1px #ffffff;
-			};
-		}
-
-		.lfg-paper-fab {
-			--paper-fab:{
-				position: fixed;
-				right: 0;
-				bottom: 0;
-				margin-right: 3%;
-				margin-bottom: 3%;
-			}; 
-			--paper-fab-background: #e65100;
-		}
-
-		.lfg-menu-icon {
+        .lfg-menu-icon {
 			--paper-icon-button:{
 				/*text-shadow: 0px 5px 5px #00ff21;
 				border: 5px solid #00ff21;
@@ -253,323 +166,315 @@
 			}
 		}
 
-		.collection-item {
-			height: auto !important;
-			padding-top: 20px !important;
-			padding-bottom: 40px !important;
-		}
+        .switch label.request-details input[type=checkbox].request-details-overlay:checked + .lever.request-details-overlay {
+            background-color: #7ED321;
+        }
 
-		.bottom-bar {
-			margin-left: 0px !important;
-		}
+        .switch.request-details-overlay label.request-details-overlay input[type=checkbox].request-details-overlay:checked + .lever.request-details-overlay:after {
+            background-color: #ccff90;
+        }
 
-		.content-area {
-			padding: 0 3% 3% 3%;
-		}
+        .switch.request-details-overlay label.request-details-overlay input[type=checkbox].request-details-overlay:checked + .positive.request-details-overlay {
+            background-color: #ffff00 !important;
+        }
 
-		.requests-card-panel {
-			width: 100%;
-			box-shadow: 0 2px 5px 0 #e65100;
-			border-radius: 0px;
-			height: 290px !important;
-		}
+        .switch.request-details-overlay label.request-details-overlay input[type=checkbox].request-details-overlay:checked + .negative.request-details-overlay:after {
+            background-color: #ffff00 !important;
+        }
 
-		.comments-card-panel {
-			width: 100%;
-			box-shadow: 0 2px 5px 0 #e65100;
-			border-radius: 0px;
-			padding:0;
-		}
+        .request-list-image {
+            border-radius: 5px;
+            border: 2px solid #ffffff;
+        }
 
-		.request-profile-image {
-			width: 50px;
-			height: 50px;
-			overflow: hidden;
-			display: inline-block;
-			vertical-align: middle;
-		}
+        .text-shadow {
+            text-shadow: 0px 1px 1px #000;
+            /*mix-blend-mode: difference;*/
+        }
 
-		.reply-circle {
+        .title {
+            margin-left: 0 !important;
+        }
 
-			font-size: 18px;
-			line-height: 55px;
-			color: #fff;
-			background-color: #bdbdbd;
-			text-align: center;
-			width: 55px;
-			height: 55px;
-			overflow: hidden;
-			left: 15px;
-			display: inline-block;
-			vertical-align: middle;
-			border-radius:50%;
-		}
+        .details-area {
+            padding: 0px 20px 20px 20px;
+        }
 
-		.request-info-area {
-			padding:0 10%;
-		}
+        .row {
+            margin-bottom: 0 !important;
+            margin-top: 0 !important;
+            line-height: 1;
+        }
 
-		.comment-row {
-			margin-top:40px !important;
-		}
+        .comment-button-row {
+            margin-top: 20px !important;
+        }
 
-		.add-comment-row {
-			cursor:pointer;
-		}
+        .lfg-input.input-field textarea {
+            color: #e65100;
+            border-bottom: 1px solid #bdbdbd;
+        }
 
-		@media (max-width: 640px) {
-			.logo-link {
-				margin-left: 0px;
-			}
+        .lfg-input.input-field textarea:focus {
+            border-bottom: 1px solid #f57c00;
+            box-shadow: 0 1px 0 0 #f57c00;
+        }
 
-			.lfg-paper-fab {
-				--paper-fab:{
-					position: fixed;
-					right: 0;
-					bottom: 0;
-					margin-right: 3.5%;
-					margin-bottom: 3.5%;
-				}; 
-				 
-				--paper-fab-background: #e65100;
-			}
-		}
-	</style>
+        .lfg-input.input-field textarea.invalid {
+            border-bottom: 1px solid #f44336;
+            box-shadow: 0 1px 0 0 #f44336;
+        }
+
+        .request-list-item {
+            cursor: pointer;
+        }
+
+        #paper-header-panel {
+            border-bottom: solid 1px #ffffff;
+        }
+
+        .collection-item {
+            height: auto !important;
+            padding-top: 20px !important;
+            padding-bottom: 40px !important;
+        }
+
+        .bottom-bar {
+            margin-left: 0px !important;
+        }
+
+        .content-area {
+            padding: 0 3% 3% 3%;
+        }
+
+        .requests-card-panel {
+            width: 100%;
+            box-shadow: 0 2px 5px 0 #e65100;
+            border-radius: 0px;
+            height: 290px !important;
+        }
+
+        .comments-card-panel {
+            width: 100%;
+            box-shadow: 0 2px 5px 0 #e65100;
+            border-radius: 0px;
+            padding: 0;
+        }
+
+        .request-profile-image {
+            width: 50px;
+            height: 50px;
+            overflow: hidden;
+            display: inline-block;
+            vertical-align: middle;
+        }
+
+        .reply-circle {
+            font-size: 18px;
+            line-height: 55px;
+            color: #fff;
+            background-color: #bdbdbd;
+            text-align: center;
+            width: 55px;
+            height: 55px;
+            overflow: hidden;
+            left: 15px;
+            display: inline-block;
+            vertical-align: middle;
+            border-radius: 50%;
+            margin-right: 30px;
+        }
+
+        .request-info-area {
+            padding: 0 10%;
+        }
+
+        .comment-row {
+            margin-top: 40px !important;
+        }
+
+        .add-comment-row {
+            cursor: pointer;
+        }
+
+        .username-text {
+            font-size: 1.25rem;
+            margin-right: 20px;
+        }
+
+        .comment-created-text {
+            font-size: 0.85rem !important;
+        }
+
+        @media (max-width: 640px) {
+            .logo-link {
+                margin-left: 0px;
+            }
+
+            .reply-circle {
+                font-size: 18px;
+                line-height: 55px;
+                color: #fff;
+                background-color: #bdbdbd;
+                text-align: center;
+                width: 26px;
+                height: 26px;
+                overflow: hidden;
+                left: 15px;
+                display: inline-block;
+                vertical-align: middle;
+                border-radius: 50%;
+                margin-right: 15px;
+            }
+
+            .console-gamer-tag {
+                margin-top: 5px;
+            }
+
+            .push-top {
+                margin-top: 4px;
+            }
+
+            .title-text {
+                font-size: 1.25rem !important;
+            }
+
+            .details-text {
+                font-size: 0.85rem;
+                color: #9e9e9e !important;
+            }
+
+            .reply-text {
+                font-size: 0.8rem !important;
+                margin-left: -20px !important;
+            }
+
+            .username-text {
+                font-size: 0.8rem !important;
+                margin-left: -20px !important;
+            }
+
+            .comment-created-text {
+                font-size: 0.6rem !important;
+            }
+        }
+    </style>
 
 	<template>
 		<paper-drawer-panel>
 			<paper-header-panel mode="seamed" drawer>
-				<paper-toolbar class="tall lfg-drawer-toolbar">
+                <paper-toolbar class="medium-tall lfg-drawer-toolbar">
                     <div class="middle">
                         <side-nav-profile class="center-center"></side-nav-profile>
                     </div>
-				</paper-toolbar>
+                </paper-toolbar>
 				<div class="fit orange darken-3">
 					<side-nav-contents></side-nav-contents>
 				</div>
 			</paper-header-panel>
 			<paper-header-panel mode="scroll" main class="lfg-main-header-panel white">
 				<paper-toolbar class="tall lfg-main-toolbar request-details-party">
-					<div id="request_header_dopple" class="profile-background-dopple"></div>
-					<div id="request_header" class="profile-background"></div>
-					<div class="profile-background-overlay"></div>
-					<paper-icon-button icon="menu" class="lfg-menu-icon" paper-drawer-toggle></paper-icon-button>
-					<paper-icon-button icon="arrow-back" class="lfg-menu-icon" on-click="goToList"></paper-icon-button>
-					<div class="flex"></div>
-					<a id="to_facebook" class="center center-align filter-tags tag-facebook" on-click="postToFacebook">
-						<i class="fa fa-facebook"></i>
-					</a>
-					<a id="to_twitter" class="center center-align filter-tags tag-twitter" on-click="postToTwitter">
-						<i class="fa fa-twitter"></i>
-					</a>
-					<div style="display:table-cell; text-align:center;" class="middle title">
-						<template is="dom-if" if="{{request.images.list_url}}">
-							<img class="request-list-image" src="[[request.images.list_url]]" width="160" />
-						</template>
-						<template is="dom-if" if="{{isImageBlank(request.images.list_url)}}">
-							<div class="layout vertical center-center white-text" style="background-color:#FB8C00; width:160px; height:90px; border-radius: 5px; padding:0 7px;">
-								<label class="white-text">{{request.gametitle}}</label>
-							</div>
-						</template>
-					</div>
-					<div class="bottom title bottom-bar">
-						<h5 class="white-text text-shadow">{{request.gametitle}}</h5>
-					</div>
+                    <div id="request_header_dopple" class="profile-background-dopple"></div>
+                    <div id="request_header" class="profile-background"></div>
+                    <div class="profile-background-overlay"></div>
+                    <paper-icon-button icon="menu" class="lfg-menu-icon" paper-drawer-toggle></paper-icon-button>
+                    <paper-icon-button icon="arrow-back" class="lfg-menu-icon" on-click="goToList"></paper-icon-button>
+                    <div class="flex"></div>
+                    <div class="layout vertical wrap" style="margin-top:20px !important;">
+                        <a id="to_facebook" class="center center-align filter-tags tag-facebook" on-click="postToFacebook">
+                            <i class="fa fa-facebook"></i>
+                        </a>
+                        <a id="to_twitter" class="center center-align filter-tags tag-twitter" on-click="postToTwitter" style="margin-top:7px;">
+                            <i class="fa fa-twitter"></i>
+                        </a>
+                    </div>
+                    <div style="display:table-cell; text-align:center;" class="middle title">
+                        <template is="dom-if" if="{{request.images.list_url}}">
+                            <img class="request-list-image" src="[[request.images.list_url]]" width="160" />
+                        </template>
+                        <template is="dom-if" if="{{isImageBlank(request.images.list_url)}}">
+                            <div class="layout vertical center-center white-text" style="background-color:#FB8C00; width:160px; height:90px; border-radius: 5px; padding:0 7px;">
+                                <label class="white-text">{{request.gametitle}}</label>
+                            </div>
+                        </template>
+                    </div>
+                    <div class="bottom title bottom-bar">
+                        <h5 class="white-text text-shadow">{{request.gametitle}}</h5>
+                    </div>
 				</paper-toolbar>
 
-				<div fit class="white details-area request-details-party">
-					<div class="row" style="margin-top:30px !important;">
-						<div class="col s3 left left-align" >
-							<!--<div class="switch">
-								<label class="white-text" style="font-size:1rem;">
-									<span class="negative">No</span>
-									<input type="checkbox">
-									<span class="lever"></span>
-									<span class="positive">Yes</span>
-								</label>
-							</div>-->
-						</div>
-						<div class="col s6 offset-s3 center center-align">
-							<span class$="[[getSystemClass(request.system)]]">[[getSystemType(request.system)]]</span>
-							<span class="center center-align tag-neutral">[[getGamerCount(request.gamercount)]]</span>
+                <div class="white details-area request-details-party request-content">
+                    <div style="margin-top:30px !important;">
+                        <!--<div class="col s3 left left-align">
+                            <div class="switch">
+                                <label class="white-text" style="font-size:1rem;">
+                                    <span class="negative">No</span>
+                                    <input type="checkbox">
+                                    <span class="lever"></span>
+                                    <span class="positive">Yes</span>
+                                </label>
+                            </div>
+                        </div>-->
+                        <div class="layout horizontal center center-center">
+                            <div><h6 class="grey-text" style="font-size:0.85rem; visibility:hidden;">[[getTimeLapse(request.datetime)]]</h6></div>
+                            <span class="flex"></span>
+                            <span class="layout horizontal wrap center-center console-gamer-tag">
+                                <span class$="[[getSystemClass(request.system)]]">[[getSystemType(request.system)]]</span>
+                                <span class="center center-align tag-neutral push-top">[[getGamerCount(request.gamercount)]]</span>
+                            </span>
                             <template is="dom-if" if="{{request.mic}}">
                                 <span style="margin-left:7px;" class="grey-text"><i style="font-size:1.2rem;" class="material-icons">headset_mic</i></span>
                             </template>
-						</div>
-						<div class="col s3 right right-align">
-							<h6 class="grey-text" style="font-size:0.85rem;">[[getTimeLapse(request.datetime)]]</h6>
-						</div>
-					</div>
-					<br />
+                            <span class="flex"></span>
+                            <div><h6 class="grey-text" style="font-size:0.85rem;">[[getTimeLapse(request.datetime)]]</h6></div>
+                        </div>
+                    </div>
+                    <br />
 
-					<div class="request-info-area">
-						<div class="row">
-							<div class="col s12 center center-aligned">
-								<img id="profile_image" alt="" src="../assets/app/img/profile-photo-placeholder.jpg" style="position:relative;" class="circle request-profile-image" width="50" height="50" />
-							</div>
-							<div class="col s12 center center-align">
-								<h6 class="light grey-text">[[user.username]]</h6>
-							</div>
-						</div>
-						
-						<div class="row">
-							<div class="col s12 center center-align">
-								<h4 class="grey-text text-darken-2 light force-wrap">[[request.title]]</h4>
-							</div>
-							<div class="col s12 center center-align">
-								<h6 class="grey-text text-darken-2 force-wrap">[[request.description]]</h6>
-							</div>
-						</div>
+                    <div class="request-info-area">
+                        <div class="row">
+                            <div class="col s12 center center-aligned">
+                                <img id="profile_image" alt="" src="../assets/app/img/profile-photo-placeholder.jpg" style="position:relative;" class="circle request-profile-image" width="50" height="50" />
+                            </div>
+                            <div class="col s12 center center-align">
+                                <h6 class="light grey-text">[[user.username]]</h6>
+                            </div>
+                        </div>
 
-						<br /><div class="divider"></div><br />
+                        <div class="row">
+                            <div class="col s12 center center-align">
+                                <h5 class="grey-text text-darken-2 light force-wrap title-text">[[request.title]]</h5>
+                            </div>
+                            <div class="col s12 center center-align">
+                                <h6 class="grey-text text-darken-2 force-wrap details-text">[[request.description]]</h6>
+                            </div>
+                        </div>
 
-						<div class="row add-comment-row">
-							<div class="col s12  add-comment-message" style="display:none;">
-								<i class="reply-circle" style="margin-right:30px; cursor:pointer;"></i>
-								<label class="grey-text text-lighten-1" style="font-size:1.25rem; cursor:pointer;">Reply to request</label>
-							</div>
+                        <br /><div class="divider"></div><br />
+
+                        <div class="row add-comment-row">
+                            <div class="col s12  add-comment-message" style="display:none;">
+                                <i class="reply-circle" style="margin-right:30px; cursor:pointer;"></i>
+                                <label class="grey-text text-lighten-1 reply-text" style="font-size:1.25rem; cursor:pointer;">Reply to request</label>
+                            </div>
 
                             <div class="col s12  sign-in-comment-message">
                                 <i class="reply-circle" style="margin-right:30px; cursor:pointer;"></i>
-                                <label class="grey-text text-lighten-1" style="font-size:1.25rem; cursor:pointer;">Sign in to reply to this Request</label>
+                                <label class="grey-text text-lighten-1 reply-text" style="font-size:1.25rem; cursor:pointer;">Sign in to reply to this Request</label>
                             </div>
 
-							<div class="lfg-input input-field col s12 add-comment-control add-comment-text" style="display:none;">
-								<textarea id="comment_text" type="text" placeholder="Say something nice" spellcheck="false" class="materialize-textarea" length="250"></textarea>
-							</div>
-							<div class="col s12 center center-align add-comment-control add-comment-button" style="display:none;">
-								<a class="waves-effect waves-light btn orange darken-4 white-text" style="text-transform:none;" on-click="addComment">Post Comment</a>
-							</div>
-						</div>
+                            <div class="lfg-input input-field col s12 add-comment-control add-comment-text" style="display:none;">
+                                <textarea id="comment_text" type="text" placeholder="Say something nice" spellcheck="false" class="materialize-textarea" length="250"></textarea>
+                            </div>
+                            <div class="col s12 center center-align add-comment-control add-comment-button" style="display:none;">
+                                <a class="waves-effect waves-light btn orange darken-4 white-text" style="text-transform:none;" on-click="addComment">Post Comment</a>
+                            </div>
+                        </div>
 
-						<div id="request_comments_list" class="row comment-row">
-							<!--<template is="dom-repeat" items="{{request.comments}}">
-								<div class="col s12">
-									<img id$="{{item.userimgid}}" src$="{{item.user.profilepic}}" class="reply-circle" style="margin-right:30px;" />
-									<span>
-										<label id$="{{item.userlabelid}}" class="grey-text text-darken-3" style="font-size:1.25rem; margin-right:20px;"></label>
-										<label class="grey-text" style="font-size:0.85rem;">{{item.created}}</label>
-									</span>
-									<p style="padding:0 0 0 88px; font-size:0.85rem; margin-top:-6px;">{{item.comment}}</p>
-								</div>
-							</template>-->
-						</div>
-					</div>
-				</div>
-
-				<!--<div fit class="content-area">
-			<div class="row">
-				<div class="col s12 m1">
-					<img src="../assets/app/img/images.jpg" alt="" style="border: 2px solid white;" class="circle" width="60" height="60">
-				</div>
-				<div class="col s12 m8 white-text"><h5 style="font-weight:200;"><span class="yellow-text">[[user.username]]</span>'s Gaming Request</h5></div>
-				<div class="col s12 m3 white-text" style="margin-top:10px;">
-					<i class="fa fa-facebook-square fa-2x white-text" style="padding-right:10px;"></i>
-					<i class="fa fa-twitter-square fa-2x white-text" style="padding-right:10px;"></i>
-					<i class="fa fa-google-plus-square fa-2x white-text" style="padding-right:10px;"></i>
-				</div>
-			</div>
-			<br /><br />
-			<div class="row request-details">
-				<div class="col s12 m4">
-					<div class="card-panel white requests-card-panel">
-					</div>
-				</div>
-				<div class="col s12 m8">
-					<div class="row">
-						<div class="col s12" style="margin-top:10px;"><h6 class="yellow-text" style="font-size:1.5rem; font-weight:300;">[[request.gametitle]]</h6></div>
-						<div class="col s12"><h4 class="white-text">[[request.title]]</h4>
-						</div>
-					</div>
-					<br />
-					<div class="row">
-						<div class="col s12 m2 input-field">
-							<h6 class="yellow-text" style="font-weight:300;">
-							<i class="fa fa-clock-o yellow-text" style="padding-right:5px;"></i>When</h6>
-						</div>
-						<div class="col s12 m9 input-field">
-							<h6 class="white-text">[[formatDate(request.datetime)]]</h6>
-						</div>
-					</div>
-					<div class="row">
-						<div class="col s12 m2 input-field">
-							<h6 class="yellow-text" style="font-weight:300;">
-								<i class="fa fa-gamepad yellow-text" style="padding-right:5px;"></i>System</h6>
-						</div>
-						<div class="col s12 m9 input-field">
-							<h6 class="white-text">[[formatSystem(request.system)]]</h6>
-						</div>
-					</div>
-					<template is="dom-if" if="[[request.gamertag]]">
-						<div class="row">
-							<div class="col s12 m2 input-field">
-								<h6 class="yellow-text" style="font-weight:300;">
-									<i class="fa fa-tag yellow-text" style="padding-right:5px;"></i>Gamertag
-								</h6>
-							</div>
-							<div class="col s12 m9 input-field">
-								<h6 class="white-text">Rammone-X</h6>
-							</div>
-						</div>
-					</template>
-					<div class="row">
-						<div class="col s12 m2 input-field">
-							<h6 class="yellow-text" style="font-weight:300;">
-								<i class="fa fa-microphone yellow-text" style="padding-right:5px;"></i>Mic</h6>
-						</div>
-						<div class="col s12 m9 input-field">
-							<h6 class="white-text">[[formatMicRequest(request.mic)]]</h6>
-						</div>
-					</div>
-				</div>
-			</div>
-			<br />
-			<div class="row">
-				<div class="col s12 input-field">
-					<h6 class="yellow-text" style="font-weight:300;">
-						<i class="fa fa-file-text yellow-text" style="padding-right:5px;"></i>Description
-					</h6>
-					<p class="white-text" style="font-weight:300; font-size: 1.15rem;">[[request.description]]</p>
-				</div>
-			</div>
-			<br /><br />
-			<div class="white-text col s12 center-align"><h5 style="font-weight:300;">Comments</h5></div>
-			<div class="row">
-				<textarea id="comment_editor">
-
-				</textarea>
-			</div>
-			<div class="row comment-button-row">
-				<div class="col s6">
-					<a class="waves-effect waves-light btn orange darken-4 white-text" on-click="addComment">Post Comment</a>
-				</div>
-			</div>
-
-			<div class="row" style="margin-top:10% !important;">
-				<div class="input-field card-panel comments-card-panel">
-					<ul id="request_comments_list" class="collection">
-						<li class="collection-item avatar">
-							<i class="mdi-file-folder circle"></i>
-							<span class="title"><strong>CoolGamer</strong> wrote:</span><br /><br />
-							<p>
-								Lorem ipsum dolor sit amet, an alterum suscipiantur est, sint animal in mel, cu latine voluptatum ius. Eu exerci mediocrem per, ad sumo platonem efficiantur has. Sit in accumsan forensibus mediocritatem, id pri magna veniam, amet vocent vulputate ei cum. Prima omnes vidisse eum et, ex accusam sapientem vulputate ius, laudem percipit signiferumque pri id. Nam at atqui nominavi, cu viris evertitur persequeris qui.
-								Harum everti no has, duo esse quando no. Putant molestiae pro ea. Eu eros imperdiet consequuntur duo, eu duis quando constituam nam. Dicta latine periculis per ei. Cu hendrerit theophrastus sed, sanctus tincidunt sententiae vim ei. Iriure bonorum saperet ne has.
-								Erat corpora et his. Putant expetendis interpretaris mea eu. Odio commodo pri et. Cu ius equidem scripserit, at has omnesque perpetua. Eos purto recusabo persecuti te, mollis maiorum
-							</p>
-							<a href="" class="grey-text secondary-content">June 23rd, 2015 @ 6:30AM</a>
-						</li>
-						template is="dom-repeat" items="[[request.comments]]">
-							<li class="collection-item avatar">
-								<img src="images/yuna.jpg" alt="" class="circle">
-								<i class="mdi-file-folder circle"></i>
-								<span class="title"><strong>[[getCommenter(item.userkey)]]</strong> wrote:</span><br /><br />
-								<div id="[[setCommentId(item.id)]]" class="comment-placeholder" changed="[[setComment(item.id, item.comment)]]"></div>
-								<a href="" class="grey-text secondary-content">[[formatDate(item.created)]]</a>
-							</li>
-					</ul>
-				</div>
-			</div>
-		</div>-->
+                        <div id="request_comments_list" class="row comment-row">
+                        </div>
+                    </div>
+                </div>
 			</paper-header-panel>
 		</paper-drawer-panel>
 
@@ -857,12 +762,13 @@
 
             		customElem.request.comments.push(requestcomment);
             		
+            	    //Comment styles located in lfg.css
             		commentHtml += '<div class="col s12" style="margin-bottom:30px;">';
-            		commentHtml += '<img id="' + requestcomment.userimgid + '" src="../assets/app/img/profile-photo-placeholder.jpg" class="reply-circle" style="margin-right:30px;" />';
-            		commentHtml += '<span><label id="' + requestcomment.userlabelid + '" class="grey-text text-darken-3" style="font-size:1.25rem; margin-right:20px;"></label>';
-            		commentHtml +=	'<label class="grey-text" style="font-size:0.85rem;">' + requestcomment.created + '</label>';
-            		commentHtml +=	'</span>';
-            		commentHtml +=	'<p class="force-wrap" style="padding:0 0 0 85px; font-size:0.85rem; margin-top:-6px;">' + requestcomment.comment + '</p>';
+            		commentHtml += '<img id="' + requestcomment.userimgid + '" src="../assets/app/img/profile-photo-placeholder.jpg" class="reply-circle" />';
+            		commentHtml += '<span><label id="' + requestcomment.userlabelid + '" class="grey-text text-darken-3 username-text"></label>';
+            		commentHtml += '<label class="grey-text comment-created-text">' + requestcomment.created + '</label>';
+            		commentHtml += '</span>';
+            		commentHtml += '<p class="force-wrap comment-details-text">' + requestcomment.comment + '</p>';
             		commentHtml += '</div>';
 
             		$(customElem.$.request_comments_list).prepend(commentHtml);
@@ -1041,6 +947,10 @@
             	};
 
             	window.lfg.utils.tweetOnTwitter(options);
+            },
+
+            setRequestUrl: function (requestid) {
+                window.history.pushState('object or string', 'Request Details', window.lfg.utils.getSharableRequestUrl(requestid));
             },
 
             setCoverImage: function () {

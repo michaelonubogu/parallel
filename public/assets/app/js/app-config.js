@@ -318,6 +318,24 @@
                 return results[1] || null;
             },
             
+            getSharableRequestListUrl: function (game, system) {
+                if (game !== null && game !== undefined && game !== '' && system !== null && system !== undefined && system !== '') {
+                    return window.location.protocol + '//' + window.location.host + '/#/requests?game=' + encodeURIComponent(window.lfg.utils.clearWhiteSpace(game).replace(/&amp;/g, "&")) + '&system=' + system;
+                }
+                else if (game !== null && game !== undefined && game !== '') {
+                    return window.location.protocol + '//' + window.location.host + '/#/requests?game=' + encodeURIComponent(window.lfg.utils.clearWhiteSpace(game).replace(/&amp;/g, "&"));
+                }
+                else if (system !== null && system !== undefined && system !== ''){
+                    return window.location.protocol + '//' + window.location.host + '/#/requests?system=' + system;
+                }
+
+                return null;
+            },
+            
+            getSharableRequestUrl: function (id){
+                return window.location.protocol + '//' + window.location.host + '/#/request/' + id;
+            },
+            
             isFileAnImage: function (blob) {
                 var int32View = new Uint8Array(blob);
                 var isValid = false;

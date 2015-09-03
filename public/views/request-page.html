@@ -462,7 +462,7 @@
                     </div>
                     <div class="dropdown-filters center center-align" display:none; style="width:100% !important; margin-right:10px !important;">
                         <!-- Dropdown Trigger -->
-                        <a id="filter_dropdown_btn" class="dropdown-button btn option-neutral" data-activates='filter_dropdown' style="width:100% !important;"><span class="filter-btn-text">{{filterButtonText}}</span></a>
+                        <a id="filter_dropdown_btn" class="dropdown-button btn option-neutral" data-activates='filter_dropdown'><span class="filter-btn-text">{{filterButtonText}}</span></a>
 
                         <!-- Dropdown Structure -->
                         <ul id='filter_dropdown' class='dropdown-content'>
@@ -1106,43 +1106,93 @@
                 var game = decodeURIComponent(window.lfg.utils.getQueryStringParam('game', pageurl)).replace(/&amp;/g, "&");
                 var system = window.lfg.utils.getQueryStringParam('system', pageurl);
 
-                if (game !== null && system !== null) {
-                    this.systemFilter = system;
+                if (game !== null && game !== 'null' && game !== undefined && game !== '' && system !== null && system !== 'null' && system !== undefined && system !== '') {
 
                     //Set the search box and current filter to appropriate system
                     $('#search_input').val(game);
 
                     switch (system) {
                         case 'pc':
+                            this.systemFilter = system;
                             $('a[data-system="pc"]').addClass('pc-filter-tag').addClass('filter-active');
                             break;
 
                         case 'ps3':
+                            this.systemFilter = system;
                             $('a[data-system="ps3"]').addClass('psn-filter-tag').addClass('filter-active');
                             break;
 
                         case 'ps4':
+                            this.systemFilter = system;
                             $('a[data-system="ps4"]').addClass('psn-filter-tag').addClass('filter-active');
                             break;
 
                         case 'xbox360':
+                            this.systemFilter = system;
                             $('a[data-system="xbox360"]').addClass('xbox-filter-tag').addClass('filter-active');
                             break;
 
                         case 'xboxOne':
+                            this.systemFilter = system;
                             $('a[data-system="xboxOne"]').addClass('xbox-filter-tag').addClass('filter-active');
                             break;
 
                         case 'wii':
+                            this.systemFilter = system;
                             $('a[data-system="wii"]').addClass('wii-filter-tag').addClass('filter-active');
                             break;
 
                         case 'wiiu':
+                            this.systemFilter = system;
                             $('a[data-system="wiiu"]').addClass('wii-filter-tag').addClass('filter-active');
                             break;
                     }
 
                     this.getRequests(game, this.querytype.bysystem, false);
+                }
+                else if (game !== null && game !== 'null' && game !== undefined && game !== '') {
+                    this.getRequests(game, this.querytype.bygame, false);
+                }
+                else if (system !== null && system !== 'null' && system !== undefined && system !== '') {
+                    
+                    switch (system) {
+                        case 'pc':
+                            this.systemFilter = system;
+                            $('a[data-system="pc"]').addClass('pc-filter-tag').addClass('filter-active');
+                            break;
+
+                        case 'ps3':
+                            this.systemFilter = system;
+                            $('a[data-system="ps3"]').addClass('psn-filter-tag').addClass('filter-active');
+                            break;
+
+                        case 'ps4':
+                            this.systemFilter = system;
+                            $('a[data-system="ps4"]').addClass('psn-filter-tag').addClass('filter-active');
+                            break;
+
+                        case 'xbox360':
+                            this.systemFilter = system;
+                            $('a[data-system="xbox360"]').addClass('xbox-filter-tag').addClass('filter-active');
+                            break;
+
+                        case 'xboxOne':
+                            this.systemFilter = system;
+                            $('a[data-system="xboxOne"]').addClass('xbox-filter-tag').addClass('filter-active');
+                            break;
+
+                        case 'wii':
+                            this.systemFilter = system;
+                            $('a[data-system="wii"]').addClass('wii-filter-tag').addClass('filter-active');
+                            break;
+
+                        case 'wiiu':
+                            this.systemFilter = system;
+                            $('a[data-system="wiiu"]').addClass('wii-filter-tag').addClass('filter-active');
+                            break;
+                    }
+
+                    this.getRequests(null, this.querytype.bysystem, false);
                 }
                 else {
                     this.getRequests(null, this.querytype.none, false);
@@ -1463,6 +1513,7 @@
                             customElem.clearFirebaseCallbacks();
                             customElem.removeNoRecordsMessage();
                             customElem.addSpinnerRoo();
+                            gameUrlParam = query;
                             query = window.lfg.utils.clearWhiteSpace(query).toLowerCase();	//querying by game title, so prepare query    
 
                             //save the query & type (for pagination)
@@ -1505,6 +1556,8 @@
 								    customElem.removeSpinnerRoo();
 								});
 
+                            customElem.setRequestListUrl(gameUrlParam);
+
                             var timeout = setTimeout(function () {
                                 if (customElem.requests == null || customElem.requests == undefined || customElem.requests.length <= 0) {
                                     customElem.removeSpinnerRoo();
@@ -1528,6 +1581,7 @@
                             customElem.addSpinnerRoo();
 
                             //save the query & type (for pagination)
+                            var gameUrlParam = query;
                             customElem.dataops.query = query;
                             customElem.dataops.querytype = querytype;
 
@@ -1567,6 +1621,8 @@
 								    customElem.removeSpinnerRoo();
 								});
 
+                            customElem.setRequestListUrl(gameUrlParam);
+
                             var timeout = setTimeout(function () {
                                 if (customElem.requests == null || customElem.requests == undefined || customElem.requests.length <= 0) {
                                     customElem.removeSpinnerRoo();
@@ -1586,6 +1642,9 @@
 
                         case customElem.querytype.bysystem:
                             //Detach all firebase callbacks
+                            var systemUrlParam = customElem.systemFilter;
+                            var gameUrlParam = query;
+
                             customElem.clearFirebaseCallbacks();
                             customElem.removeNoRecordsMessage();
                             customElem.addSpinnerRoo();
@@ -1629,6 +1688,8 @@
 								    customElem.notifyPath('requests', customElem.requests);
 								    customElem.removeSpinnerRoo();
 								});
+
+                            customElem.setRequestListUrl(gameUrlParam, systemUrlParam);
 
                             var timeout = setTimeout(function () {
                                 if (customElem.requests == null || customElem.requests == undefined || customElem.requests.length <= 0) {
@@ -1958,6 +2019,14 @@
                         }
                     }
                 });
+            },
+
+            setRequestListUrl: function (game, system) {
+                var url = window.lfg.utils.getSharableRequestListUrl(game, system);
+
+                if(url !== null && url !== undefined && url !== ''){
+                    window.history.pushState('object or string', 'Request List', url);
+                }
             },
 
             showNoRecordsMessage: function () {
