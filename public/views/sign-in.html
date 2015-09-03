@@ -10,7 +10,6 @@
 
 <dom-module id="sign-in">
 	<!-- CSS stuff -->
-	<link rel="import" type="css" href='../assets/app/css/lfg.css'>
 
 	<style>
 		:host {
@@ -58,70 +57,87 @@
 			font-size:0.85rem;
 			font-weight:500;
 		}
+
+        .transparent-toolbar{
+            background-color:#fb8c00;
+        }
 	</style>
 
 	<template>
-        <a href="#/requests" class="btn-flat white-text waves-effect waves-purple" style="position:absolute; z-index:1000; text-transform:none; margin-top:20px;">
-            <i class="material-icons left">arrow_back</i> 
-            Requests
-        </a>
-
-		<div class="layout fit vertical center-center orange darken-1">
-            <a href="#/requests" style="cursor:pointer;" class="center">
-                <img src="../assets/app/img/logo-orange-60-60-light.png" />
-                <h6 class="white-text" style="font-size:12px; margin-top:3px;">parallel</h6>
+        <!--<paper-toolbar class="waterfall transparent-toolbar">
+            <a href="#/requests" class="btn-flat white-text waves-effect waves-purple" style="text-transform:none;">
+                <i class="material-icons left">arrow_back</i>
+                Requests
             </a>
-			<div class="layout vertical center">
-				<h4 class="white-text thin">Sign in & Start Gaming with Gamers</h4>
-			</div>
-			<div class="layout horizontal">
-				<i class="flaticon-xbox12 sign-in-flaticon-update"></i>
-				<i class="flaticon-xbox19 sign-in-flaticon-update"></i>
-				<i class="flaticon-game27 sign-in-flaticon-update"></i>
-				<i class="flaticon-ps46 sign-in-flaticon-update"></i>
-				<i class="flaticon-wii14 sign-in-flaticon-update"></i>
-				<i class="flaticon-wii12 sign-in-flaticon-update"></i>
-				<i class="flaticon-monitor49 sign-in-flaticon-update"></i>
-			</div>
-			<br /><br />
-			<div>
-				<a id="facebook_button" class="waves-effect waves-light btn light-blue darken-4 white-text sign-in-button regular-text" on-click="signInWithFacebook">
-					<i class="fa fa-facebook left"></i>
-					Sign in with Facebook
-				</a>
-			</div>
-			<br />
-			<div>
-				<a id="twitter_button" class="waves-effect waves-purple btn light-blue accent-3 white-text sign-in-button regular-text" on-click="signInWithTwitter">
-					<i class="fa fa-twitter left"></i>
-					Sign in with Twitter
-				</a>
-			</div>
-			<br />
-			<div>
-				<a id="google_button" class="waves-effect waves-light btn red darken-2 white-text sign-in-button regular-text" on-click="signInWithGoogle">
-					<i class="fa fa-google left"></i>
-					Sign in with Google
-				</a>
-			</div>
-			<br />
-			<div>
-				<a id="steam_button" class="waves-effect waves-light btn light-green darken-3 white-text sign-in-button regular-text" on-click="signInWithSteam">
-					<i class="fa fa-steam-square left"></i>
-					Sign in with Steam
-				</a>
-			</div>
-			<br />
-			<div>
-				<p>
-					<input type="checkbox" id="keep_signed" class="filled-in" checked="{{login.keepsignin}}" />
-					<label for="keep_signed" class="white-text">Keep me logged in</label>
-				</p>
-			</div>
-			<br />
-			<div>
-				<p class="white-text">By signing in to Parallel, you agree to our <a href="#termsagree" class="yellow-text text-accent-2 modal-trigger" style="cursor:pointer;">Terms & Data Policy</a></p>
-			</div>
+        </paper-toolbar>-->
+
+        <paper-header-panel class="flex" mode="seamed">
+            <paper-toolbar class="orange darken-1">
+                <a href="#/requests" class="btn-flat white-text waves-effect waves-purple" style="text-transform:none;">
+                    <i class="material-icons left">arrow_back</i>
+                    Requests
+                </a>
+            </paper-toolbar>
+        </paper-header-panel>
+
+		<div class="layout vertical fullbleed wrap center-center orange darken-1" style="overflow-y:auto;">
+            <div class="layout vertical wrap center-center" style="max-width:600px;">
+                <a href="#/requests" style="cursor:pointer;" class="center">
+                    <img src="../assets/app/img/logo-orange-60-60-light.png" />
+                    <h6 class="white-text" style="font-size:12px; margin-top:3px;">parallel</h6>
+                </a>
+                <div class="layout vertical center">
+                    <h4 class="white-text thin">Sign in & Start Gaming with Gamers</h4>
+                </div>
+                <div class="layout horizontal wrap center-center">
+                    <i class="flaticon-xbox12 sign-in-flaticon-update"></i>
+                    <i class="flaticon-xbox19 sign-in-flaticon-update"></i>
+                    <i class="flaticon-game27 sign-in-flaticon-update"></i>
+                    <i class="flaticon-ps46 sign-in-flaticon-update"></i>
+                    <i class="flaticon-wii14 sign-in-flaticon-update"></i>
+                    <i class="flaticon-wii12 sign-in-flaticon-update"></i>
+                    <i class="flaticon-monitor49 sign-in-flaticon-update"></i>
+                </div>
+                <br /><br />
+                <div>
+                    <a id="facebook_button" class="waves-effect waves-light btn btn-large light-blue darken-4 white-text sign-in-button regular-text" on-click="signInWithFacebook">
+                        <i class="fa fa-facebook left"></i>
+                        Sign in with Facebook
+                    </a>
+                </div>
+                <br />
+                <div>
+                    <a id="twitter_button" class="waves-effect waves-purple btn btn-large light-blue accent-3 white-text sign-in-button regular-text" on-click="signInWithTwitter">
+                        <i class="fa fa-twitter left"></i>
+                        Sign in with Twitter
+                    </a>
+                </div>
+                <br />
+                <div>
+                    <a id="google_button" class="waves-effect waves-light btn btn-large red darken-2 white-text sign-in-button regular-text" on-click="signInWithGoogle">
+                        <i class="fa fa-google left"></i>
+                        Sign in with Google
+                    </a>
+                </div>
+                <br />
+                <div>
+                    <a id="steam_button" class="waves-effect waves-light btn btn-large light-green darken-3 white-text sign-in-button regular-text" on-click="signInWithSteam">
+                        <i class="fa fa-steam-square left"></i>
+                        Sign in with Steam
+                    </a>
+                </div>
+                <br />
+                <div>
+                    <p>
+                        <input type="checkbox" id="keep_signed" class="filled-in" checked="{{login.keepsignin}}" />
+                        <label for="keep_signed" class="white-text">Keep me logged in</label>
+                    </p>
+                </div>
+                <br />
+                <div>
+                    <p class="white-text">By signing in to Parallel, you agree to our <a href="#termsagree" class="yellow-text text-accent-2 modal-trigger" style="cursor:pointer;">Terms & Data Policy</a></p>
+                </div>
+            </div>
 		</div>
 
 		<div id="loginerror" class="modal">
