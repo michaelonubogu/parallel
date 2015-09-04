@@ -5,6 +5,7 @@
 
 <!-- Custom Imports -->
 <link rel="import" href="../imports/side-nav-contents.html" />
+<link rel="import" href="../imports/side-nav-profile.html" />
 <link rel="import" href="../imports/sign-in-button.html" />
 <link rel="import" href="../views/request-details-overlay.html" />
 
@@ -17,10 +18,10 @@
 		}
 
 		.system-tag {
-			font-size: 0.7rem;
-			padding: 3px 10px;
-			border-radius: 4px;
-		}
+            font-size: 0.7rem;
+            padding: 4px 10px;
+            border-radius: 3px;
+        }
 
 		.flaticon-update {
 			margin-top: 2px !important;
@@ -44,6 +45,16 @@
 			margin: 0 5px;
 			max-height: 30px !important;
 		}
+
+        .option-neutral {
+            background-color: #f57c00;
+            color: #ffffff;
+        }
+
+        .option-neutral:hover {
+            background-color: #f57c00 !important;
+            color: #ffffff;
+        }
 
 		.new-request-button {
 			display: block;
@@ -82,6 +93,16 @@
 			max-height: 30px !important;
 		}
 
+        .option-psn {
+            background-color: #01579B;
+            color: #ffffff !important;
+        }
+
+        .option-psn:hover {
+            background-color: #01579B !important;
+            color: #ffffff !important;
+        }
+
 		.xbox-filter-tag {
 			background-color: #5DCB17;
 			color: #ffffff !important;
@@ -93,6 +114,16 @@
 			margin: 0 5px;
 			max-height: 30px !important;
 		}
+
+        .option-xbox {
+            background-color: #5DCB17;
+            color: #ffffff !important;
+        }
+
+        .option-xbox:hover {
+            background-color: #5DCB17 !important;
+            color: #ffffff !important;
+        }
 
 		.wii-filter-tag {
 			background-color: #03A9F4;
@@ -106,6 +137,16 @@
 			max-height: 30px !important;
 		}
 
+        .option-wii {
+            background-color: #03A9F4;
+            color: #ffffff !important;
+        }
+
+        .option-wii:hover {
+            background-color: #03A9F4 !important;
+            color: #ffffff !important;
+        }
+
 		.pc-filter-tag {
 			background-color: #F44336;
 			color: #ffffff !important;
@@ -117,6 +158,16 @@
 			margin: 0 5px;
 			max-height: 30px !important;
 		}
+
+        .option-pc {
+            background-color: #F44336;
+            color: #ffffff !important;
+        }
+
+        .option-pc:hover {
+            background-color: #F44336 !important;
+            color: #ffffff !important;
+        }
 
 		[class^="flaticon-"]:before, [class*=" flaticon-"]:before {
 			margin-left: 0px !important;
@@ -265,10 +316,45 @@
 			border-radius: 4px;
 		}
 
+        .dropdown-filters{
+            display:none;
+        }
+
 		@media (max-width: 640px) {
-			.logo-link {
-				margin-left: 0px;
-			}
+			.requests-logo-link {
+                margin-left: 0px;
+            }
+
+            .content-area {
+                padding: 0;
+            }
+
+            .flaticon-update {
+                margin-top: 2px !important;
+            }
+
+            .profile-icon-row {
+                margin-top: -150px !important;
+            }
+
+            .request-filter-row{
+                display:none !important;
+                padding-top:8px !important;
+            }
+
+            .dropdown-filters{
+                display:block !important;
+            }
+
+            .img-extend{
+                width:100% !important;
+            }
+
+            .request-list-item{
+                margin-bottom:30px !important;
+                border-bottom: solid 1px #e0e0e0 !important;
+                padding-bottom:30px !important;
+            }
 
 			.content-area {
 				padding: 0;
@@ -284,11 +370,6 @@
 			.flaticon-update {
 				margin-top: 2px !important;
 			}
-
-			.profile-icon-row {
-				margin-top: -150px !important;
-			}
-
 		}
 	</style>
 
@@ -340,27 +421,37 @@
 				</div>
 			</paper-header-panel>
 			<paper-header-panel mode="seamed" main class="lfg-main-header-panel white">
-				<paper-toolbar class="medium-tall white lfg-main-toolbar">
+				<paper-toolbar class="white lfg-main-toolbar">
 					<paper-icon-button icon="menu" class="grey-text" paper-drawer-toggle></paper-icon-button>
+                    <div class="layout horizontal wrap request-filter-row">
+                        <a class="center center-align filter-tags tag-neutral" data-system="ps3">PS3</a>
+                        <a class="center center-align filter-tags tag-neutral" data-system="ps4">PS4</a>
+                        <a class="center center-align filter-tags tag-neutral" data-system="xbox360">X360</a>
+                        <a class="center center-align filter-tags tag-neutral" data-system="xboxOne">X1</a>
+                        <a class="center center-align filter-tags tag-neutral" data-system="wii">Wii</a>
+                        <a class="center center-align filter-tags tag-neutral" data-system="wiiu">Wii U</a>
+                        <a class="center center-align filter-tags tag-neutral" data-system="pc">PC</a>
+                    </div>
+                    <div class="dropdown-filters center center-align" display:none; style="width:100% !important; margin-right:10px !important;">
+                        <!-- Dropdown Trigger -->
+                        <a id="filter_dropdown_btn" class="dropdown-button btn option-neutral" data-activates='filter_dropdown'><span class="filter-btn-text">{{filterButtonText}}</span></a>
+
+                        <!-- Dropdown Structure -->
+                        <ul id='filter_dropdown' class='dropdown-content'>
+                            <li><a class="grey-text filter-option" data-system="ps3">PS3</a></li>
+                            <li><a class="grey-text filter-option" data-system="ps4">PS4</a></li>
+                            <li><a class="grey-text filter-option" data-system="xbox360">Xbox 360</a></li>
+                            <li><a class="grey-text filter-option" data-system="xboxOne">Xbox One</a></li>
+                            <li><a class="grey-text filter-option" data-system="wii">Wii</a></li>
+                            <li><a class="grey-text filter-option" data-system="wiiu">Wii U</a></li>
+                            <li><a class="grey-text filter-option" data-system="pc">PC</a></li>
+                            <li class="divider"></li>
+                            <li><a class="grey-text filter-option" data-system="all">All Consoles</a></li>
+                        </ul>
+                    </div>
 					<div class="flex"></div>
 					<paper-icon-button id="search_button" icon="search" class="grey-text" on-click="showSearch"></paper-icon-button>
-					<ul id='dropdown1' class='dropdown-content'>
-						<template is="dom-repeat" items="[[sortoptions]]">
-							<li><a on-click="changeSort" data-sort$="[[item.column]]">[[item.name]]</a></li>
-						</template>
-					</ul>
 					<div class="middle">
-					</div>
-					<div class="bottom" style="width:100%;">
-						<div class="layout horizontal wrap filter-row" style="display:none;">
-							<span class="center center-align filter-tags tag-neutral" data-system="ps3">PS3</span>
-							<span class="center center-align filter-tags tag-neutral" data-system="ps4">PS4</span>
-							<span class="center center-align filter-tags tag-neutral" data-system="xbox360">X360</span>
-							<span class="center center-align filter-tags tag-neutral" data-system="xboxOne">X1</span>
-							<span class="center center-align filter-tags tag-neutral" data-system="wii">Wii</span>
-							<span class="center center-align filter-tags tag-neutral" data-system="wiiu">Wii U</span>
-							<span class="center center-align filter-tags tag-neutral" data-system="pc">PC</span>
-						</div>
 					</div>
 				</paper-toolbar>
 
@@ -370,43 +461,47 @@
                         <template is="dom-repeat" items="{{requests}}">
                             <li data-request-key$="[[item.key]]" class="collection-item request-list-item" on-click="loadRequest">
                                 <div style="width:100%" class="right right-align">
-                                    <h6 class="grey-text" style="font-size: 0.75rem;margin: 0px 20px 0 0;position: absolute;right: 0;">[[getTimeLapse(item.datetime)]]</h6>
+                                    <h6 class="grey-text" style="font-size: 0.75rem;margin: 0px 20px 0 0;position: absolute;right: 0;">[[getTimeLapse(item.created)]]</h6>
                                 </div>
-                                <div class="row">
-                                    <div class="col s10 layout horizontal">
-                                        <div style="margin-right:20px;">
-                                            <template is="dom-if" if="{{item.images.list_url}}">
-                                                <img class="request-list-image" src="[[item.images.list_url]]" width="160" />
-                                            </template>
-                                            <template is="dom-if" if="{{isImageBlank(item.images.list_url)}}">
-                                                <div class="layout vertical center-center white-text" style="background-color:#FB8C00; width:160px; height:90px; border-radius: 5px; padding:0 7px;">
-                                                    <label class="white-text">{{item.gametitle}}</label>
-                                                </div>
-                                            </template>
-                                        </div>
-                                        <div>
-                                            <div class="item-content-container">
-                                                <div><span class="grey-text text-darken-2" style="font-size:0.75rem;">[[item.gametitle]]</span></div>
-                                                <div><span style="font-size:1.15rem; margin-top:-5px; font-weight:500;">[[item.title]]</span></div>
-                                                <div><span class="grey-text" style="font-size:0.9rem;">[[item.description]]</span></div>
-                                                <div>
-                                                    <span class="white-text center center-align system-tag" style$="[[item.systemColor]]">[[getSystemType(item.system)]]</span>
-                                                    <span class="grey-text text-lighten-1 center center-align" style="background-color:#ffffff; font-size:0.7rem; padding:3px 10px; border:solid 1px #BDBDBD; border-radius:5px;">[[getGamerCount(item.gamercount)]]</span>
-                                                    <template is="dom-if" if="{{item.mic}}">
-                                                        <span style="margin-left:7px; vertical-align:text-top;" class="grey-text"><i style="font-size:1.0rem;" class="material-icons">headset_mic</i></span>
-                                                    </template>
+                                <div class="layout horizontal wrap">
+                                    <div class="img-extend" style="margin-right:20px;">
+                                        <template is="dom-if" if="{{item.images.list_url}}">
+                                            <img class="request-list-image" src="[[item.images.list_url]]" width="160" />
+                                        </template>
+                                        <template is="dom-if" if="{{isImageBlank(item.images.list_url)}}">
+                                            <div class="layout vertical center-center white-text" style="background-color:#FB8C00; width:160px; height:90px; border-radius: 5px; padding:0 7px;">
+                                                <label class="white-text">{{item.gametitle}}</label>
+                                            </div>
+                                        </template>
+                                    </div>
+                                    <div class="request-list-item-details">
+                                        <div class="item-content-container">
+                                            <div><span class="grey-text text-darken-2" style="font-size:0.75rem;">[[item.gametitle]]</span></div>
+                                            <div><span style="font-size:1.15rem; margin-top:-5px; font-weight:500;">[[item.title]]</span></div>
+                                            <div><span class="grey-text" style="font-size:0.9rem;">[[item.description]]</span></div>
+                                            <div>
+                                                <span class="white-text center center-align system-tag" style$="[[item.systemColor]]">[[getSystemType(item.system)]]</span>
+                                                <span class="grey-text center center-align" style="background-color:#ffffff; font-size:0.7rem; padding:3px 10px; border:solid 1px #BDBDBD; border-radius:3px;">
+                                                    <span class="grey-text text-darken-1">[[getGamerCount(item.gamercount)]]</span>
+                                                    &nbsp;
+                                                    <i class="fa fa-user grey-text text-lighten-1"></i>
+                                                </span>
+                                                <template is="dom-if" if="{{item.mic}}">
+                                                    <span style="margin-left:7px; vertical-align:text-top;" class="grey-text"><i style="font-size:1.0rem;" class="material-icons">headset_mic</i></span>
+                                                </template>
 
-                                                    <template is="dom-if" if="{{item.commentCount}}">
-                                                        <span style="margin-left:7px;" class="grey-text"><i class="fa fa-comments grey-text"></i>&nbsp;<span style="font-size:0.7rem">{{item.commentCount}}</span></span>
-                                                    </template>
-                                                </div>
+                                                <template is="dom-if" if="{{item.commentCount}}">
+                                                    <span style="margin-left:7px;" class="grey-text"><i class="fa fa-comments grey-text"></i>&nbsp;<span style="font-size:0.7rem">{{item.commentCount}}</span></span>
+                                                </template>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col s2 right right-align">
+                                    <div class="flex"></div>
+                                    <div class="right right-align">
                                         <img id$="{{getImageId(item.key)}}" src="../assets/app/img/profile-photo-placeholder.jpg" alt="" style="position:relative; margin-top:35px; margin-right:15px;" class="circle request-profile-image">
                                     </div>
                                 </div>
+
                             </li>
                         </template>
 
@@ -504,6 +599,122 @@
 
             addSpinnerRoo: function () {
             	$('.spinner-roo-item').show();
+            },
+
+            activateFilterOption: function (e) {
+                var cusElem = this;
+
+                //unbind this annoying event - will be rebound if it is.
+                $('#mainContainer').unbind('scroll');
+                cusElem.scrollBound = false;
+
+                var system = e.target.dataset.system;
+
+                switch (system) {
+                    case 'pc':
+                        cusElem.systemFilter = 'pc';
+                        cusElem.filterButtonText = 'PC';
+                        cusElem.clearOptionClass($(cusElem.$.filter_dropdown_btn).get());
+                        $(cusElem.$.filter_dropdown_btn).addClass('option-pc');
+                        if (cusElem.dataops.query === null || cusElem.dataops.query === undefined || cusElem.dataops.query === '') {
+                            cusElem.getRequests(null, cusElem.querytype.bysystem, false);
+                        }
+                        else {
+                            cusElem.getRequests(cusElem.dataops.query, cusElem.querytype.bysystem, false);
+                        }
+                        break;
+
+                    case 'ps3':
+                        cusElem.systemFilter = 'ps3';
+                        cusElem.filterButtonText = 'PS3';
+                        cusElem.clearOptionClass($(cusElem.$.filter_dropdown_btn).get());
+                        $(cusElem.$.filter_dropdown_btn).addClass('option-psn');
+                        if (cusElem.dataops.query === null || cusElem.dataops.query === undefined || cusElem.dataops.query === '') {
+                            cusElem.getRequests(null, cusElem.querytype.bysystem, false);
+                        }
+                        else {
+                            cusElem.getRequests(cusElem.dataops.query, cusElem.querytype.bysystem, false);
+                        }
+                        break;
+
+                    case 'ps4':
+                        cusElem.systemFilter = 'ps4';
+                        cusElem.filterButtonText = 'PS4';
+                        cusElem.clearOptionClass($(cusElem.$.filter_dropdown_btn).get());
+                        $(cusElem.$.filter_dropdown_btn).addClass('option-psn');
+                        if (cusElem.dataops.query === null || cusElem.dataops.query === undefined || cusElem.dataops.query === '') {
+                            cusElem.getRequests(null, cusElem.querytype.bysystem, false);
+                        }
+                        else {
+                            cusElem.getRequests(cusElem.dataops.query, cusElem.querytype.bysystem, false);
+                        }
+                        break;
+
+                    case 'xbox360':
+                        cusElem.systemFilter = 'xbox360';
+                        cusElem.filterButtonText = 'Xbox 360';
+                        cusElem.clearOptionClass($(cusElem.$.filter_dropdown_btn).get());
+                        $(cusElem.$.filter_dropdown_btn).addClass('option-xbox');
+                        if (cusElem.dataops.query === null || cusElem.dataops.query === undefined || cusElem.dataops.query === '') {
+                            cusElem.getRequests(null, cusElem.querytype.bysystem, false);
+                        }
+                        else {
+                            cusElem.getRequests(cusElem.dataops.query, cusElem.querytype.bysystem, false);
+                        }
+                        break;
+
+                    case 'xboxOne':
+                        cusElem.systemFilter = 'xboxOne';
+                        cusElem.filterButtonText = 'Xbox One';
+                        cusElem.clearOptionClass($(cusElem.$.filter_dropdown_btn).get());
+                        $(cusElem.$.filter_dropdown_btn).addClass('option-xbox');
+                        if (cusElem.dataops.query === null || cusElem.dataops.query === undefined || cusElem.dataops.query === '') {
+                            cusElem.getRequests(null, cusElem.querytype.bysystem, false);
+                        }
+                        else {
+                            cusElem.getRequests(cusElem.dataops.query, cusElem.querytype.bysystem, false);
+                        }
+                        break;
+
+                    case 'wii':
+                        cusElem.systemFilter = 'wii';
+                        cusElem.filterButtonText = 'Wii';
+                        cusElem.clearOptionClass($(cusElem.$.filter_dropdown_btn).get());
+                        $(cusElem.$.filter_dropdown_btn).addClass('option-wii');
+                        if (cusElem.dataops.query === null || cusElem.dataops.query === undefined || cusElem.dataops.query === '') {
+                            cusElem.getRequests(null, cusElem.querytype.bysystem, false);
+                        }
+                        else {
+                            cusElem.getRequests(cusElem.dataops.query, cusElem.querytype.bysystem, false);
+                        }
+                        break;
+
+                    case 'wiiu':
+                        cusElem.systemFilter = 'wiiu';
+                        cusElem.filterButtonText = 'Wii U';
+                        cusElem.clearOptionClass($(cusElem.$.filter_dropdown_btn).get());
+                        $(cusElem.$.filter_dropdown_btn).addClass('option-wii');
+                        if (cusElem.dataops.query === null || cusElem.dataops.query === undefined || cusElem.dataops.query === '') {
+                            cusElem.getRequests(null, cusElem.querytype.bysystem, false);
+                        }
+                        else {
+                            cusElem.getRequests(cusElem.dataops.query, cusElem.querytype.bysystem, false);
+                        }
+                        break;
+
+                    default:
+                        cusElem.systemFilter = 'none';
+                        cusElem.filterButtonText = 'All Consoles';
+                        cusElem.clearOptionClass($(cusElem.$.filter_dropdown_btn).get());
+                        $(cusElem.$.filter_dropdown_btn).addClass('option-neutral');
+                        if (cusElem.dataops.query == null || cusElem.dataops.query === undefined || cusElem.dataops.query === '') {
+                            cusElem.getRequests(null, cusElem.querytype.none, false);
+                        }
+                        else {
+                            cusElem.getRequests(cusElem.dataops.query, cusElem.querytype.bygame, false);
+                        }
+                        break;
+                }
             },
 
             activateFilterTag: function (e) {
@@ -772,6 +983,13 @@
 
             clearNeutralTagClass: function (node) {
             	$(node).removeClass('tag-neutral');
+            },
+
+            clearOptionClass: function (node) {
+                $(node).removeClass('option-psn');
+                $(node).removeClass('option-xbox');
+                $(node).removeClass('option-wii');
+                $(node).removeClass('option-pc');
             },
 
             clearSystemTagClass: function (node) {
@@ -1467,13 +1685,14 @@
             },
 
             getGamerCount: function (count) {
-            	if (count <= 1) {
-            		return '1 Gamer';
-            	}
-            	else {
-            		return count + ' Gamers';
-            	}
+                if (count <= 1) {
+                    return '1';
+                }
+                else {
+                    return count;
+                }
             },
+
 
             getSystemType: function (system) {
 
@@ -1670,6 +1889,8 @@
 					{ name: 'Game', column: 'game' },
             	];
 
+            	this.filterButtonText = 'All Consoles';
+
             	this.querytype = {
             		bygame: 'bygame',
             		byid: 'byid',
@@ -1708,6 +1929,7 @@
             	$('#mainContainer').scroll(this.containerScroll.bind(this));
             	$(document).on('click', '.search-result-item', this.doResultSearchWithClick.bind(this));
             	$('.filter-tags').click(this.activateFilterTag.bind(this));
+            	$(document).on('click', '.filter-option', this.activateFilterOption.bind(this));
 
                 //clear all auth callbacks
             	window.lfg.config.detachAllAuthCallbacks();
@@ -1727,6 +1949,17 @@
             		gutter: 0, // Spacing from edge
             		belowOrigin: false // Displays dropdown below the button
             	});
+
+            	$(this.$.filter_dropdown_btn).dropdown({
+            	    inDuration: 300,
+            	    outDuration: 225,
+            	    constrain_width: false, // Does not change width of dropdown to that of the activator
+            	    hover: false, // Activate on hover
+            	    gutter: 0, // Spacing from edge
+            	    belowOrigin: false // Displays dropdown below the button
+            	});
+
+            	$(this.$.filter_dropdown).width($(this.$.filter_dropdown_btn).outerWidth(true) + 85);
             },
 
 			/* Events */

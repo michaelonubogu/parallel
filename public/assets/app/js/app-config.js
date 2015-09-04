@@ -2,15 +2,6 @@
  * Created by Namdascious on 6/3/2015...
  */
 (function(){
-  //  document.onreadystatechange = function(){
-  //      var state = document.readyState;
-
-		//if (state === 'complete') {
-			
-			
-  //      }
-  //  }
-
 	$(document).ready(function () {
 		//Config & Util Settings
 		var lfg = window.lfg !== null && window.lfg !== undefined ? window.lfg : {};

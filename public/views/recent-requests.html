@@ -7,6 +7,7 @@
 
 <!-- Custom Imports -->
 <link rel="import" href="../imports/side-nav-contents.html" />
+<link rel="import" href="../imports/side-nav-profile.html" />
 <link rel="import" href="../imports/sign-in-button.html" />
 <link rel="import" href="../views/request-details-overlay.html" />
 
@@ -20,8 +21,8 @@
 
         .system-tag {
             font-size: 0.7rem;
-            padding: 3px 10px;
-            border-radius: 4px;
+            padding: 4px 10px;
+            border-radius: 3px;
         }
 
         .flaticon-update {
@@ -273,6 +274,41 @@
                 padding: 0;
             }
 
+            .requests-logo-link {
+                margin-left: 0px;
+            }
+
+            .content-area {
+                padding: 0;
+            }
+
+            .flaticon-update {
+                margin-top: 2px !important;
+            }
+
+            .profile-icon-row {
+                margin-top: -150px !important;
+            }
+
+            .request-filter-row{
+                display:none !important;
+                padding-top:8px !important;
+            }
+
+            .dropdown-filters{
+                display:block !important;
+            }
+
+            .img-extend{
+                width:100% !important;
+            }
+
+            .request-list-item{
+                margin-bottom:30px !important;
+                border-bottom: solid 1px #e0e0e0 !important;
+                padding-bottom:30px !important;
+            }
+
             .lfg-paper-fab {
                 --paper-fab:{
                     margin-top: -5px;
@@ -289,11 +325,6 @@
             }
         }
 
-        @media (min-width: 640px) and (max-width: 992px) {
-            .profile-icon-row {
-                margin-top: -150px !important;
-            }
-        }
     </style>
 
     <template>
@@ -326,9 +357,10 @@
                     <side-nav-contents></side-nav-contents>
                 </div>
             </paper-header-panel>
-            <paper-header-panel mode="seamed" main class="lfg-main-header-panel white">
-                <paper-toolbar class="medium-tall white lfg-main-toolbar">
+            <paper-header-panel mode="waterfall" main class="lfg-main-header-panel white">
+                <paper-toolbar class="white lfg-main-toolbar">
                     <paper-icon-button icon="menu" class="grey-text" paper-drawer-toggle></paper-icon-button>
+                    <paper-icon-button class="grey-text" icon="arrow-back" on-click="goToList"></paper-icon-button>
                     <div class="flex"></div>
                     <!--<paper-icon-button id="search_button" icon="search" class="grey-text" on-click="showSearch"></paper-icon-button>-->
                     <ul id='dropdown1' class='dropdown-content'>
@@ -365,8 +397,55 @@
 
                 <div id="recent_requests_content" class="white lighten-3" style="margin-bottom:10%;">
                     <ul id="request_list" class="collection request-list-item-container" style="margin-top:0; border:none;">
-                        
+
                         <template is="dom-repeat" items="{{recentRequests}}">
+                            <li data-request-key$="[[item.request.key]]" class="collection-item request-list-item" on-click="loadRequest">
+                                <div style="width:100%" class="right right-align">
+                                    <h6 class="grey-text" style="font-size: 0.75rem;margin: 0px 20px 0 0;position: absolute;right: 0;">[[getTimeLapse(item.request.created)]]</h6>
+                                </div>
+                                <div class="layout horizontal wrap">
+                                    <div class="img-extend" style="margin-right:20px;">
+                                        <template is="dom-if" if="{{item.request.images.list_url}}">
+                                            <img class="request-list-image" src="[[item.request.images.list_url]]" width="160" />
+                                        </template>
+                                        <template is="dom-if" if="{{isImageBlank(item.request.images.list_url)}}">
+                                            <div class="layout vertical center-center white-text" style="background-color:#FB8C00; width:160px; height:90px; border-radius: 5px; padding:0 7px;">
+                                                <label class="white-text">{{item.request.gametitle}}</label>
+                                            </div>
+                                        </template>
+                                    </div>
+                                    <div class="request-list-item-details">
+                                        <div class="item-content-container">
+                                            <div><span class="grey-text text-darken-2" style="font-size:0.75rem;">[[item.request.gametitle]]</span></div>
+                                            <div><span style="font-size:1.15rem; margin-top:-5px; font-weight:500;">[[item.request.title]]</span></div>
+                                            <div><span class="grey-text" style="font-size:0.9rem;">[[item.request.description]]</span></div>
+                                            <div>
+                                                <span class="white-text center center-align system-tag" style$="[[item.request.systemColor]]">[[getSystemType(item.request.system)]]</span>
+                                                <span class="grey-text center center-align" style="background-color:#ffffff; font-size:0.7rem; padding:3px 10px; border:solid 1px #BDBDBD; border-radius:3px;">
+                                                    <span class="grey-text text-darken-1">[[getGamerCount(item.request.gamercount)]]</span>
+                                                    &nbsp;
+                                                    <i class="fa fa-user grey-text text-lighten-1"></i>
+                                                </span>
+                                                <template is="dom-if" if="{{item.request.mic}}">
+                                                    <span style="margin-left:7px; vertical-align:text-top;" class="grey-text"><i style="font-size:1.0rem;" class="material-icons">headset_mic</i></span>
+                                                </template>
+
+                                                <template is="dom-if" if="{{item.request.commentCount}}">
+                                                    <span style="margin-left:7px;" class="grey-text"><i class="fa fa-comments grey-text"></i>&nbsp;<span style="font-size:0.7rem">{{item.request.commentCount}}</span></span>
+                                                </template>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="flex"></div>
+                                    <div class="right right-align">
+                                        <img id$="{{item.request.profilepicid}}" src="../assets/app/img/profile-photo-placeholder.jpg" alt="" style="position:relative; margin-top:35px; margin-right:15px;" class="circle request-profile-image">
+                                    </div>
+                                </div>
+
+                            </li>
+                        </template>
+                        
+                        <!--<template is="dom-repeat" items="{{recentRequests}}">
                             <li data-request-key$="[[item.request.key]]" class="collection-item request-list-item" on-click="loadRequest">
                                 <div style="width:100%" class="right right-align">
                                     <h6 class="grey-text" style="font-size: 0.75rem;margin: 0px 20px 0 0;position: absolute;right: 0;">[[getTimeLapse(item.request.datetime)]]</h6>
@@ -407,7 +486,7 @@
                                     </div>
                                 </div>
                             </li>
-                        </template>
+                        </template>-->
 
                         <li class="collection-item request-list-item spinner-roo-item">
                             <div class="row">
@@ -1146,13 +1225,14 @@
             },
 
             getGamerCount: function (count) {
-            	if (count <= 1) {
-            		return '1 Gamer';
-            	}
-            	else {
-            		return count + ' Gamers';
-            	}
+                if (count <= 1) {
+                    return '1';
+                }
+                else {
+                    return count;
+                }
             },
+
 
             getSystemType: function (system) {
 
@@ -1220,6 +1300,10 @@
             			return 'background-color: #03a9f4;';
             			break;
             	}
+            },
+
+            goToList: function () {
+                document.querySelector('app-router').go('/');
             },
 
             hideMessage: function (e) {

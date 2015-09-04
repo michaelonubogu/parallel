@@ -6,6 +6,7 @@
 
 <link rel="import" href="../imports/sign-in-button.html" />
 <link rel="import" href="../imports/side-nav-contents.html" />
+<link rel="import" href="../imports/side-nav-profile.html" />
 
 <dom-module id="games-page">
 	<!-- CSS -->
@@ -1065,7 +1066,7 @@
             getRequestListUrl: function (game) {
                 var appUrl = window.lfg.config.getAppUrl();
                 if (appUrl[appUrl.length - 1] !== '/') { appUrl += '/'; }
-                var url = appUrl + '#/requests?game=' + encodeURIComponent(window.lfg.utils.clearWhiteSpace(game.game).replace(/&amp;/g, "&")) + '&system=' + game.system;
+                var url = appUrl + '#/requests?game=' + encodeURIComponent(game.game.replace(/&amp;/g, "&")) + '&system=' + game.system;
                 return url;
             },
 
