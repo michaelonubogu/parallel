@@ -163,18 +163,23 @@
 	</style>
 
 	<template>
-        <div id="new_acct_form" class="fit orange darken-1" style="display:none;">
+        <div id="new_acct_form" class="orange darken-1 fit" style="display:none; overflow-y:auto; padding-bottom:20px;">
             <div id="profile_background" class="layout vertical center orange darken-1" >
                 <div class="layout horizontal center-justified" style="margin-top:70px;">
                     <div class="flex"></div>
                     <div class="col s6 center self-center">
+                        <div>
+                            <img src="../assets/app/img/logo-orange-60-60-light.png" />
+                            <h6 class="white-text" style="font-size:12px; margin-top:3px;">parallel <span style="font-weight:600;">BETA</span></h6>
+                        </div>
+                        <br />
                         <h5 class="white-text" style="font-size:1.5rem;">Sweet! You're almost there...</h5>
                         <h6 class="white-text" style="font-size:0.85rem;">Enter your Username & Email, and upload a profile picture</h6>
                     </div>
                     <div class="flex"></div>
                 </div>
             </div>
-            <div class="container content-area" style="margin-top:60px;">
+            <div class="container content-area">
                 <br />
                 <div class="row" style="margin-bottom:0;">
                     <div class="col s12 center center-aligned">
@@ -226,6 +231,11 @@
 
         <div id="first_time_overlay" class="layout fit vertical center orange darken-1" style="position:absolute; width:100%; z-index:1000;">
             <div class="layout vertical" style="max-width:1000px; margin-top:100px;">
+                <div>
+                    <img src="../assets/app/img/logo-orange-60-60-light.png" />
+                    <h6 class="white-text" style="font-size:12px; margin-top:3px;">parallel <span style="font-weight:600;">BETA</span></h6>
+                </div>
+                <br />
                 <h5 class="white-text text-darken-2 light" style="font-size:1.5rem;">{{providerText}}</h5>
                 <h6 class="white-text text-darken-2" style="font-size:1.5rem;">Is this your first time using Parallel?</h6>
             </div>
