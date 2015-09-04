@@ -36,7 +36,6 @@
             margin: 0 5px;
             max-height: 30px !important;
             z-index: 1000;
-            width: 40px;
         }
 
         .tag-twitter {
@@ -50,7 +49,6 @@
             margin: 0 5px;
             max-height: 30px !important;
             z-index: 1000;
-            width: 40px;
         }
 
         .tag-neutral {
@@ -369,6 +367,7 @@
                     </div>
                 </paper-toolbar>
 				<div class="fit orange darken-3">
+                    <sign-in-button></sign-in-button>
 					<side-nav-contents></side-nav-contents>
 				</div>
 			</paper-header-panel>
@@ -382,9 +381,11 @@
                     <div class="flex"></div>
                     <div class="layout vertical wrap" style="margin-top:20px !important;">
                         <a id="to_facebook" class="center center-align filter-tags tag-facebook" on-click="postToFacebook">
+                            <i class="fa fa-share-alt"></i>&nbsp;&nbsp;
                             <i class="fa fa-facebook"></i>
                         </a>
                         <a id="to_twitter" class="center center-align filter-tags tag-twitter" on-click="postToTwitter" style="margin-top:7px;">
+                            <i class="fa fa-share-alt"></i>&nbsp;&nbsp;
                             <i class="fa fa-twitter"></i>
                         </a>
                     </div>
