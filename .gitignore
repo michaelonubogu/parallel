@@ -19,6 +19,9 @@ $RECYCLE.BIN/
 *.njsproj
 *.tmp
 
+# App related files
+config.js
+
 # Windows shortcuts
 *.lnk
 
