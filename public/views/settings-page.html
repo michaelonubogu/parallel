@@ -453,6 +453,8 @@
                 if (this.validateEmail()) {
                     //check db for duplicate email
                     var email = $(this.$.email).val().trim();
+                    email = filterXSS(email);
+
                     var authData = window.lfg.utils.getAuthData();
                     var userRef = new Firebase(window.lfg.config.getFirebaseUrl() + 'users');
 
@@ -507,6 +509,12 @@
                 if (this.validateUsername()) {
                     //check db for duplicate username
                     var username = $(this.$.username).val().trim();
+
+                    var options = {
+                        whiteList: {}
+                    };
+                    username = xss(username, options);
+
                     var authData = window.lfg.utils.getAuthData();
                     var userRef = new Firebase(window.lfg.config.getFirebaseUrl() + 'users');
 

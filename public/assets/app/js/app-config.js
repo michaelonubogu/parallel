@@ -12,7 +12,7 @@
             fayeDevUrl: 'http://localhost:1337/faye',
             fayeTestUrl: 'http://parallel-test.azurewebsites.net/faye',
             fayeProdUrl: 'http://www.parallel.team/faye',
-            env: 'prod',
+            env: 'dev',
 			apiEndPoints: {
 				games: 'api/giantbomb/games',
 				game: 'api/giantbomb/game',
@@ -319,7 +319,9 @@
                 else if (system !== null && system !== undefined && system !== ''){
                     return window.location.protocol + '//' + window.location.host + '/#/requests?system=' + system;
                 }
-
+                else {
+                    return window.location.protocol + '//' + window.location.host + '/#/requests';
+                }
                 return null;
             },
             
@@ -422,6 +424,19 @@
                 
                 if (authJSON === null || authJSON === undefined) {
                     sessionStorage.setItem(config.firebaseCacheKey, JSON.stringify(authData));
+                }
+            },
+            
+            sendVerificationEmail: function (){
+                var uid = this.getUser();
+                if (uid) {
+                    //var userRef = new Firebase(window.lfg.config.getFirebaseUrl() + 'users/' + uid);
+                    
+                    //emailVerifiedRef.once('value', function (snapshot) {
+                    //    var verified = snapshot.val();
+                    //    cusElem.emailNotVerified = !verified ? true : false;
+                    //    cusElem.notifyPath('emailVerified', cusElem.emailVerified);
+                    //});
                 }
             },
 			

@@ -287,6 +287,14 @@
             		cusElem.user.username = $(cusElem.$.username).val();
             		cusElem.user.email = $(cusElem.$.email).val();
 
+            		var options = {
+            		    whiteList: {}
+            		};
+
+            	    //scrub for xss
+            		cusElem.user.username = xss(cusElem.$.username, options);
+            		cusElem.user.email = xss(cusElem.$.email, options);
+
             		cusElem.usernameExists = null;
             		cusElem.emailExists = null;
 

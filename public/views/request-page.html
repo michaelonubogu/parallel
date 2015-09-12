@@ -339,6 +339,9 @@
             margin-left:0px !important;
         }
 
+        .alert-banner{
+        }
+
         @media (max-width: 640px) {
             .requests-logo-link {
                 margin-left: 0px;
@@ -395,28 +398,12 @@
                     <div class="col s10 style-scope request-page" style="margin-top: 18px; font-size:1.5rem;">
                         <input id="search_input" type="text" class="validate style-scope request-page" placeholder="Game Title">
                     </div>
-                    <!--<div class="col s1" style="margin-bottom: 0px; margin-top:21px;">
-                        <div class="search-loading-item center center-align" style="display:none;">
-                            <div class="preloader-wrapper active" style="height:32px; width:32px;">
-                                <div class="spinner-layer spinner-yellow-only">
-                                    <div class="circle-clipper left">
-                                        <div class="circle"></div>
-                                    </div>
-                                    <div class="gap-patch">
-                                        <div class="circle"></div>
-                                    </div>
-                                    <div class="circle-clipper right">
-                                        <div class="circle"></div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>-->
                 </div>
             </li>
-            <li class="search-loading-item center" style="padding:15px;">
-                <div class="search-loading-item center center-align" style="display:none;">
-                    <div class="preloader-wrapper active" style="height:28px; width:28px;">
+            <li class="divider"></li>
+            <li class="search-loading-item center">
+                <div class="search-loading-item center center-align" style="display:none; padding:15px;">
+                    <div class="preloader-wrapper active" style="height:35px; width:35px;">
                         <div class="spinner-layer spinner-yellow-only">
                             <div class="circle-clipper left">
                                 <div class="circle"></div>
@@ -489,11 +476,29 @@
                 </paper-toolbar>
 
                 <template is="dom-if" if="{{loggedOut}}">
-                    <paper-toolbar id="signin_message" class="orange lfg-main-toolbar">
+                    <paper-toolbar id="signin_message" class="orange lfg-main-toolbar alert-banner">
                         <div><label class="white-text" style="font-size:1rem;">Sign in to create a Request</label></div>
                         <div class="flex"></div>
                         <div style="margin-top:5px;">
                             <a id="hide_message" class="white-text" style="cursor:pointer !important; z-index:10000;" on-click="hideMessage">
+                                <i class="material-icons">cancel</i>
+                            </a>
+                        </div>
+                    </paper-toolbar>
+                </template>
+
+                <template is="dom-if" if="{{emailNotVerified}}">
+                    <paper-toolbar id="unverified_message" class="green lfg-main-toolbar alert-banner">
+                        <div><label class="white-text" style="font-size:1rem;">Verify your email to receive alerts on your requests.&nbsp;&nbsp;
+                                <a on-click="verifyEmail" class="white-text" style="cursor:pointer; font-weight:600;">
+                                    <i class="fa fa-paper-plane"></i>&nbsp;
+                                    Re-send Verification Email
+                                </a>
+                            </label>
+                        </div>
+                        <div class="flex"></div>
+                        <div style="margin-top:5px;">
+                            <a id="hide_verification_message" class="white-text" style="cursor:pointer !important; z-index:10000;" on-click="hideVerificationMessage">
                                 <i class="material-icons">cancel</i>
                             </a>
                         </div>
@@ -1207,7 +1212,7 @@
                 var cusElem = this;
                 var query = $('#search_input').val();
                 var url = window.lfg.config.getGiantBombUrl(window.lfg.config.apiEndPoints.search);
-
+                $('#search_dropdown').find('.search-result-item').remove();
                 $('#search_dropdown').find('.search-loading-item').show();
 
                 $.ajax({
@@ -1217,8 +1222,7 @@
                     data: { search: query, limit: 4 },
                     dataType: 'json',
                     success: function (data) {
-                        var html = '<li class="divider search-result-item"></li>';
-                        $('#search_dropdown').find('.search-result-item').remove();
+                        var html = '';
 
                         _.each(data.results, function (result) {
                             html += '<li class="search-result-item" data-result-id="' + result.id + '" style="padding: 7px 0px 7px 8.2%;">';
@@ -1228,13 +1232,13 @@
                                 result.image.screen_url !== null &&
                                 result.image.screen_url !== undefined &&
                                 result.image.screen_url !== '') {
-                                html += '<span><span><img src="' + result.image.screen_url + '" width="100" style="margin-right:30px; border-radius:5px;" /></span>';
+                                html += '<span class="layout horizontal"><span><img src="' + result.image.screen_url + '" width="100" style="margin-right:30px; border-radius:5px;" /></span>';
                             }
                             else {
                                 html += '<span style="background-color:#FB8C00; width:100px; height:56px;"></span>';
                             }
 
-                            html += '<span style="margin-top:-7px !important;"><a class="search-result-link orange-text text-darken-3">' + result.name + '</span></a></span></li>';
+                            html += '<span style="padding-top:21px !important;"><a class="search-result-link orange-text text-darken-3">' + result.name + '</span></a></span></li>';
                         });
                         $('#search_dropdown').find('.search-loading-item').hide();
                         $('#search_dropdown').append(html);
@@ -1760,6 +1764,8 @@
 								    console.log("The read failed: " + errorObject.code);
 								});
 
+                            customElem.setRequestListUrl();
+
                             //This is realy a hack for the firebase child_added event. Because if there are no records to return,
                             //the child_added nevr gets called, we need to set a timeout to remove tge spinner and display a message if there's nothing
                             //to return back - otherwise, the spinner keeps spinning - making the user think the app is taking too long
@@ -1908,6 +1914,28 @@
 
             hideMessage: function (e) {
                 $('#signin_message').slideUp();
+            },
+
+            hideVerificationMessage(e){
+                $('#unverified_message').slideUp();
+            },
+
+            isUserEmailVerified: function () {
+                var cusElem = this;
+                var loggedIn = window.lfg.utils.isLoggedIn();
+
+                if (loggedIn) {
+                    var uid = window.lfg.utils.getUser();
+                    if (uid) {
+                        var emailVerifiedRef = new Firebase(window.lfg.config.getFirebaseUrl() + 'users/' + uid + '/emailverified');
+
+                        emailVerifiedRef.once('value', function (snapshot) {
+                            var verified = snapshot.val();
+                            cusElem.emailNotVerified = !verified ? true : false;
+                            cusElem.notifyPath('emailVerified', cusElem.emailVerified);
+                        });
+                    }
+                }
             },
 
             isImageBlank: function (url) {
@@ -2059,14 +2087,19 @@
                 }
             },
 
+            verifyEmail: function(e){
+                window.lfg.utils.sendVerificationEmail();
+            },
 
             /* Init */
             initializeData: function () {
                 this.loggedIn = null;
                 this.loggedOut = null;
+                this.emailNotVerified = null;
 
                 this.isLoggedIn();
                 this.isLoggedOut();
+                this.isUserEmailVerified();
 
                 this.firebaseUrl = window.lfg.config.getFirebaseUrl() + '/requests';
 

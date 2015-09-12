@@ -6,7 +6,11 @@ var http = require('http');
 var url = require('url');
 var path = require('path');
 var openid = require('openid');
-//var faye = require('faye');
+var nodemailer = require('nodemailer');
+var uuid = require('uuid');
+var fs = require('fs');
+
+var Firebase = require('firebase');
 var FirebaseTokenGenerator = require("firebase-token-generator");
 var giantbomb = require('../giantbomb');
 var steam = require('../steam');
@@ -37,14 +41,6 @@ switch (config.appsettings.env) {
         break;
 }
 
-//Faye websocket init
-//var server = http.createServer();
-//var faye_server = new faye.NodeAdapter({ mount: '/faye', timeout: 45 });
-//console.log('Firing up faye server. . . ');
-
-//faye_server.attach(server);
-//server.listen(fayePort);
-
 var relyingParty = new openid.RelyingParty(
 							origin + '/api/steam/authenticate/verify', // Verification URL (yours)
 							origin, // Realm (optional, specifies realm for OpenID authentication)
@@ -53,22 +49,59 @@ var relyingParty = new openid.RelyingParty(
 							[]
 ); // List of extensions to enable and include
 
+// create reusable transporter object using SMTP transport
+var transporter = nodemailer.createTransport({
+    service: 'Gmail',
+    auth: {
+        user: config.email.gmail.user,
+        pass: config.email.gmail.password
+    }
+});
+
 
 router.get('/', function (req, res) {
 	res.send('respond with a resource');
 });
 
-//router.get('/request/:id', function (req, res) {
-//	var filePath = path.join(__dirname, "/../public");
-//	//res.send({ 'requestid' : req.params.id });
-//	res.sendFile(filePath + '/request.html');	//Send the home page - we have logic to route there.
-//});
+router.get('/verify/:uid', function (req, res) {
+    var uid = req.query.uid;
+    var userEmailRef = new Firebase(config.firebase.url +'users/' + uid + '/email');
 
-//router.get('/game/:id', function (req, res) {
-//	var filePath = path.join(__dirname, "/../public");
-//	//res.send({ 'gameid' : req.params.id });
-//	res.sendFile(filePath + '/game.html');
-//});
+    userEmailRef.once('value', function (snapshot) {
+        var email = snapshot.val();
+
+        if (email) {
+            //create, save & send email token
+            var token = uuid.v1();           
+            var htmlTemplate = fs.readFileSync('../emailTemplates/verifyEmail.html', "utf8");
+            var verify_url = origin + '/api/confirm/' + token;
+            
+            htmlTemplate = htmlTemplate.replace('{{verify_url}}', verify_url);
+            htmlTemplate = htmlTemplate.replace('{{unsubscribe_url}}', verify_url);
+
+            // setup e-mail data with unicode symbols
+            var mailOptions = {
+                from: config.email.gmail.user, // sender address
+                to: email, // list of receivers
+                subject: 'Verify your Parallel Account Email', // Subject line
+                html: verify_url // html body
+            };
+
+            // send mail with defined transport object
+            transporter.sendMail(mailOptions, function (error, info) {
+                if (error) {
+                    return console.log(error);
+                }
+                console.log('Message sent: ' + info.response);
+
+                //send a faye notification to the client...
+            });
+        }
+    });
+});
+
+router.get('/confirm/:token', function (req, res) { 
+});
 
 router.get('/steam/authenticate', function (req, res) {
 	
