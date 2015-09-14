@@ -83,7 +83,7 @@ router.get('/verify', function (req, res) {
                     console.log('Synchronization failed');
                 } else {
                     //Send verification email and success message to user/client
-                    var htmlTemplate = fs.readFileSync('./emailTemplates/verifyEmail.html', "utf8");
+                    var htmlTemplate = fs.readFileSync(path.join(__dirname, '../emailTemplates', 'verifyEmail.html'), "utf8");
                     var verify_url = origin + '/api/confirm/' + token;
                     
                     htmlTemplate = htmlTemplate.replace('{{verify_url}}', verify_url);
