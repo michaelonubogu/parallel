@@ -63,7 +63,7 @@ router.get('/', function (req, res) {
 	res.send('respond with a resource');
 });
 
-router.get('/verify/:uid', function (req, res) {
+router.get('/verify', function (req, res) {
     var uid = req.query.uid;
     var userEmailRef = new Firebase(config.firebase.url +'users/' + uid + '/email');
 
@@ -72,29 +72,49 @@ router.get('/verify/:uid', function (req, res) {
 
         if (email) {
             //create, save & send email token
-            var token = uuid.v1();           
-            var htmlTemplate = fs.readFileSync('../emailTemplates/verifyEmail.html', "utf8");
-            var verify_url = origin + '/api/confirm/' + token;
+            var token = uuid.v1();
             
-            htmlTemplate = htmlTemplate.replace('{{verify_url}}', verify_url);
-            htmlTemplate = htmlTemplate.replace('{{unsubscribe_url}}', verify_url);
-
-            // setup e-mail data with unicode symbols
-            var mailOptions = {
-                from: config.email.gmail.user, // sender address
-                to: email, // list of receivers
-                subject: 'Verify your Parallel Account Email', // Subject line
-                html: verify_url // html body
-            };
-
-            // send mail with defined transport object
-            transporter.sendMail(mailOptions, function (error, info) {
+            //Save confirm token for user
+            userVerifyTokenRef = new Firebase(config.firebase.url + 'users/' + uid + '/verifytoken');
+            userVerifyTokenRef.set(token, function (error) {
                 if (error) {
-                    return console.log(error);
-                }
-                console.log('Message sent: ' + info.response);
+                    //Send message to user/client - probably via faye
+                    console.log('Synchronization failed');
+                } else {
+                    //Send verification email and success message to user/client
+                    var htmlTemplate = fs.readFileSync('./emailTemplates/verifyEmail.html', "utf8");
+                    var verify_url = origin + '/api/confirm/' + token;
+                    
+                    htmlTemplate = htmlTemplate.replace('{{verify_url}}', verify_url);
+                    htmlTemplate = htmlTemplate.replace('{{unsubscribe_url}}', verify_url);
+                    
+                    // setup e-mail data with unicode symbols
+                    var mailOptions = {
+                        from: config.email.gmail.user, // sender address
+                        to: email, // list of receivers
+                        subject: 'Verify your Parallel Account Email', // Subject line
+                        html: verify_url // html body
+                    };
+                    
+                    // send mail with defined transport object
+                    transporter.sendMail(mailOptions, function (error, info) {
+                        if (error) {
+                            return console.log(error);
+                        }
+                        console.log('Message sent: ' + info.response);
 
-                //send a faye notification to the client...
+                        //send a faye notification to the client...
+                        var faye_server = GLOBAL.faye_server;
+                        
+                        if (faye_server !== null && faye_server !== undefined) {
+                            //Send confirmation to client
+                            faye_server.getClient().publish('/verificationSent', 
+			                {
+                                emailSent: true
+                            });
+                        }
+                    });
+                }
             });
         }
     });

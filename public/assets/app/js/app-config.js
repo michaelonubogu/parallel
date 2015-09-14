@@ -12,13 +12,14 @@
             fayeDevUrl: 'http://localhost:1337/faye',
             fayeTestUrl: 'http://parallel-test.azurewebsites.net/faye',
             fayeProdUrl: 'http://www.parallel.team/faye',
-            env: 'dev',
+            env: 'prod',
 			apiEndPoints: {
 				games: 'api/giantbomb/games',
 				game: 'api/giantbomb/game',
 				platforms: 'api/giantbomb/platform',
 				search: 'api/giantbomb/search',
-				steamlogin: 'api/steam/authenticate'
+                steamlogin: 'api/steam/authenticate',
+                verifyEmail : 'api/verify'
 			},
 			firebaseUrl: 'https://lfgbase.firebaseio.com/',
 			firebaseEntities: {
@@ -127,7 +128,30 @@
                 if (url[url.length - 1] !== '/') { url += '/'; }
 
 				return url + this.apiEndPoints.steamlogin;
-			}
+            },
+
+            getVerifyEmailUrl: function (){
+                var url = '';
+                switch (this.env) {
+                    case 'dev':
+                        url = this.appDevUrl;
+                        break;
+
+                    case 'test':
+                        url = this.appTestUrl;
+                        break;
+
+                    case 'prod':
+                        url = this.appProdUrl;
+                        break;
+
+                    default:
+                        break;
+                }
+                
+                if (url[url.length - 1] !== '/') { url += '/'; }
+                return url + this.apiEndPoints.verifyEmail;
+            }
 		};
 		
 		var utils = {
@@ -430,13 +454,19 @@
             sendVerificationEmail: function (){
                 var uid = this.getUser();
                 if (uid) {
-                    //var userRef = new Firebase(window.lfg.config.getFirebaseUrl() + 'users/' + uid);
-                    
-                    //emailVerifiedRef.once('value', function (snapshot) {
-                    //    var verified = snapshot.val();
-                    //    cusElem.emailNotVerified = !verified ? true : false;
-                    //    cusElem.notifyPath('emailVerified', cusElem.emailVerified);
-                    //});
+                    //Call verification email server route
+                    url = config.getVerifyEmailUrl();
+
+                    $.ajax({
+                        url: url,
+                        type: 'GET',
+                        cache: false,
+                        data: { uid: uid },
+                        dataType: 'json',
+                        success: function (data) { 
+                            console.log('Server contacted');
+                        }
+                    });
                 }
             },
 			
