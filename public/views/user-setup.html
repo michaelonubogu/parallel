@@ -340,7 +340,8 @@
             		cusElem.intervalId = window.setInterval(checkUnique, 500);
 
             		//Get the user profile info. If none exists, redirect to Onboarding process...
-            		usersRef
+            	    usersRef
+                        .orderByChild('username')
 						.equalTo(this.user.username)
 						.once('value', function (snapshot) {
 							var user = snapshot.val();
@@ -354,7 +355,8 @@
 							}
 						});
 
-            		usersRef
+            	    usersRef
+                        .orderByChild('email')
 						.equalTo(this.user.email)
 						.once('value', function (snapshot) {
 							var user = snapshot.val();
