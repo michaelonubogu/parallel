@@ -225,7 +225,7 @@
                     </div>
                 </div>
                 <br />
-                <a class="waves-effect waves-green orange darken-4 btn-large white-text" on-click="finishSetUp" style="width:100%;"><i class="material-icons left">done</i>I'm Done. Get me in there!</a>
+                <a class="waves-effect waves-green orange darken-4 btn-large white-text" on-click="finishSetUp" style="width:100%;"><i class="material-icons left">done</i>I'm Done! What's Next?</a>
             </div>
         </div>
 
@@ -244,6 +244,25 @@
                 <a class="waves-effect waves-light btn-large green darken-2" on-click="hideOverlay"><i class="material-icons right">arrow_forward</i>Yes, I need to create an account</a>
                 <br /><br />
                 <a class="waves-effect waves-light btn-large red" on-click="goBackToSignin"><i class="material-icons left">arrow_back</i>No, let me try signing in again</a>
+            </div>
+        </div>
+
+        <div id="setup_success" class="layout fit vertical center orange darken-1" style="position:absolute; width:100%; z-index:1000; display:none;">
+            <div class="layout vertical container" style="margin-top:100px;">
+                <div>
+                    <img src="../assets/app/img/logo-orange-60-60-light.png" />
+                    <h6 class="white-text" style="font-size:12px; margin-top:3px;">parallel <span style="font-weight:600;">BETA</span></h6>
+                </div>
+                <br />
+                <h4 class="white-text layout horizontal center-center">
+                    <i class="material-icons white-text" style="margin-right:10px; font-size:2.3rem;">check_circle</i> 
+                    Setup Done!</h4>
+                <h5 class="white-text text-darken-2" style="font-size:1.5rem;">Your account has been created!</h5>
+                <h6 class="white-text text-darken-2 thin" style="font-size:1.15rem;">We sent an email to <span class="yellow-text text-accent-2" style="font-weight:500;">{{user.email}}</span> with a link to verify your account. You'll be redirected to the requests page momentarily...</h6>
+            </div>
+            <br />
+            <div class="layout vertical" style="max-width:1000px; margin-top:30px;">
+                <a href="#/requests" class="waves-effect waves-light btn-large green darken-2"><i class="material-icons right">arrow_forward</i>Take me there now!</a>
             </div>
         </div>
 	</template>
@@ -287,13 +306,9 @@
             		cusElem.user.username = $(cusElem.$.username).val();
             		cusElem.user.email = $(cusElem.$.email).val();
 
-            		var options = {
-            		    whiteList: {}
-            		};
-
             	    //scrub for xss
-            		cusElem.user.username = xss(cusElem.$.username, options);
-            		cusElem.user.email = xss(cusElem.$.email, options);
+            		cusElem.user.username = filterXSS(cusElem.user.username);
+            		cusElem.user.email = filterXSS(cusElem.user.email);
 
             		cusElem.usernameExists = null;
             		cusElem.emailExists = null;
@@ -500,18 +515,27 @@
             },
 
             saveUserData: function (authData, userdata) {
+                var cusElem = this;
                 var userRef = new Firebase(window.lfg.config.getFirebaseUrl() + 'users/' + authData.uid);
                 userdata.setupcomplete = true;
-                userRef.set(userdata);
 
-                var userid = userRef.key();
+                userRef.set(userdata, function (error) {
+                    if (error) {
+                        console.log('Synchronization failed');
+                    } else {
+                        var userid = userRef.key();
+                        cusElem.notifyPath('user.email', cusElem.user.email);
 
-                if (userid !== null && userid !== undefined) {
-                    document.querySelector('app-router').go('/');
-                }
-                else {
-                    //Show error message
-                }
+                        if (userid !== null && userid !== undefined) {
+                            $(cusElem.$.setup_success).fadeIn();
+                            cusElem.verifyEmail();
+                            setTimeout(function () { document.querySelector('app-router').go('/requests'); }, 5000);
+                        }
+                        else {
+                            //Show error message
+                        }
+                    }
+                });
             },
 
             validateInput: function () {
@@ -536,6 +560,10 @@
             	}
 
             	return valid;
+            },
+
+            verifyEmail: function () {
+                window.lfg.utils.sendVerificationEmail();
             },
 
 			/* Init */

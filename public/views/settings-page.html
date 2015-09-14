@@ -187,7 +187,6 @@
                     <div class="bottom layout horizontal" style="width:100%;">
                         <label class="logo-link grey-text text-darken-2 light left" style="margin-left: 12px !important;">Settings</label>
                         <div class="flex"></div>
-                        <!--<a class="btn green white-text waves-effect waves-light" style="margin-top: 6px; margin-right: 30px;" on-click="saveButtonEvent">-->
                         <i class="material-icons left">save</i>
                         Save</a>
                     </div>
@@ -224,7 +223,24 @@
                         </div>
                         <div id="email_label" class="layout horizontal col s12">
                             <h5 class="grey-text text-darken-1" style="margin-right:15px;">{{user.email}}</h5>
-                            <a id="edit_email" class="material-icons" style="margin-top:13px; cursor:pointer;" on-click="showEmailField">create</a>
+                            <a id="edit_email" class="material-icons" style="margin-top:13px; margin-right:30px; cursor:pointer;" on-click="showEmailField">create</a>
+                            <template is="dom-if" if="{{user.emailverified}}">
+                                <span class="layout horizontal">
+                                    <i class="material-icons green-text" style="margin-top:13px; margin-right:5px;">check_circle</i>
+                                    <label class="green-text" style="font-size:1.2rem; margin-top:13px;">verified</label>
+                                </span>
+                            </template>
+                            <template is="dom-if" if="{{emailNotverified}}">
+                                <span class="layout horizontal" style="display:none;">
+                                    <i class="material-icons orange-text text-darken-1" style="margin-top:13px; margin-right:5px;">info</i>
+                                    <label class="orange-text text-darken-1" style="font-size:1.2rem; margin-top:13px;">not verified</label>
+                                </span>
+                            </template>
+                        </div>
+                        <div class="col s12">
+                            <template is="dom-if" if="{{emailNotverified}}">
+                                <a class="blue-text" on-click="verifyEmail" style="cursor:pointer;"><i class="fa fa-paper-plane blue-text"></i>&nbsp;Resend Verification Email</a>
+                            </template>
                         </div>
                     </div>
 
@@ -367,6 +383,7 @@
                         var user = snapshot.val() || {};
                         if (user) {
                             var profileImage = document.getElementById('profile_pic');
+                            cusElem.emailNotverified = (user.emailverified == null || user.emailverified == undefined || !user.emailverified);
 
                             if (profileImage !== null && profileImage !== undefined) {
                                 profileImage.src = user.profilepic;
@@ -470,8 +487,17 @@
                                 $(cusElem.$.email_error).find('strong').html("**That email is being used already");
                             }
                             else {
-                                usernameRef = new Firebase(window.lfg.config.getFirebaseUrl() + 'users/' + authData.uid + '/email');
-                                usernameRef.set(email);
+                                var emailRef = new Firebase(window.lfg.config.getFirebaseUrl() + 'users/' + authData.uid + '/email');
+                                emailRef.set(email);
+
+                                //make sure to set the new email as not verified
+                                var verifiedRef = new Firebase(window.lfg.config.getFirebaseUrl() + 'users/' + authData.uid + '/emailverified');
+                                verifiedRef.remove();
+
+                                cusElem.user.emailverified = null;
+                                cusElem.emailNotverified = true;
+                                cusElem.notifyPath('user.emailverified', cusElem.user.emailverified);
+                                cusElem.notifyPath('emailNotverified', cusElem.emailNotverified);
 
                                 cusElem.user.email = email;
                                 cusElem.notifyPath('user.email', cusElem.user.email);
@@ -509,11 +535,7 @@
                 if (this.validateUsername()) {
                     //check db for duplicate username
                     var username = $(this.$.username).val().trim();
-
-                    var options = {
-                        whiteList: {}
-                    };
-                    username = xss(username, options);
+                    username = filterXSS(username);
 
                     var authData = window.lfg.utils.getAuthData();
                     var userRef = new Firebase(window.lfg.config.getFirebaseUrl() + 'users');
@@ -587,6 +609,7 @@
             initializeData: function () {
                 this.loggedIn = null;
                 this.loggedOut = null;
+                this.emailNotverified = null;
 
                 this.isLoggedIn();
                 this.isLoggedOut();
@@ -704,6 +727,11 @@
                     $(cusElem.$.email_field).fadeIn();
                     $(cusElem.$.email).focus();
                 });
+            },
+
+            verifyEmail: function (e) {
+                window.lfg.utils.sendVerificationEmail();
+                $('#unverified_message').slideUp();
             },
 
             verifyImageFromFileReader: function (e) {

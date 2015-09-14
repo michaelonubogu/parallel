@@ -9,6 +9,7 @@ var openid = require('openid');
 var nodemailer = require('nodemailer');
 var uuid = require('uuid');
 var fs = require('fs');
+var _ = require('underscore');
 
 var Firebase = require('firebase');
 var FirebaseTokenGenerator = require("firebase-token-generator");
@@ -125,21 +126,36 @@ router.get('/verify', function (req, res) {
 router.get('/confirm/:token', function (req, res) {
     var token = req.params.token;
     usersRef = new Firebase(config.firebase.url + 'users');
+    
+    //hack - save the response object to use and send response later
+    GLOBAL.confirmResponse = res;
 
     usersRef
         .orderByChild('verifytoken')
         .equalTo(token)
         .once('value', function (snapshot) {
             var user = snapshot.val();
+            var confirmResponse = GLOBAL.confirmResponse;
 
             if (user && !user.emailverified) {
-                var userItemRef = new Firebase(config.firebase.url + 'users/' + snapshot.key() + '/emailverified');
-                userItemRef.set(true);
+                var userKey = _.map(user, function (obj, key) { return key; });
 
-                //send verification success message
+                if (userKey && userKey.length > 0) {
+                    var firebaseUrl = config.firebase.url + 'users/' + userKey[0] + '/emailverified';
+                    var userItemRef = new Firebase(firebaseUrl);
+                    userItemRef.set(true);
+                
+                    //send verification success page
+                    if (confirmResponse !== null && confirmResponse !== undefined) {
+                        confirmResponse.sendFile(path.join(__dirname, '../public', 'confirm.html'));
+                    }
+                }
             }
             else {
-
+                if (confirmResponse !== null && confirmResponse !== undefined) {
+                    //send message to client about not being able to confirm
+                    confirmResponse.sendFile(path.join(__dirname, '../public', 'index.html'));
+                }
             }
         });
 });
