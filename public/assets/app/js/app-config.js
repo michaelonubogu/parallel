@@ -12,7 +12,7 @@
             fayeDevUrl: 'http://localhost:1337/faye',
             fayeTestUrl: 'http://parallel-test.azurewebsites.net/faye',
             fayeProdUrl: 'http://www.parallel.team/faye',
-            env: 'prod',
+            env: 'dev',
 			apiEndPoints: {
 				games: 'api/giantbomb/games',
 				game: 'api/giantbomb/game',

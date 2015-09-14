@@ -1,15 +1,16 @@
 ﻿<!DOCTYPE html>
 <html>
 <head lang="en">
-	<title></title>
+	<title>Parallel - Find people to play games with</title>
 	<meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
 
 	<script>
-		if (window.location.pathname.indexOf('game')) {
+		if (window.location.pathname.indexOf('confirm')) {
+			//store the request id in local storage. We'll check for it on index.html
 			var pathname = window.location.pathname;
-			var gameid = pathname.substring(pathname.lastIndexOf('/') + 1);
+			var confirmToken = pathname.substring(pathname.lastIndexOf('/') + 1);
 
-			window.sessionStorage.setItem('gameid', gameid);
+			window.sessionStorage.setItem('requestid', requestid);
 			window.location.href = window.location.protocol + '//' + window.location.host;
 		}
 	</script>

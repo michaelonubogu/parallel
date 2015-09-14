@@ -9,14 +9,14 @@ var env = {
 
 module.exports = {
 	"appsettings" : {
-        "env" : env.prod,
+        "env" : env.dev,
         "testDomain" : 'http://parallel-test.azurewebsites.net',
         "prodDomain" : 'http://www.parallel.team'
     },
     "email": {
         "gmail": {
-            "user" : "parallelteamapp@gmail.com",
-            "password" : "trexapplerobot2015"
+            "user" : "hello@parallel.team",
+            "password" : "Donnatadessuka24!"
         }
     },
 	"giant_bomb": {

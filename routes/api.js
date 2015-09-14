@@ -90,10 +90,10 @@ router.get('/verify', function (req, res) {
                     
                     // setup e-mail data with unicode symbols
                     var mailOptions = {
-                        from: config.email.gmail.user, // sender address
+                        from: 'Parallel <' + config.email.gmail.user + '>', // sender address
                         to: email, // list of receivers
                         subject: 'Verify your Parallel Account Email', // Subject line
-                        html: verify_url // html body
+                        html: htmlTemplate // html body
                     };
                     
                     // send mail with defined transport object
@@ -118,9 +118,30 @@ router.get('/verify', function (req, res) {
             });
         }
     });
+
+    res.status(200).send('server reached');
 });
 
-router.get('/confirm/:token', function (req, res) { 
+router.get('/confirm/:token', function (req, res) {
+    var token = req.params.token;
+    usersRef = new Firebase(config.firebase.url + 'users');
+
+    usersRef
+        .orderByChild('verifytoken')
+        .equalTo(token)
+        .once('value', function (snapshot) {
+            var user = snapshot.val();
+
+            if (user && !user.emailverified) {
+                var userItemRef = new Firebase(config.firebase.url + 'users/' + snapshot.key() + '/emailverified');
+                userItemRef.set(true);
+
+                //send verification success message
+            }
+            else {
+
+            }
+        });
 });
 
 router.get('/steam/authenticate', function (req, res) {
