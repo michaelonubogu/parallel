@@ -19,9 +19,6 @@ $RECYCLE.BIN/
 *.njsproj
 *.tmp
 
-# App related files
-config.js
-
 # Windows shortcuts
 *.lnk
 
@@ -48,5 +45,4 @@ config.js
 .AppleDesktop
 Network Trash Folder
 Temporary Items
-node_modules
 .apdisk
