@@ -1946,7 +1946,8 @@
                 var cusElem = this;
 
                 if (window.lfg.utils.isLoggedIn()) {
-                    var userRef = new Firebase(window.lfg.config.getFirebaseUrl() + 'users/' + authData.uid);
+                    var uid = window.lfg.utils.getUser();
+                    var userRef = new Firebase(window.lfg.config.getFirebaseUrl() + 'users/' + uid);
 
                     //Get the user profile info. If none exists, redirect to Onboarding process...
                     userRef
@@ -1965,9 +1966,10 @@
 
             isLoggedOut: function () {
                 var cusElem = this;
+                var uid = window.lfg.utils.getUser();
 
                 if (window.lfg.utils.isLoggedIn()) {
-                    var userRef = new Firebase(window.lfg.config.getFirebaseUrl() + 'users/' + authData.uid);
+                    var userRef = new Firebase(window.lfg.config.getFirebaseUrl() + 'users/' + uid);
 
                     //Get the user profile info. If none exists, redirect to Onboarding process...
                     userRef
@@ -1981,6 +1983,9 @@
                                 cusElem.loggedOut = false;
                             }
                         });
+                }
+                else {
+                    cusElem.loggedOut = true;
                 }
             },
 

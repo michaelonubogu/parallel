@@ -64,6 +64,44 @@ router.get('/', function (req, res) {
 	res.send('respond with a resource');
 });
 
+router.get('/email/sendInviteRequest', function (req, res) {
+    var requestid = req.query.requestid;
+    var invitee = req.query.invitee;
+    var creator = req.query.creator;
+    var creatorEmail = req.query.creatorEmail;
+    var gametitle = req.query.gametitle;
+    var system = req.query.system;
+
+    //Send verification email and success message to user/client
+    var templateDir = config.appsettings.env === 'dev' ? './emailTemplates/inviteRequestEmail.html' : '../emailTemplates/inviteRequestEmail.html';
+    var htmlTemplate = fs.readFileSync(templateDir, "utf8");
+    var requesturl = origin + '/#/request/' + requestid;
+    
+    htmlTemplate = htmlTemplate.replace('{{creator}}', creator);
+    htmlTemplate = htmlTemplate.replace('{{inviteRequestor}}', invitee);
+    htmlTemplate = htmlTemplate.replace('{{gametitle}}', gametitle);
+    htmlTemplate = htmlTemplate.replace('{{system}}', system);
+    htmlTemplate = htmlTemplate.replace('{{requesturl}}', requesturl);
+    
+    // setup e-mail data with unicode symbols
+    var mailOptions = {
+        from: 'Parallel <' + config.email.gmail.user + '>', // sender address
+        to: creatorEmail, // list of receivers
+        subject: 'Response to your gaming request', // Subject line
+        html: htmlTemplate // html body
+    };
+    
+    // send mail with defined transport object
+    transporter.sendMail(mailOptions, function (error, info) {
+        if (error) {
+            return console.log(error);
+        }
+        console.log('Message sent: ' + info.response);
+    });
+
+    res.status(200).send('server reached');
+});
+
 router.get('/verify', function (req, res) {
     var uid = req.query.uid;
     var userEmailRef = new Firebase(config.firebase.url +'users/' + uid + '/email');
@@ -83,7 +121,8 @@ router.get('/verify', function (req, res) {
                     console.log('Synchronization failed');
                 } else {
                     //Send verification email and success message to user/client
-                    var htmlTemplate = fs.readFileSync('../emailTemplates/verifyEmail.html', "utf8");
+                    var templateDir = config.appsettings.env === 'dev' ? './emailTemplates/verifyEmail.html' : '../emailTemplates/verifyEmail.html';
+                    var htmlTemplate = fs.readFileSync(templateDir, "utf8");
                     var verify_url = origin + '/api/confirm/' + token;
                     
                     htmlTemplate = htmlTemplate.replace('{{verify_url}}', verify_url);

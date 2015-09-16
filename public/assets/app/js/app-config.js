@@ -19,7 +19,8 @@
 				platforms: 'api/giantbomb/platform',
 				search: 'api/giantbomb/search',
                 steamlogin: 'api/steam/authenticate',
-                verifyEmail : 'api/verify'
+                verifyEmail : 'api/verify',
+                inviteRequest: 'api/email/sendInviteRequest'
 			},
 			firebaseUrl: 'https://lfgbase.firebaseio.com/',
 			firebaseEntities: {
@@ -151,6 +152,29 @@
                 
                 if (url[url.length - 1] !== '/') { url += '/'; }
                 return url + this.apiEndPoints.verifyEmail;
+            },
+
+            getInviteRequestUrl: function (){
+                var url = '';
+                switch (this.env) {
+                    case 'dev':
+                        url = this.appDevUrl;
+                        break;
+
+                    case 'test':
+                        url = this.appTestUrl;
+                        break;
+
+                    case 'prod':
+                        url = this.appProdUrl;
+                        break;
+
+                    default:
+                        break;
+                }
+                
+                if (url[url.length - 1] !== '/') { url += '/'; }
+                return url + this.apiEndPoints.inviteRequest;
             }
 		};
 		

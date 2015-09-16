@@ -20,6 +20,41 @@
 			margin-left: -15px !important;
 		}
 
+        .profile-place-holder{
+            background-image: url('../assets/app/img/profile-photo-placeholder.jpg')
+        }
+
+        .play-neutral{
+            background-color: #ffffff;
+			color: #bdbdbd;
+			font-size: 1rem;
+			padding: 4.5px 13px;
+			border: solid 2px #BDBDBD;
+			border-radius: 5px;
+			margin: 0 5px;
+			max-height: 30px !important;
+            cursor: pointer;
+        }
+
+        .play-selected{
+            background-color: #4caf50;
+			color: #ffffff;
+			font-size: 1rem;
+			padding: 4.5px 13px;
+			border: solid 2px #4caf50;
+			border-radius: 5px;
+			margin: 0 5px;
+			max-height: 30px !important;
+            cursor: pointer;
+        }
+
+        .play-icon-neutral{
+            color: #9e9e9e;
+        }
+
+        .play-icon-selected{
+            color: #ffffff;
+        }
 
 		.tag-facebook {
 			background-color: #3B5998;
@@ -284,6 +319,11 @@
             font-size:0.85rem !important;
         }
 
+        .invitee-item{
+            margin-right:20px !important;
+            margin-top: 25px !important;
+        }
+
 		@media (max-width: 640px) {
 			.logo-link {
 				margin-left: 0px;
@@ -364,28 +404,21 @@
 
 		<div class="white details-area request-details-party request-content" style="display:none;">
 			<div style="margin-top:30px !important;">
-				<!--<div class="col s3 left left-align">
-                    <div class="switch">
-                        <label class="white-text" style="font-size:1rem;">
-                            <span class="negative">No</span>
-                            <input type="checkbox">
-                            <span class="lever"></span>
-                            <span class="positive">Yes</span>
-                        </label>
+				<div class="layout horizontal wrap center center-center">
+                    <!--<div><h6 class="grey-text" style="font-size:0.85rem; visibility:hidden;">[[getTimeLapse(request.datetime)]]</h6></div>-->
+                    <div class="console-gamer-tag" style="width:35% !important;">
+                        <template is="dom-if" if="{{buttonDisplayCondition}}">
+                            <a id="interested_button" on-click="addRequestForUser" class="center center-align play-neutral push-top"><i class="fa fa-check-circle play-icon play-icon-neutral" style="margin-right:7px;"></i><span class="invite-button-text">Ask for Invite</span></a>
+                        </template>
                     </div>
-				</div>-->
-				<div class="layout horizontal center center-center">
-                    <div><h6 class="grey-text" style="font-size:0.85rem; visibility:hidden;">[[getTimeLapse(request.datetime)]]</h6></div>
-                    <span class="flex"></span>
-					<span class="layout horizontal wrap center-center console-gamer-tag">
+					<span class="layout horizontal wrap center-center flex console-gamer-tag">
                         <span class$="[[getSystemClass(request.system)]]">[[getSystemType(request.system)]]</span>
                         <span class="center center-align tag-neutral push-top">[[getGamerCount(request.gamercount)]]</span>
+                        <template is="dom-if" if="{{request.mic}}">
+                            <span style="margin-left:7px;" class="grey-text"><i style="font-size:1.2rem;" class="material-icons">headset_mic</i></span>
+                        </template>
                     </span>
-                    <template is="dom-if" if="{{request.mic}}">
-                        <span style="margin-left:7px;" class="grey-text"><i style="font-size:1.2rem;" class="material-icons">headset_mic</i></span>
-                    </template>
-                    <span class="flex"></span>
-                    <div><h6 class="grey-text" style="font-size:0.85rem;">[[getTimeLapse(request.datetime)]]</h6></div>
+                    <div style="width:35% !important;"><h6 class="grey-text" style="font-size:0.85rem;">[[getTimeLapse(request.datetime)]]</h6></div>
 				</div>
 			</div>
 			<br />
@@ -409,9 +442,25 @@
 					</div>
 				</div>
 
-				<br /><div class="divider"></div><br />
+				<!--<br /><div class="divider"></div><br />-->
+                <br /><br />
+                <div class="layout horizontal center-center" style="width:100%;">
+                    <h5 class="grey-text text-lighten-1 thin">Who wants to play?</h5>
+                </div>
+                <div class="row want-to-play-area">
+                    <div class="layout horizontal wrap" style="margin-bottom:7px;">
+                        <template is="dom-repeat" items="{{interestedPlayers}}">
+                            <div class="layout vertical center-center invitee-item">
+                                <img src$="{{item.profilepic}}" class="responsive-img circle profile-place-holder" style="width:35px; height:35px;" />
+                                <label class="grey-text text-darken-2" style="font-size:0.85rem; margin-top:11px !important;">{{item.username}}</label>
+                            </div>
+                        </template>
+                    </div>
+                </div>
 
-				<div class="row add-comment-row">
+                <br /><div class="divider"></div><br />
+
+				<div class="row add-comment-row" style="margin-top:20px !important;">
 					<div class="col s12  add-comment-message" style="display:none;">
 						<i class="reply-circle" style="margin-right:30px; cursor:pointer;"></i>
 						<label class="grey-text text-lighten-1 reply-text" style="font-size:1.25rem; cursor:pointer;">Reply to request</label>
@@ -505,6 +554,7 @@
 					var options = {
 					    whiteList: {}
 					};
+
 					var userComment = filterXSS(userComment, options);
 
 					var requestCommentRef = new Firebase(window.lfg.config.getFirebaseUrl() + 'comments');
@@ -526,6 +576,108 @@
 				}
 			},
 
+			addRequestForUser: function (e) {
+			    var cusElem = this;
+			    var uid = window.lfg.utils.getUser();
+			    var requestid = cusElem.request.id;
+
+			    if ($('#interested_button').hasClass('invite-sent')) {
+			        ////Have the request removed for the user, and remove them from the request's interested users list
+			        //var userInterestedRef = new Firebase(window.lfg.config.getFirebaseUrl() + 'users/' + uid + '/interestedrequests/' + requestid);
+			        //var requestInterestedRef = new Firebase(window.lfg.config.getFirebaseUrl() + 'requests/' + requestid + '/interestedplayers/' + uid);
+
+			        //userInterestedRef.remove();
+			        //requestInterestedRef.remove();
+
+			        //$('#interested_button').removeClass('play-selected').addClass('play-neutral');
+			        //$('#interested_button').find('.play-icon').removeClass('play-icon-selected').addClass('play-icon-neutral');
+			        //$('#interested_button').removeClass('invite-sent');
+			    }
+			    else {
+			        //save the request for the user, and also add the user to the players requested list for the request
+			        var userInterestedRef = new Firebase(window.lfg.config.getFirebaseUrl() + 'users/' + uid + '/interestedrequests/' + requestid);
+			        var requestInterestedRef = new Firebase(window.lfg.config.getFirebaseUrl() + 'requests/' + requestid + '/interestedplayers/' + uid);
+
+			        userInterestedRef.set({
+			            requestid: requestid,
+			            gametitle: cusElem.request.gametitle,
+			            title: cusElem.request.title,
+			            description: cusElem.request.description,
+			            system: cusElem.request.system,
+			            images: cusElem.request.images,
+			            created: cusElem.request.created
+			        });
+
+			        requestInterestedRef.set({ uid: uid });
+
+			        //alert the user; mark the icon as invited (with the invite sent class); send email to owner of request
+			        $('#interested_button').removeClass('play-neutral').addClass('play-selected');
+			        $('#interested_button').find('.play-icon').removeClass('play-icon-neutral').addClass('play-icon-selected');
+			        $('#interested_button').find('.invite-button-text').html('Invite Asked');
+			        $('#interested_button').addClass('invite-sent');
+
+			        var uid = window.lfg.utils.getUser();
+			        var userRef = new Firebase(window.lfg.config.getFirebaseUrl() + 'users/' + uid);
+
+			        userRef.once('value', function (snapshot) {
+			            var user = snapshot.val();
+
+                        //Make sure the creator's email is verified
+			            if (user !== null && user !== undefined && cusElem.user.emailverified) {
+			                var url = window.lfg.config.getInviteRequestUrl();
+			                var system = cusElem.getSystemType(cusElem.request.system);
+
+			                var data = {
+			                    requestid: cusElem.request.id,
+			                    invitee: user.username,
+			                    creator: cusElem.user.username,
+			                    creatorEmail: cusElem.user.email,
+			                    gametitle: cusElem.request.gametitle,
+			                    system: system
+			                }
+
+			                //Send email to creator of the request
+			                $.ajax({
+			                    url: url,
+			                    type: 'GET',
+			                    cache: false,
+			                    data: data,
+			                    dataType: 'json',
+			                    success: function (data) {
+                                    //maybe alert user it was success??
+			                    },
+			                    error: function (err) {
+			                    }
+			                });
+			            }
+			        });
+			    }
+			},
+
+			checkInviteStatus: function(){
+			    //Checks to see if an invite was requested for the user
+			    var cusElem = this;
+
+                //I am totally embarassed about this hack :\ but I'm on a tight deadline...
+			    setTimeout(function () {
+			        var uid = window.lfg.utils.getUser();
+			        var requestid = cusElem.request.id;
+
+			        var requestInterestedRef = new Firebase(window.lfg.config.getFirebaseUrl() + 'requests/' + requestid + '/interestedplayers/' + uid);
+
+			        requestInterestedRef.once('value', function (snapshot) {
+			            var data = snapshot.val();
+
+			            if (data !== null && data !== undefined) {
+			                $('#interested_button').removeClass('play-neutral').addClass('play-selected');
+			                $('#interested_button').find('.play-icon').removeClass('play-icon-neutral').addClass('play-icon-selected');
+			                $('#interested_button').addClass('invite-sent');
+			                $('#interested_button').find('.invite-button-text').html('Invite Asked');
+			            }
+			        });
+			    }, 250);
+
+			},
 
 			getGamerCount: function (count) {
 				if (count <= 1) {
@@ -609,6 +761,10 @@
 			getTimeLapse: function (date) {
 				var convDate = new Date(date);
 				return window.lfg.utils.timeSince(window.lfg.utils.convertUtcToLocalDate(convDate));
+			},
+
+			getInviteRequestors: function(){
+                //retrieves the list of people who want to play the game for the request
 			},
 
 			goToList: function () {
@@ -743,10 +899,11 @@
 
 			getRequest: function (key) {
 				var customElem = this;
-				var requestRef = new Firebase(window.lfg.config.getFirebaseUrl() + 'requests/' + this.requestkey);
+				var requestRef = new Firebase(window.lfg.config.getFirebaseUrl() + 'requests/' + customElem.requestkey);
+				var uid = window.lfg.utils.getUser();
 
-				requestRef.once('value', function (snapshot) {	//I LUV U Firebase :D. Data will be read once for initial request
-
+				requestRef.once('value', function (snapshot) {
+				    //I LUV U Firebase :D. Data will be read once for initial request
 					var comments = [];
 					var request = snapshot.val();
 					request.id = snapshot.key();
@@ -765,7 +922,62 @@
 					});
 
 					customElem.setRequestUrl(request.id);
+					customElem.buttonDisplayCondition = window.lfg.utils.isLoggedIn() && (uid !== request.uid);
+					customElem.checkInviteStatus();
+
+				    //Get interested players
+					customElem.getInterestedPlayers();
 				});
+			},
+
+			getInterestedPlayers: function () {
+			    var cusElem = this;
+
+			    if (cusElem.request !== null && cusElem.request !== undefined) {
+			        var interestedUidsArray = _.map(cusElem.request.interestedplayers, function (elem, key) {
+			            return key;
+			        });
+
+			        if (interestedUidsArray) {
+			            _.each(interestedUidsArray, function (uid, index) {
+			                var userRef = new Firebase(window.lfg.config.getFirebaseUrl() + 'users/' + uid);
+			                userRef.orderByPriority().once('value', function (snapshot) {
+			                    var user = snapshot.val();
+
+			                    if (user) {
+			                        cusElem.push('interestedPlayers', user);
+			                        cusElem.notifyPath('interestedPlayers', cusElem.interestedPlayers);
+			                    }
+			                });
+			            })
+			        }
+
+			        //set an "on" firebase event for any other additions
+			        var newInviteesRef = new Firebase(window.lfg.config.getFirebaseUrl() + 'requests/' + cusElem.request.id + '/interestedplayers');
+			        var lastInterestedUid = interestedUidsArray[interestedUidsArray.length - 1];
+
+			        newInviteesRef
+                        .orderByChild('uid')
+                        .startAt(lastInterestedUid)
+                        .on('child_added', function (childSnapshot) {
+                            var addedUser = childSnapshot.val();
+
+                            if (addedUser && childSnapshot.key() !== interestedUidsArray[interestedUidsArray.length - 1]) {
+
+                                var interestedUid = childSnapshot.key();
+                                var interestedUserRef = new Firebase(window.lfg.config.getFirebaseUrl() + 'users/' + interestedUid);
+
+                                interestedUserRef.once('value', function (snapshot) {
+                                    var interestedUser = snapshot.val();
+
+                                    if (interestedUser) {
+                                        cusElem.push('interestedPlayers', interestedUser);
+                                        cusElem.notifyPath('interestedPlayers', cusElem.interestedPlayers);
+                                    }
+                                });
+                            }
+                        });
+			    }
 			},
 
 			getUserProfile: function (request) {
@@ -957,6 +1169,7 @@
 
 			initializeData: function () {
 			   
+			    this.buttonDisplayCondition = null;
 			    this.loggedIn = null;
 			    this.isLoggedIn();
 
@@ -965,6 +1178,7 @@
 					comments: []
 				};
 				this.user = {};
+				this.interestedPlayers = [];
 			},
 
 			registerPlugins: function () {
