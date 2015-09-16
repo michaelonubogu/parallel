@@ -595,10 +595,7 @@
             		}
 
             	    //scrub for xss
-            		var options = {
-            		    whiteList: {}
-            		};
-            		var userComment = xss(userComment, options);
+            		var userComment = filterXSS(userComment);
 
             		var requestCommentRef = new Firebase(window.lfg.config.getFirebaseUrl() + 'comments');
             		var newCommentRef = requestCommentRef.push({
