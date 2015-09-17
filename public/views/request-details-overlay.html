@@ -84,59 +84,20 @@
 			
 		}
 
-		.tag-neutral {
-			background-color: #ffffff;
-			color: #bdbdbd;
-			font-size: 1rem;
-			padding: 3px 13px;
-			border: solid 2px #BDBDBD;
-			border-radius: 5px;
-			margin: 0 5px;
-			max-height: 30px !important;
-		}
-
-		.psn-filter-tag {
+		.psn-label-tag {
 			background-color: #01579B;
-			color: #ffffff !important;
-			font-size: 1rem;
-			padding: 3px 13px;
-			border: solid 2px #01579B;
-			border-radius: 5px;
-			margin: 0 5px;
-			max-height: 30px !important;
 		}
 
-		.xbox-filter-tag {
+		.xbox-label-tag {
 			background-color: #5DCB17;
-			color: #ffffff !important;
-			font-size: 1rem;
-			padding: 3px 13px;
-			border: solid 2px #5DCB17;
-			border-radius: 5px;
-			margin: 0 5px;
-			max-height: 30px !important;
 		}
 
-		.wii-filter-tag {
+		.wii-label-tag {
 			background-color: #03A9F4;
-			color: #ffffff !important;
-			font-size: 1rem;
-			padding: 3px 13px;
-			border: solid 2px #03A9F4;
-			border-radius: 5px;
-			margin: 0 5px;
-			max-height: 30px !important;
 		}
 
-		.pc-filter-tag {
+		.pc-label-tag {
 			background-color: #F44336;
-			color: #ffffff !important;
-			font-size: 1rem;
-			padding: 3px 13px;
-			border: solid 2px #F44336;
-			border-radius: 5px;
-			margin: 0 5px;
-			max-height: 30px !important;
 		}
 
 		.profile-background {
@@ -147,13 +108,14 @@
 			position: absolute !important;
 			height: 200px;
 			background-size: cover;
-			border-bottom: solid 1px #ffee58;
+			/*border-bottom: solid 1px #ffee58;*/
 			width: 100%;
-			filter: blur(4px);
-			-webkit-filter: blur(4px);
-			-moz-filter: blur(4px);
-			-o-filter: blur(4px);
-			-ms-filter: blur(4px);
+			filter: blur(5px);
+			-webkit-filter: blur(5px);
+			-moz-filter: blur(5px);
+			-o-filter: blur(5px);
+			-ms-filter: blur(5px);
+            overflow:hidden;
 		}
 
 		.profile-background-dopple {
@@ -164,7 +126,7 @@
 			position: absolute !important;
 			height: 200px;
 			background-size: cover;
-			border-bottom: solid 1px #ffee58;
+			/*border-bottom: solid 1px #ffee58;*/
 			width: 100%;
 		}
 
@@ -275,7 +237,7 @@
 			padding: 0;
 		}
 
-		.request-profile-image {
+		.creator-profile-image {
 			width: 50px;
 			height: 50px;
 			overflow: hidden;
@@ -324,10 +286,22 @@
             margin-top: 25px !important;
         }
 
+        .request-info-row{
+            height:50px 
+            !important; 
+            z-index:1000; 
+            margin-top:8px !important;
+        }
+
 		@media (max-width: 640px) {
 			.logo-link {
 				margin-left: 0px;
 			}
+
+            .request-info-row{
+                margin-top:32px !important;
+                margin-bottom: 100px !important;
+            }
 
             .reply-circle {
 			    font-size: 18px;
@@ -402,10 +376,44 @@
 			</div>
 		</paper-toolbar>
 
+        <div class="row request-info-row">
+            <div class$="[[getSystemClass(request.system)]]" style="height:100%;">
+                <h6 class="valign white-text">[[getSystemType(request.system)]]</h6>
+            </div>
+            <div class="col s12 m4 center center-align valign-wrapper layout horizontal center-center" style="height:100%; background-color:#E3E3E3;">
+                <h6 class="valign grey-text text-darken-2">[[getGamerCount(request.gamercount)]]</h6>
+            </div>
+            <div class="col s12 m4 center center-align valign-wrapper layout horizontal center-center" style="background-color:#F5F5F5; height:100%;">
+                
+                <template is="dom-if" if="{{request.mic}}">
+                    <i class="material-icons grey-text text-darken-1" style="font-size:1.15rem; margin-right:7px;">mic</i>
+                    <h6 class="valign grey-text text-darken-1">Mic Required</h6>
+                </template>
+                <template is="dom-if" if="{{!request.mic}}">
+                    <i class="material-icons grey-text text-lighten-1" style="font-size:1.15rem; margin-right:7px;">mic_off</i>
+                    <h6 class="valign grey-text text-lighten-1">Mic Not Required</h6>
+                </template>
+            </div>
+        </div>
+
+        <br />
+
+        <div class="layout horizontal center-center"><h6 class="grey-text" style="font-size:0.85rem;">[[getTimeLapse(request.datetime)]]</h6></div>
+
+        <br />
+
+        <div class="row">
+            <div class="col s12 center center-align">
+                <h5 class="grey-text text-darken-2 light force-wrap title-text">[[request.title]]</h5>
+            </div>
+            <div class="col s12 center center-align">
+                <h6 class="grey-text text-darken-2 force-wrap details-text">[[request.description]]</h6>
+            </div>
+        </div>
+
 		<div class="white details-area request-details-party request-content" style="display:none;">
-			<div style="margin-top:30px !important;">
+			<!--<div style="margin-top:30px !important;">
 				<div class="layout horizontal wrap center center-center">
-                    <!--<div><h6 class="grey-text" style="font-size:0.85rem; visibility:hidden;">[[getTimeLapse(request.datetime)]]</h6></div>-->
                     <div class="console-gamer-tag" style="width:35% !important;">
                         <template is="dom-if" if="{{buttonDisplayCondition}}">
                             <a id="interested_button" on-click="addRequestForUser" class="center center-align play-neutral push-top"><i class="fa fa-check-circle play-icon play-icon-neutral" style="margin-right:7px;"></i><span class="invite-button-text">Ask for Invite</span></a>
@@ -420,33 +428,39 @@
                     </span>
                     <div style="width:35% !important;"><h6 class="grey-text" style="font-size:0.85rem;">[[getTimeLapse(request.datetime)]]</h6></div>
 				</div>
-			</div>
-			<br />
+			</div>-->
+
+			<br /><br /><br />
 
 			<div class="request-info-area">
-				<div class="row">
-					<div class="col s12 center center-aligned">
-						<img id="profile_image" alt="" src="../assets/app/img/profile-photo-placeholder.jpg" style="position:relative;" class="circle request-profile-image" width="50" height="50" />
-					</div>
-					<div class="col s12 center center-align">
-						<h6 class="light grey-text">[[user.username]]</h6>
-					</div>
-				</div>
-
-				<div class="row">
-					<div class="col s12 center center-align">
-						<h5 class="grey-text text-darken-2 light force-wrap title-text">[[request.title]]</h5>
-					</div>
-					<div class="col s12 center center-align">
-						<h6 class="grey-text text-darken-2 force-wrap details-text">[[request.description]]</h6>
-					</div>
-				</div>
-
-				<!--<br /><div class="divider"></div><br />-->
-                <br /><br />
-                <div class="layout horizontal center-center" style="width:100%;">
-                    <h5 class="grey-text text-lighten-1 thin">Who wants to play?</h5>
+                <div class="divider" style="overflow:visible;">
+                    <div class="row">
+                        <div class="col s12 center center-aligned">
+                            <img id="profile_image" alt="" src="../assets/app/img/profile-photo-placeholder.jpg" style="position:relative; margin-top:-27px;" class="circle creator-profile-image" width="50" height="50" />
+                        </div>
+                        <div class="col s12 center center-align">
+                            <h6 class="thin grey-text text-darken-4">[[user.username]]</h6>
+                        </div>
+                    </div>
                 </div>
+				
+
+                <br /><br /><br />
+
+                <div class="layout horizontal center-center" style="width:100%;">
+                    <h5 class="grey-text thin" style="font-size:1.25rem;">Who wants to play?</h5>
+                </div>
+
+                <br />
+                <div class="layout horizontal center-center">
+                    <div class="console-gamer-tag">
+                        <template is="dom-if" if="{{buttonDisplayCondition}}">
+                            <a id="interested_button" on-click="addRequestForUser" class="center center-align play-neutral push-top"><i class="fa fa-hand-paper-o play-icon play-icon-neutral" style="margin-right:7px;"></i><span class="invite-button-text">I want to play</span></a>
+                        </template>
+                    </div>
+                </div>
+                <br />
+
                 <div class="row want-to-play-area">
                     <div class="layout horizontal wrap" style="margin-bottom:7px;">
                         <template is="dom-repeat" items="{{interestedPlayers}}">
@@ -458,7 +472,7 @@
                     </div>
                 </div>
 
-                <br /><div class="divider"></div><br />
+                <br />
 
 				<div class="row add-comment-row" style="margin-top:20px !important;">
 					<div class="col s12  add-comment-message" style="display:none;">
@@ -612,8 +626,8 @@
 
 			        //alert the user; mark the icon as invited (with the invite sent class); send email to owner of request
 			        $('#interested_button').removeClass('play-neutral').addClass('play-selected');
-			        $('#interested_button').find('.play-icon').removeClass('play-icon-neutral').addClass('play-icon-selected');
-			        $('#interested_button').find('.invite-button-text').html('Invite Asked');
+			        $('#interested_button').find('.play-icon').removeClass('play-icon-neutral').addClass('play-icon-selected').removeClass('fa-hand-paper-o').addClass('fa-check-circle');
+			        $('#interested_button').find('.invite-button-text').html('I want to play');
 			        $('#interested_button').addClass('invite-sent');
 
 			        var uid = window.lfg.utils.getUser();
@@ -670,9 +684,9 @@
 
 			            if (data !== null && data !== undefined) {
 			                $('#interested_button').removeClass('play-neutral').addClass('play-selected');
-			                $('#interested_button').find('.play-icon').removeClass('play-icon-neutral').addClass('play-icon-selected');
+			                $('#interested_button').find('.play-icon').removeClass('play-icon-neutral').addClass('play-icon-selected').removeClass('fa-hand-paper-o').addClass('fa-check-circle');
 			                $('#interested_button').addClass('invite-sent');
-			                $('#interested_button').find('.invite-button-text').html('Invite Asked');
+			                $('#interested_button').find('.invite-button-text').html('I want to play');
 			            }
 			        });
 			    }, 250);
@@ -724,36 +738,36 @@
 
 			getSystemClass: function (system) {
 
-				var tagClass = "center center-align ";
+			    var tagClass = "col s12 m4 valign-wrapper layout horizontal center-center ";
 
 				switch (system) {
 
 					case 'pc':
-						return tagClass + 'pc-filter-tag';
+					    return tagClass + 'pc-label-tag';
 						break;
 
 					case 'ps3':
-						return tagClass + 'psn-filter-tag';
+					    return tagClass + 'psn-label-tag';
 						break;
 
 					case 'ps4':
-						return tagClass + 'psn-filter-tag';
+					    return tagClass + 'psn-label-tag';
 						break;
 
 					case 'xbox360':
-						return tagClass + 'xbox-filter-tag';
+					    return tagClass + 'xbox-label-tag';
 						break;
 
 					case 'xboxOne':
-						return tagClass + 'xbox-filter-tag';
+					    return tagClass + 'xbox-label-tag';
 						break;
 
 					case 'wii':
-						return tagClass + 'wii-filter-tag';
+					    return tagClass + 'wii-label-tag';
 						break;
 
 					case 'wiiu':
-						return tagClass + 'wii-filter-tag';
+					    return tagClass + 'wii-label-tag';
 						break;
 				}
 			},
