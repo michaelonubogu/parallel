@@ -57,32 +57,30 @@
         }
 
 		.tag-facebook {
-			background-color: #3B5998;
-			color: #ffffff;
-			font-size: 1rem;
-			padding: 3px 13px;
-			border: solid 2px #3B5998;
-			border-radius: 5px;
-			cursor: pointer;
-			margin: 0 5px;
-			max-height: 30px !important;
-			z-index: 1000;
-			
-		}
+            background-color: #3B5998;
+            color: #ffffff;
+            font-size: 1rem;
+            padding: 3px 13px;
+            border: solid 2px #3B5998;
+            border-radius: 16px;
+            cursor: pointer;
+            margin: 0 5px;
+            max-height: 30px !important;
+            z-index: 1000;
+        }
 
-		.tag-twitter {
-			background-color: #55ACEE;
-			color: #ffffff;
-			font-size: 1rem;
-			padding: 3px 13px;
-			border: solid 2px #55ACEE;
-			border-radius: 5px;
-			cursor: pointer;
-			margin: 0 5px;
-			max-height: 30px !important;
-			z-index: 1000;
-			
-		}
+        .tag-twitter {
+            background-color: #55ACEE;
+            color: #ffffff;
+            font-size: 1rem;
+            padding: 3px 13px;
+            border: solid 2px #55ACEE;
+            border-radius: 16px;
+            cursor: pointer;
+            margin: 0 5px;
+            max-height: 30px !important;
+            z-index: 1000;
+        }
 
 		.psn-label-tag {
 			background-color: #01579B;
@@ -293,10 +291,18 @@
             margin-top:8px !important;
         }
 
+        .share-buttons{
+            margin-top:20px;
+        }
+
 		@media (max-width: 640px) {
 			.logo-link {
 				margin-left: 0px;
 			}
+
+            .share-buttons{
+                margin-top:115px;
+            }
 
             .request-info-row{
                 margin-top:32px !important;
@@ -358,16 +364,6 @@
 			<div id="request_header" class="profile-background"></div>
 			<div class="profile-background-overlay"></div>
 			<div class="flex"></div>
-			<div class="layout vertical wrap right right-align" style="margin-top:20px !important;">
-                <a id="to_facebook" class="layout horizontal center center-align filter-tags tag-facebook" on-click="postToFacebook">
-                    <i class="fa fa-share-alt"></i>&nbsp;&nbsp;
-                    <i class="fa fa-facebook"></i>
-                </a>
-                <a id="to_twitter" class="center center-align filter-tags tag-twitter" on-click="postToTwitter" style="margin-top:7px;">
-                    <i class="fa fa-share-alt"></i>&nbsp;&nbsp;
-                    <i class="fa fa-twitter"></i>
-                </a>
-            </div>
 			<div class="middle title layout horizontal center-center">
                 <img class="request-list-image self-center" src="[[request.images.list_url]]" width="160" />
             </div>
@@ -394,6 +390,17 @@
                     <h6 class="valign grey-text text-lighten-1">Mic Not Required</h6>
                 </template>
             </div>
+        </div>
+
+        <div class="layout horizontal center-center wrap share-buttons" style="width:100%;">
+            <a id="to_facebook" class="center center-align filter-tags tag-facebook" on-click="postToFacebook">
+                <i class="fa fa-share-alt"></i>&nbsp;&nbsp;
+                <i class="fa fa-facebook"></i>
+            </a>
+            <a id="to_twitter" class="center center-align filter-tags tag-twitter" on-click="postToTwitter">
+                <i class="fa fa-share-alt"></i>&nbsp;&nbsp;
+                <i class="fa fa-twitter"></i>
+            </a>
         </div>
 
         <br />

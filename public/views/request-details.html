@@ -67,7 +67,7 @@
             font-size: 1rem;
             padding: 3px 13px;
             border: solid 2px #3B5998;
-            border-radius: 5px;
+            border-radius: 16px;
             cursor: pointer;
             margin: 0 5px;
             max-height: 30px !important;
@@ -80,7 +80,7 @@
             font-size: 1rem;
             padding: 3px 13px;
             border: solid 2px #55ACEE;
-            border-radius: 5px;
+            border-radius: 16px;
             cursor: pointer;
             margin: 0 5px;
             max-height: 30px !important;
@@ -313,9 +313,17 @@
                 margin-left: 0px;
             }
 
+            .share-buttons{
+                margin-top:115px;
+            }
+
             .request-info-row{
                 margin-top:32px !important;
                 margin-bottom: 100px !important;
+            }
+
+            .top-nav-buttons{
+                margin-top:30px;
             }
 
             .reply-circle {
@@ -385,19 +393,11 @@
                     <div id="request_header_dopple" class="profile-background-dopple"></div>
                     <div id="request_header" class="profile-background"></div>
                     <div class="profile-background-overlay"></div>
-                    <paper-icon-button icon="menu" class="lfg-menu-icon" paper-drawer-toggle></paper-icon-button>
-                    <paper-icon-button icon="arrow-back" class="lfg-menu-icon" on-click="goToList"></paper-icon-button>
-                    <div class="flex"></div>
-                    <div class="layout vertical wrap" style="margin-top:20px !important;">
-                        <a id="to_facebook" class="center center-align filter-tags tag-facebook" on-click="postToFacebook">
-                            <i class="fa fa-share-alt"></i>&nbsp;&nbsp;
-                            <i class="fa fa-facebook"></i>
-                        </a>
-                        <a id="to_twitter" class="center center-align filter-tags tag-twitter" on-click="postToTwitter" style="margin-top:7px;">
-                            <i class="fa fa-share-alt"></i>&nbsp;&nbsp;
-                            <i class="fa fa-twitter"></i>
-                        </a>
+                    <div class="layout horizontal wrap top-nav-buttons" style="max-width:40px;">
+                        <paper-icon-button icon="menu" class="lfg-menu-icon" paper-drawer-toggle></paper-icon-button>
+                        <paper-icon-button icon="arrow-back" class="lfg-menu-icon" on-click="goToList"></paper-icon-button>
                     </div>
+                    <div class="flex"></div>
                     <div style="display:table-cell; text-align:center;" class="middle title">
                         <template is="dom-if" if="{{request.images.list_url}}">
                             <img class="request-details-profile-image" src="[[request.images.list_url]]" width="160" />
@@ -431,6 +431,17 @@
                             <h6 class="valign grey-text text-lighten-1">Mic Not Required</h6>
                         </template>
                     </div>
+                </div>
+
+                <div class="layout horizontal center-center wrap share-buttons" style="width:100%;">
+                    <a id="to_facebook" class="center center-align filter-tags tag-facebook" on-click="postToFacebook">
+                        <i class="fa fa-share-alt"></i>&nbsp;&nbsp;
+                        <i class="fa fa-facebook"></i>
+                    </a>
+                    <a id="to_twitter" class="center center-align filter-tags tag-twitter" on-click="postToTwitter">
+                        <i class="fa fa-share-alt"></i>&nbsp;&nbsp;
+                        <i class="fa fa-twitter"></i>
+                    </a>
                 </div>
 
                 <br />
@@ -565,6 +576,24 @@
                  * @type string
                  * @default ''
                  */
+            },
+
+            authDataCallback: function (authData) {
+                var cusElem = this;
+
+                if (authData) {
+                    //console.log("User " + authData.uid + " is logged in with " + authData.provider);
+                } else {
+                    //Check to make sure the user is logged out
+                    cusElem.loggedIn = false;
+                    cusElem.loggedOut = true;
+                    cusElem.buttonDisplayCondition = false;
+
+                    cusElem.notifyPath('loggedIn', cusElem.loggedIn);
+                    cusElem.notifyPath('loggedOut', cusElem.loggedOut);
+                    cusElem.notifyPath('buttonDisplayCondition', cusElem.buttonDisplayCondition);
+                    console.log("User is logged out");
+                }
             },
 
             addComment: function () {
@@ -1219,6 +1248,9 @@
             	$(document).on('input', this.$.comment_text, function () {
             		$(this).removeClass('invalid');
             	});
+
+            	var ref = new Firebase(window.lfg.config.getFirebaseUrl());
+            	ref.onAuth(this.authDataCallback.bind(this));
 
             	//$(document).on('click', this.$.to_facebook, this.postToFacebook.bind(this));
             	//$(document).on('click', this.$.to_twitter, this.postToTwitter.bind(this));

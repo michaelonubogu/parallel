@@ -56,6 +56,10 @@
             cursor:pointer;
         }
 
+        .nav-link-label{
+            font-size:0.9rem;
+        }
+
         .arrow-left {
 	        width: 0; 
 	        height: 0; 
@@ -74,46 +78,52 @@
 
 	<template>
 		<div id="nav_links" style="padding-top:20px; display:none;">
-            <a data-path="requests" href="#/" class="white-text nav-links">
+            <a data-path="requests" href="#/" class="white-text nav-links login-required">
                 <iron-icon icon="view-day"></iron-icon>
-                <span class="thin">Requests</span>
+                <span class="thin nav-link-label">Requests</span>
                 <span class="arrow-left" style="display:none;"></span>
             </a>
-            <a data-path="recent" href="#/recent" class="white-text nav-links">
+            <a data-path="recent" href="#/recent" class="white-text nav-links login-required">
                 <iron-icon icon="history"></iron-icon>
-                <span class="thin">Recent Requests</span>
+                <span class="thin nav-link-label">Recent Requests</span>
                 <span class="arrow-left" style="display:none;"></span>
             </a>
-            <br />
-            <a data-path="userrequests" href="#/userrequests" class="white-text nav-links">
+            <a data-path="userrequests" href="#/userrequests" class="white-text nav-links login-required">
                 <iron-icon icon="bookmark-border"></iron-icon>
-                <span class="thin">My Requests</span>
+                <span class="thin nav-link-label">My Requests</span>
                 <span class="arrow-left" style="display:none;"></span>
             </a>
-            <a data-path="games" href="#/games" class="white-text nav-links">
+            <a data-path="games" href="#/games" class="white-text nav-links login-required">
                 <iron-icon icon="hardware:gamepad"></iron-icon>
-                <span class="thin">My Games</span>
+                <span class="thin nav-link-label">My Games</span>
                 <span class="arrow-left" style="display:none;"></span>
             </a>
             <br />
-            <a data-path="about" href="#/landing" class="white-text nav-links">
+            <!--<a data-path="about" href="#/landing" class="white-text nav-links">
                 <iron-icon icon="info-outline"></iron-icon>
-                <span class="thin">About</span>
+                <span class="thin nav-link-label">About</span>
                 <span class="arrow-left" style="display:none;"></span>
-            </a>
-            <a data-path="settings" href="#/settings" class="white-text nav-links">
+            </a>-->
+            <a data-path="settings" href="#/settings" class="white-text nav-links login-required">
                 <iron-icon icon="build"></iron-icon>
-                <span class="thin">Settings</span>
+                <span class="thin nav-link-label">Settings</span>
                 <span class="arrow-left" style="display:none;"></span>
             </a>
-		</div>
-		<div style="padding-top:20px;">
-			<template is="dom-if" if="{{loggedIn}}">
-                <a class="white-text nav-links" on-click="logOut"><iron-icon icon="arrow-back"></iron-icon><span class="thin">Sign Out</span></a>
-			</template>
+            <template is="dom-if" if="{{loggedIn}}">
+                <a class="white-text nav-links login-required" on-click="logOut">
+                    <iron-icon icon="arrow-back"></iron-icon>
+                    <span class="thin nav-link-label">Sign Out</span>
+                </a>
+            </template>
 		</div>
 
-        <br /><br />
+        <br />
+
+        <div class="layout horizontal center-center" style="margin-bottom:6px; padding:0 14px 0 20px;">
+            <a href="#/landing" class="btn white-text thin orange darken-1" style="margin-left:-6px; font-size:0.8rem; width:100%;">About Parallel</a>
+        </div>
+
+        <br />
 
         <!-- Giantbomb & Steam-->
         <div class="layout vertical" style="width:100%; bottom:0; margin-bottom:20px;">
@@ -214,7 +224,7 @@
             },
 
             hideNavLinks: function(){
-                $(this.$.nav_links).remove();
+                $('.login-required').remove();
             },
 
             isLoggedIn: function () {
