@@ -438,7 +438,7 @@
 									<label class="grey-text text-darken-2" style="font-size:1rem; margin-right:5px;">Console</label>
 									<label class="red-text error-message" style="font-size:1rem; display:none;">**This is required</label>
 								</div>
-								<div class="layout horizontal col s12" style="margin-left:-4px;">
+								<div class="layout horizontal wrap col s12" style="margin-left:-4px;">
 									<span class="center center-align filter-tags tag-neutral" data-system="ps3">PS3</span>
 									<span class="center center-align filter-tags tag-neutral" data-system="ps4">PS4</span>
 									<span class="center center-align filter-tags tag-neutral" data-system="xbox360">X360</span>
@@ -914,7 +914,9 @@
             },
 
             postToFacebook: function (e) {
-            	if (this.newRequest !== null && this.newRequest !== undefined) {
+                var cusElem = this;
+
+                if (cusElem.newRequest !== null && this.newRequest !== undefined) {
             		var authJSON = sessionStorage.getItem(window.lfg.config.firebaseCacheKey);
             		var authData = JSON.parse(authJSON);
 
@@ -923,19 +925,19 @@
             			authData = JSON.parse(localJSON);
             		}
 
-            		var message = 'Find gamers to play ' + this.newRequest.gametitle + ' on ' + this.formatSystem(this.newRequest.system) + ' with Parallel';
+            		var message = 'Find gamers to play ' + cusElem.newRequest.gametitle + ' on ' + cusElem.formatSystem(cusElem.newRequest.system) + ' with Parallel';
 
-            		if (authData !== null && authData !== undefined && authData.uid === this.request.uid) {
-            			message = 'I created a gaming request for ' + this.newRequest.gametitle + ' on ' + this.formatSystem(this.newRequest.system) + ' with Parallel';
+            		if (authData !== null && authData !== undefined && authData.uid === cusElem.request.uid) {
+            		    message = 'I created a gaming request for ' + cusElem.newRequest.gametitle + ' on ' + cusElem.formatSystem(cusElem.newRequest.system) + ' with Parallel';
             		}
 
             		var options = {
-            			entityId: this.newRequest.id,
+            		    entityId: cusElem.newRequest.id,
             			entityType: 'request',
-            			gametitle: this.newRequest.gametitle,
-            			system: this.formatSystem(this.newRequest.system),
+            			gametitle: cusElem.newRequest.gametitle,
+            			system: cusElem.formatSystem(cusElem.newRequest.system),
             			description: message,
-            			photo: this.newRequest.images.list_url
+            			photo: cusElem.newRequest.images.list_url
             		};
 
             		window.lfg.utils.postToFacebook(options);
@@ -943,7 +945,9 @@
             },
 
             postToTwitter: function (e) {
-            	if (this.newRequest !== null && this.newRequest !== undefined) {
+                var cusElem = this;
+
+                if (cusElem.newRequest !== null && cusElem.newRequest !== undefined) {
             		var authJSON = sessionStorage.getItem(window.lfg.config.firebaseCacheKey);
             		var authData = JSON.parse(authJSON);
 
@@ -952,16 +956,16 @@
             			authData = JSON.parse(localJSON);
             		}
 
-            		var message = 'Check out this gaming request to play ' + this.newRequest.gametitle + ' for ' + this.formatSystem(this.newRequest.system) + ' on the Parallel app';
+            		var message = 'Check out this gaming request to play ' + cusElem.newRequest.gametitle + ' for ' + cusElem.formatSystem(cusElem.newRequest.system) + ' on the Parallel app';
 
-            		if (authData !== null && authData !== undefined && authData.uid === this.newRequest.uid) {
-            			message = 'I created a gaming request to play ' + this.newRequest.gametitle + ' on ' + this.formatSystem(this.newRequest.system) + ' with the Parallel app. Check it out';
+            		if (authData !== null && authData !== undefined && authData.uid === cusElem.newRequest.uid) {
+            		    message = 'I created a gaming request to play ' + cusElem.newRequest.gametitle + ' on ' + cusElem.formatSystem(cusElem.newRequest.system) + ' with the Parallel app. Check it out';
             		}
 
             		var encodedMessage = encodeURIComponent(message);
 
             		var options = {
-            			entityId: this.request.id,
+            		    entityId: cusElem.newRequest.id,
             			entityType: 'request',
             			message: encodedMessage
             		};
@@ -1311,6 +1315,7 @@
             		var requestid = newRequestRef.key();
 
             		if (requestid !== null && requestid !== undefined) {
+            		    newRequest.id = requestid;
             			this.newRequest = newRequest;
             			this.showSuccessMessage();
             		}

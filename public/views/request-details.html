@@ -994,6 +994,12 @@
 
                     if (interestedUidsArray) {
                         _.each(interestedUidsArray, function (uid, index) {
+
+                            //store the last interested player recieved from the once('value') function
+                            if (index === (interestedUidsArray.length - 1)) {
+                                cusElem.lastInterestedPlayer = uid;
+                            }
+
                             var userRef = new Firebase(window.lfg.config.getFirebaseUrl() + 'users/' + uid);
                             userRef.orderByPriority().once('value', function (snapshot) {
                                 var user = snapshot.val();
@@ -1016,7 +1022,7 @@
                         .on('child_added', function (childSnapshot) {
                             var addedUser = childSnapshot.val();
 
-                            if (addedUser && childSnapshot.key() !== interestedUidsArray[interestedUidsArray.length - 1]) {
+                            if (addedUser && childSnapshot.key() !== cusElem.lastInterestedPlayer) {
 
                                 var interestedUid = childSnapshot.key();
                                 var interestedUserRef = new Firebase(window.lfg.config.getFirebaseUrl() + 'users/' + interestedUid);
@@ -1217,6 +1223,7 @@
             	};
             	this.user = {};
             	this.interestedPlayers = [];
+            	this.lastInterestedPlayer = null;
             },
 
             registerPlugins: function () {
