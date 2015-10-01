@@ -452,6 +452,7 @@
             saveUserData: function (authData, userdata) {
                 var userRef = new Firebase(window.lfg.config.getFirebaseUrl() + 'users/' + authData.uid);
                 userdata.setupcomplete = true;
+                userdata.usernamelowercase = userdata.username.toLowerCase().trim();
                 userRef.set(userdata);
 
                 var userid = userRef.key();

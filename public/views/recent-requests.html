@@ -1210,18 +1210,18 @@
             },
 
             getUserProfile: function (request) {
-            	var cusElem = this;
-            	var userRef = new Firebase(window.lfg.config.getFirebaseUrl() + 'users/' + request.uid);
-            	userRef.once("value", function (snapshot) {
-            		var user = snapshot.val() || {};
-            		if (user) {
-            		    var profileImage = document.getElementById(request.profilepicid);
+                var cusElem = this;
+                var userImageRef = new Firebase(window.lfg.config.getFirebaseUrl() + 'users/' + request.uid + '/profilepic');
+                userImageRef.once("value", function (snapshot) {
+                    var profilepic = snapshot.val();
+                    if (profilepic !== null && profilepic !== undefined && profilepic !== '') {
+                        var profileImage = document.getElementById(request.profilepicid);
 
-            			if (profileImage !== null && profileImage !== undefined) {
-            			    profileImage.src = user.profilepic;
-            			}
-            		}
-            	});
+                        if (profileImage !== null && profileImage !== undefined) {
+                            profileImage.src = profilepic;
+                        }
+                    }
+                });
             },
 
             getGamerCount: function (count) {

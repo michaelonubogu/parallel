@@ -591,7 +591,7 @@
 
 
         <!-- Request Details Overlay-->
-        <div id="details_overlay" class="overlay-cover layout horizontal center-center" style="width:100%; height:100% !important; z-index:10000 !important; position:absolute; display:none;">
+        <div id="details_overlay" class="overlay-cover layout horizontal center-center" style="width:100%; height:100% !important; z-index:10000 !important; position:fixed; display:none;">
             <div id="details_overlay_content" class="white overlay-card" style="width:100%; max-width:1000px; height:92% !important; border-radius:5px;">
                 <div class="layout vertical white" style="border-radius:5px;">
                     <div class="layout horizontal">
@@ -1074,6 +1074,7 @@
             closeOverlay: function () {
                 $(this.$.details_overlay).fadeOut();
                 this.$.overlay_details.innerHTML = '';
+                $(this.$.overlay_details).empty();
             },
 
             changeSort: function (e) {
@@ -1118,6 +1119,8 @@
 
                 if (game !== null && game !== 'null' && game !== undefined && game !== '' && system !== null && system !== 'null' && system !== undefined && system !== '') {
 
+                    this.dataops.query = game;
+
                     //Set the search box and current filter to appropriate system
                     $('#search_input').val(game);
 
@@ -1161,6 +1164,7 @@
                     this.getRequests(game, this.querytype.bysystem, false);
                 }
                 else if (game !== null && game !== 'null' && game !== undefined && game !== '') {
+                    this.dataops.query = game;
                     this.getRequests(game, this.querytype.bygame, false);
                 }
                 else if (system !== null && system !== 'null' && system !== undefined && system !== '') {
@@ -1823,14 +1827,14 @@
 
             getUserProfile: function (request) {
                 var cusElem = this;
-                var userRef = new Firebase(window.lfg.config.getFirebaseUrl() + 'users/' + request.uid);
-                userRef.once("value", function (snapshot) {
-                    var user = snapshot.val() || {};
-                    if (user) {
+                var userImageRef = new Firebase(window.lfg.config.getFirebaseUrl() + 'users/' + request.uid + '/profilepic');
+                userImageRef.once("value", function (snapshot) {
+                    var profilepic = snapshot.val();
+                    if (profilepic !== null && profilepic !== undefined && profilepic !== '') {
                         var profileImage = document.getElementById("img" + request.key);
 
                         if (profileImage !== null && profileImage !== undefined) {
-                            document.getElementById("img" + request.key).src = user.profilepic;
+                            document.getElementById("img" + request.key).src = profilepic;
                         }
                     }
                 });

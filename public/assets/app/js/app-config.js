@@ -20,7 +20,8 @@
 				search: 'api/giantbomb/search',
                 steamlogin: 'api/steam/authenticate',
                 verifyEmail : 'api/verify',
-                inviteRequest: 'api/email/sendInviteRequest'
+                inviteRequest: 'api/email/sendInviteRequest',
+                commentEmail: 'api/email/sendCommentEmail'
 			},
 			firebaseUrl: 'https://lfgbase.firebaseio.com/',
 			firebaseEntities: {
@@ -175,6 +176,29 @@
                 
                 if (url[url.length - 1] !== '/') { url += '/'; }
                 return url + this.apiEndPoints.inviteRequest;
+            },
+
+            getCommentEmailUrl: function (){
+                var url = '';
+                switch (this.env) {
+                    case 'dev':
+                        url = this.appDevUrl;
+                        break;
+
+                    case 'test':
+                        url = this.appTestUrl;
+                        break;
+
+                    case 'prod':
+                        url = this.appProdUrl;
+                        break;
+
+                    default:
+                        break;
+                }
+                
+                if (url[url.length - 1] !== '/') { url += '/'; }
+                return url + this.apiEndPoints.commentEmail;
             }
 		};
 		
@@ -307,6 +331,32 @@
 				}
             },
             
+            getAbsolutePosition: function (element){
+                var rect = element.getBoundingClientRect();
+                console.log(rect.top, rect.right, rect.bottom, rect.left);
+                return rect;
+            },
+            
+            getEditableDivCaretPosition: function (){
+                //Another serious hack :|
+                //Gets the index position of the cursor relative to the text of the currently-editing content editable div
+                if (window.getSelection) {
+                    var selection = window.getSelection();
+                    if (selection) {
+                        if (selection.getRangeAt) { // Mozilla
+                            if (selection.rangeCount >= 1) {
+                                var range = selection.getRangeAt(0);
+                                return range.startOffset;
+                                //alert(range.startContainer + ' | ' + range.startOffset);
+                            }
+                        } else if (selection.focusNode) { // Webkit
+                            return selection.focusOffset;
+                            //alert(selection.startContainer + ' | ' + selection.startOffset);
+                        }
+                    }
+                }
+            },
+
             getAuthData: function () {
                 var authJSON = sessionStorage.getItem(config.firebaseCacheKey);
                 var authData = JSON.parse(authJSON);

@@ -64,39 +64,215 @@ router.get('/', function (req, res) {
 	res.send('respond with a resource');
 });
 
+router.get('/email/sendCommentEmail', function (req, res) {
+    var requestid = req.query.requestid;
+    var commenter = req.query.commenter;
+    var creator = req.query.creator;
+    var gametitle = req.query.gametitle;
+    var system = req.query.system;
+    
+    var titlemessage = 'Someone commented on your request';
+    var grammarfocus = 'your';
+    var interestfocus = 'you are interested in'
+    var subject = 'Someone commented on your gaming request';
+
+    //Send email to the owner of the request
+    var templateDir = config.appsettings.env === 'dev' ? './emailTemplates/commentRequestEmail.html' : '../emailTemplates/commentRequestEmail.html';
+    var originalHtmlTemplate = fs.readFileSync(templateDir, "utf8");
+    var requesturl = origin + '/#/request/' + requestid;
+    
+    //Gonna need to do some querying - Get the creator, then for each subscriber, get their user info, and send an email to them if they are subscribed
+    var creatorRef = new Firebase(config.firebase.url + 'users');
+    
+    creatorRef
+    .orderByChild('username')
+    .equalTo(creator)
+    .once('value', function (creatorSnapshot) {
+        var creatorUserObj = creatorSnapshot.val();
+
+        if (creatorUserObj !== null && creatorUserObj !== undefined) {
+
+            var creatorEmail = null;
+            var creatorUser = null;
+
+            var creatorUserArray = _.map(creatorUserObj, function (userItem, userKey) { 
+                return userItem;
+            });
+            
+            if (creatorUserArray !== null && creatorUserArray !== undefined && creatorUserArray.length > 0) {
+                creatorUser = creatorUserArray[0];
+                creatorEmail = creatorUserArray[0].email;
+            }
+
+            //Send an email to the creator if (a) their email is verified & (b) they are not the commenter
+            if (
+                creatorEmail !== null && 
+                creatorEmail !== undefined && 
+                creatorUser !== null &&
+                creatorUser !== undefined &&
+                creatorUser.emailverified !== null && 
+                creatorUser.emailverified !== undefined && 
+                creatorUser.emailverified == true &&
+                creator.trim() !== commenter.trim()) {
+
+                //send email to creator
+                var htmlTemplate = originalHtmlTemplate.slice(0); //get a copy of the template
+                htmlTemplate = htmlTemplate.replace('{{addressee}}', creator);
+                htmlTemplate = htmlTemplate.replace('{{titlemessage}}', titlemessage);
+                htmlTemplate = htmlTemplate.replace('{{grammarfocus}}', grammarfocus);
+                htmlTemplate = htmlTemplate.replace('{{interestfocus}}', ''); //interest focus is empty for the creator
+                htmlTemplate = htmlTemplate.replace('{{commenter}}', commenter);
+                htmlTemplate = htmlTemplate.replace('{{gametitle}}', gametitle);
+                htmlTemplate = htmlTemplate.replace('{{system}}', system);
+                htmlTemplate = htmlTemplate.replace('{{requesturl}}', requesturl);
+                
+                // setup e-mail data with unicode symbols
+                var mailOptions = {
+                    from: 'Parallel <' + config.email.gmail.user + '>', // sender address
+                    to: creatorUser.email, // list of receivers
+                    subject: subject, // Subject line
+                    html: htmlTemplate // html body
+                };
+                
+                // send mail with defined transport object
+                transporter.sendMail(mailOptions, function (error, info) {
+                    if (error) {
+                        return console.log(error);
+                    }
+                    console.log('Message sent: ' + info.response);
+                });
+            }
+
+            //Now we are going to make a call for each subscribed user, and send them an email one after the other
+            var requestSubscribersRef = new Firebase(config.firebase.url + 'requests/' + requestid + '/subscribers');
+
+            requestSubscribersRef.once('value', function (subsSnapshot) {
+                var subscriberIds = subsSnapshot.val();
+
+                if (subscriberIds !== null && subscriberIds !== undefined) {
+                    var subscriberIdsArray = _.map(subscriberIds, function (sub, key) {
+                        return sub.uid;
+                    });
+
+                    if (subscriberIdsArray !== null && subscriberIdsArray !== undefined && subscriberIdsArray.length > 0) {
+                        //Get the user for each uid and send them an email - all except the commenter
+                        _.each(subscriberIdsArray, function (subId) {
+
+                            var userRef = new Firebase(config.firebase.url + 'users/' + subId);
+                            userRef.once('value', function (userSnapshot) {
+                                var user = userSnapshot.val();
+
+                                if (
+                                    user !== null && 
+                                    user !== undefined &&
+                                     user.username !== null && 
+                                     user.username !== undefined && 
+                                     user.email !== null && 
+                                     user.email !== undefined && 
+                                     user.emailverified !== null &&
+                                     user.emailverified !== undefined &&
+                                     user.emailverified == true &&
+                                     user.username.trim() !== commenter.trim()) {
+                                    
+                                    //send the user an email
+                                    var htmlTemplate = originalHtmlTemplate.slice(0); //get a copy of the template
+                                    htmlTemplate = htmlTemplate.replace('{{addressee}}', user.username);
+                                    htmlTemplate = htmlTemplate.replace('{{titlemessage}}', 'Someone commented on a request you are interested in');
+                                    htmlTemplate = htmlTemplate.replace('{{grammarfocus}}', 'a');
+                                    htmlTemplate = htmlTemplate.replace('{{interestfocus}}', 'you are interested in'); //interest focus is empty for the creator
+                                    htmlTemplate = htmlTemplate.replace('{{commenter}}', commenter);
+                                    htmlTemplate = htmlTemplate.replace('{{gametitle}}', gametitle);
+                                    htmlTemplate = htmlTemplate.replace('{{system}}', system);
+                                    htmlTemplate = htmlTemplate.replace('{{requesturl}}', requesturl);
+                                    
+                                    // setup e-mail data with unicode symbols
+                                    var mailOptions = {
+                                        from: 'Parallel <' + config.email.gmail.user + '>', // sender address
+                                        to: user.email, // list of receivers
+                                        subject: 'Someone commented on a gaming request you are interested in', // Subject line
+                                        html: htmlTemplate // html body
+                                    };
+                                    
+                                    // send mail with defined transport object
+                                    transporter.sendMail(mailOptions, function (error, info) {
+                                        if (error) {
+                                            return console.log(error);
+                                        }
+                                        console.log('Message sent: ' + info.response);
+                                    });
+                                }
+                            });
+                        });
+                    }
+                }
+            });
+        }
+    });
+    
+    res.status(200).send('server reached');
+    
+});
+
 router.get('/email/sendInviteRequest', function (req, res) {
     var requestid = req.query.requestid;
     var invitee = req.query.invitee;
-    var creator = req.query.creator;
-    var creatorEmail = req.query.creatorEmail;
     var gametitle = req.query.gametitle;
     var system = req.query.system;
+    
+    //Get the request
+    var requestRef = new Firebase(config.firebase.url + 'requests/' + requestid);
+    
+    requestRef.once('value', function (requestSnapshot) {
 
-    //Send verification email and success message to user/client
-    var templateDir = config.appsettings.env === 'dev' ? './emailTemplates/inviteRequestEmail.html' : '../emailTemplates/inviteRequestEmail.html';
-    var htmlTemplate = fs.readFileSync(templateDir, "utf8");
-    var requesturl = origin + '/#/request/' + requestid;
-    
-    htmlTemplate = htmlTemplate.replace('{{creator}}', creator);
-    htmlTemplate = htmlTemplate.replace('{{inviteRequestor}}', invitee);
-    htmlTemplate = htmlTemplate.replace('{{gametitle}}', gametitle);
-    htmlTemplate = htmlTemplate.replace('{{system}}', system);
-    htmlTemplate = htmlTemplate.replace('{{requesturl}}', requesturl);
-    
-    // setup e-mail data with unicode symbols
-    var mailOptions = {
-        from: 'Parallel <' + config.email.gmail.user + '>', // sender address
-        to: creatorEmail, // list of receivers
-        subject: 'Response to your gaming request', // Subject line
-        html: htmlTemplate // html body
-    };
-    
-    // send mail with defined transport object
-    transporter.sendMail(mailOptions, function (error, info) {
-        if (error) {
-            return console.log(error);
+        var request = requestSnapshot.val();
+        
+        if (request !== null && request !== undefined) {
+            
+            //Get the request creator
+            var creatorRef = new Firebase(config.firebase.url + 'users/' + request.uid);
+            creatorRef.once('value', function (creatorSnapshot) {
+
+                var creator = creatorSnapshot.val();
+                
+                //Make sure their email is verified
+                if (
+                    creator !== null && 
+                    creator !== undefined && 
+                    creator.username !== null && 
+                    creator.username !== undefined && 
+                    creator.email !== null && 
+                    creator.email !== undefined && 
+                    creator.emailverified === true) {
+                    
+                    //Send email to the creator
+                    var templateDir = config.appsettings.env === 'dev' ? './emailTemplates/inviteRequestEmail.html' : '../emailTemplates/inviteRequestEmail.html';
+                    var htmlTemplate = fs.readFileSync(templateDir, "utf8");
+                    var requesturl = origin + '/#/request/' + requestid;
+                    
+                    htmlTemplate = htmlTemplate.replace('{{creator}}', creator.username);
+                    htmlTemplate = htmlTemplate.replace('{{inviteRequestor}}', invitee);
+                    htmlTemplate = htmlTemplate.replace('{{gametitle}}', gametitle);
+                    htmlTemplate = htmlTemplate.replace('{{system}}', system);
+                    htmlTemplate = htmlTemplate.replace('{{requesturl}}', requesturl);
+                    
+                    // setup e-mail data with unicode symbols
+                    var mailOptions = {
+                        from: 'Parallel <' + config.email.gmail.user + '>', // sender address
+                        to: creator.email, // list of receivers
+                        subject: 'Response to your gaming request', // Subject line
+                        html: htmlTemplate // html body
+                    };
+                    
+                    // send mail with defined transport object
+                    transporter.sendMail(mailOptions, function (error, info) {
+                        if (error) {
+                            return console.log(error);
+                        }
+                        console.log('Message sent: ' + info.response);
+                    });
+                }
+            });
         }
-        console.log('Message sent: ' + info.response);
     });
 
     res.status(200).send('server reached');

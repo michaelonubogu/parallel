@@ -302,9 +302,9 @@
             finishSetUp: function () {
             	//Do some validation...
             	var cusElem = this;
-            	if (this.validateInput(this.user)) {
-            		cusElem.user.username = $(cusElem.$.username).val();
-            		cusElem.user.email = $(cusElem.$.email).val();
+            	if (cusElem.validateInput(cusElem.user)) {
+            		cusElem.user.username = $(cusElem.$.username).val().trim();
+            		cusElem.user.email = $(cusElem.$.email).val().trim();
 
             	    //scrub for xss
             		cusElem.user.username = filterXSS(cusElem.user.username);
@@ -342,7 +342,7 @@
             		//Get the user profile info. If none exists, redirect to Onboarding process...
             	    usersRef
                         .orderByChild('username')
-						.equalTo(this.user.username)
+						.equalTo(cusElem.user.username)
 						.once('value', function (snapshot) {
 							var user = snapshot.val();
 
@@ -520,6 +520,7 @@
                 var cusElem = this;
                 var userRef = new Firebase(window.lfg.config.getFirebaseUrl() + 'users/' + authData.uid);
                 userdata.setupcomplete = true;
+                userdata.usernamelowercase = userdata.username.toLowerCase().trim();;
 
                 userRef.set(userdata, function (error) {
                     if (error) {
