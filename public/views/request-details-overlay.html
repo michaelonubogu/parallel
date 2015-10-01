@@ -556,8 +556,8 @@
                     </div>
 
 					<div class="lfg-input input-field col s12 add-comment-control add-comment-text" style="display:none;">
-						<!--<textarea id="comment_text" type="text" placeholder="Say something nice" spellcheck="false" class="materialize-textarea" length="250"></textarea>-->
-                        <div contenteditable="true" id="comment_text" spellcheck="false"></div>
+						<textarea id="comment_text" type="text" placeholder="Say something nice" spellcheck="false" class="materialize-textarea" length="250"></textarea>
+                        <!--<div contenteditable="true" id="comment_text" spellcheck="false"></div>-->
 					</div>
 					<div class="col s12 center center-align add-comment-control add-comment-button" style="display:none;">
 						<a class="waves-effect waves-light btn orange darken-4 white-text" style="text-transform:none;" on-click="addComment">Post Comment</a>
@@ -666,8 +666,8 @@
 				}
 
 				if (authData !== null && authData !== undefined) {
-					//var userComment = $(customElem.$.comment_text).val();
-					var userComment = $(customElem.$.comment_text).html();
+					var userComment = $(customElem.$.comment_text).val();
+					//var userComment = $(customElem.$.comment_text).html();
 
 					if (userComment === null || userComment === undefined || userComment === '') {
 						$(customElem.$.comment_text).addClass('invalid');
